@@ -40,8 +40,8 @@ const Hero = () => {
                 <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
                 Join the Pilot Program
               </Button>
-              <Button variant="heroOutline" size="lg">
-                Learn More
+              <Button variant="heroOutline" size="lg" asChild>
+                <a href="#about">Learn More</a>
               </Button>
             </div>
           </div>
