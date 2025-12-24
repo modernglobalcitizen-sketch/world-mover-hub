@@ -17,7 +17,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <a href="/" className="flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-105">
             <Globe className="h-5 w-5" />
           </div>
@@ -39,10 +39,9 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="outline" size="default">
-            Login / Sign Up
+          <Button variant="outline" size="default" asChild>
+            <a href="/auth">Login / Sign Up</a>
           </Button>
         </div>
 
@@ -70,8 +69,8 @@ const Header = () => {
                 {link.name}
               </a>
             ))}
-            <Button variant="outline" className="w-full mt-2">
-              Login / Sign Up
+            <Button variant="outline" className="w-full mt-2" asChild>
+              <a href="/auth">Login / Sign Up</a>
             </Button>
           </nav>
         </div>
