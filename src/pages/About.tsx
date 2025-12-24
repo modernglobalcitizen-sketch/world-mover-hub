@@ -24,6 +24,24 @@ const About = () => {
                 Beyond funding, our members gain access to curated opportunities, learning resources for skill-building, and a supportive community of others on the same journey. Together, we're proving that barriers to global mobility can be overcome through solidarity and collective action.
               </p>
             </div>
+
+            <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-headline pt-8">
+              Our Story
+            </h2>
+            
+            <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
+              <p>
+                The Global Moves was born from a simple observation: incredible talent exists everywhere, but access to global opportunities doesn't. Our founders, having experienced the barriers of limited passport mobility firsthand, realized that individual effort alone wasn't enough — collective action was the answer.
+              </p>
+              
+              <p>
+                What started as a small group pooling resources to help friends afford visa applications and financial proof requirements has grown into a comprehensive community-funded platform serving thousands of members worldwide. By combining small monthly contributions, we've created a sustainable model that democratizes access to global opportunities.
+              </p>
+              
+              <p>
+                Today, The Global Moves continues to grow through transparency, member participation, and our shared commitment to making international mobility a reality for those who need it most. Every member who succeeds becomes part of the solution, contributing back to help the next generation of global movers.
+              </p>
+            </div>
           </article>
         </div>
       </main>
