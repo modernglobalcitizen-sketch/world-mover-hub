@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ArrowDownCircle, ArrowUpCircle, DollarSign, TrendingUp, Users } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, DollarSign, Users } from "lucide-react";
 import { format } from "date-fns";
+import { Session } from "@supabase/supabase-js";
 
 interface Transaction {
   id: string;
@@ -19,8 +21,35 @@ interface Transaction {
 const Transparency = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setCheckingAuth(false);
+        if (!session) {
+          navigate("/auth");
+        }
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setCheckingAuth(false);
+      if (!session) {
+        navigate("/auth");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!session) return;
+    
     const fetchTransactions = async () => {
       const { data, error } = await supabase
         .from("fund_transactions")
@@ -36,7 +65,7 @@ const Transparency = () => {
     };
 
     fetchTransactions();
-  }, []);
+  }, [session]);
 
   const totalIncome = transactions
     .filter((t) => t.transaction_type === "income")
@@ -108,7 +137,7 @@ const Transparency = () => {
                 <h2 className="text-xl font-display font-semibold text-foreground">Transaction History</h2>
               </div>
               
-              {loading ? (
+              {(loading || checkingAuth) ? (
                 <div className="p-12 text-center text-muted-foreground">Loading transactions...</div>
               ) : transactions.length === 0 ? (
                 <div className="p-12 text-center text-muted-foreground">
