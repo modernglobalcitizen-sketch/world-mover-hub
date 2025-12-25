@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      applications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          opportunity_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          opportunity_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          opportunity_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fund_transactions: {
         Row: {
           amount: number
@@ -44,6 +82,45 @@ export type Database = {
           id?: string
           recipient_name?: string | null
           transaction_type?: string
+        }
+        Relationships: []
+      }
+      opportunities: {
+        Row: {
+          category: string
+          created_at: string
+          deadline: string | null
+          description: string
+          id: string
+          is_active: boolean
+          location: string | null
+          requirements: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          deadline?: string | null
+          description: string
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          requirements?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean
+          location?: string | null
+          requirements?: string | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }

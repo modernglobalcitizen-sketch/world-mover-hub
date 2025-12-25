@@ -5,11 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Shield } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -24,6 +27,18 @@ interface Transaction {
   recipient_name: string | null;
 }
 
+interface Opportunity {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  location: string | null;
+  deadline: string | null;
+  requirements: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
 const emptyTransaction = {
   date: new Date().toISOString().split("T")[0],
   description: "",
@@ -33,15 +48,34 @@ const emptyTransaction = {
   recipient_name: "",
 };
 
+const emptyOpportunity = {
+  title: "",
+  description: "",
+  category: "",
+  location: "",
+  deadline: "",
+  requirements: "",
+  is_active: true,
+};
+
 const Admin = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  
+  // Transaction dialog
+  const [txDialogOpen, setTxDialogOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
-  const [formData, setFormData] = useState(emptyTransaction);
+  const [txFormData, setTxFormData] = useState(emptyTransaction);
+  
+  // Opportunity dialog
+  const [oppDialogOpen, setOppDialogOpen] = useState(false);
+  const [editingOpportunity, setEditingOpportunity] = useState<Opportunity | null>(null);
+  const [oppFormData, setOppFormData] = useState(emptyOpportunity);
+  
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -91,29 +125,27 @@ const Admin = () => {
   }, [session]);
 
   useEffect(() => {
-    if (!session || checkingAuth) return;
+    if (!session || checkingAuth || !isAdmin) return;
 
-    const fetchTransactions = async () => {
-      const { data, error } = await supabase
-        .from("fund_transactions")
-        .select("*")
-        .order("date", { ascending: false });
+    const fetchData = async () => {
+      const [txResult, oppResult] = await Promise.all([
+        supabase.from("fund_transactions").select("*").order("date", { ascending: false }),
+        supabase.from("opportunities").select("*").order("created_at", { ascending: false }),
+      ]);
 
-      if (error) {
-        console.error("Error fetching transactions:", error);
-      } else {
-        setTransactions(data || []);
-      }
+      if (txResult.data) setTransactions(txResult.data);
+      if (oppResult.data) setOpportunities(oppResult.data);
       setLoading(false);
     };
 
-    fetchTransactions();
-  }, [session, checkingAuth]);
+    fetchData();
+  }, [session, checkingAuth, isAdmin]);
 
-  const handleOpenDialog = (transaction?: Transaction) => {
+  // Transaction handlers
+  const handleOpenTxDialog = (transaction?: Transaction) => {
     if (transaction) {
       setEditingTransaction(transaction);
-      setFormData({
+      setTxFormData({
         date: transaction.date,
         description: transaction.description,
         category: transaction.category,
@@ -123,13 +155,13 @@ const Admin = () => {
       });
     } else {
       setEditingTransaction(null);
-      setFormData(emptyTransaction);
+      setTxFormData(emptyTransaction);
     }
-    setDialogOpen(true);
+    setTxDialogOpen(true);
   };
 
-  const handleSave = async () => {
-    if (!formData.description || !formData.category || formData.amount <= 0) {
+  const handleSaveTx = async () => {
+    if (!txFormData.description || !txFormData.category || txFormData.amount <= 0) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -137,12 +169,12 @@ const Admin = () => {
     setSaving(true);
 
     const transactionData = {
-      date: formData.date,
-      description: formData.description,
-      category: formData.category,
-      amount: formData.amount,
-      transaction_type: formData.transaction_type,
-      recipient_name: formData.recipient_name || null,
+      date: txFormData.date,
+      description: txFormData.description,
+      category: txFormData.category,
+      amount: txFormData.amount,
+      transaction_type: txFormData.transaction_type,
+      recipient_name: txFormData.recipient_name || null,
     };
 
     if (editingTransaction) {
@@ -153,7 +185,6 @@ const Admin = () => {
 
       if (error) {
         toast.error("Failed to update transaction");
-        console.error(error);
       } else {
         toast.success("Transaction updated");
         setTransactions(transactions.map(t => 
@@ -169,7 +200,6 @@ const Admin = () => {
 
       if (error) {
         toast.error("Failed to add transaction");
-        console.error(error);
       } else {
         toast.success("Transaction added");
         setTransactions([data, ...transactions]);
@@ -177,23 +207,118 @@ const Admin = () => {
     }
 
     setSaving(false);
-    setDialogOpen(false);
+    setTxDialogOpen(false);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteTx = async (id: string) => {
     if (!confirm("Are you sure you want to delete this transaction?")) return;
 
-    const { error } = await supabase
-      .from("fund_transactions")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("fund_transactions").delete().eq("id", id);
 
     if (error) {
       toast.error("Failed to delete transaction");
-      console.error(error);
     } else {
       toast.success("Transaction deleted");
       setTransactions(transactions.filter(t => t.id !== id));
+    }
+  };
+
+  // Opportunity handlers
+  const handleOpenOppDialog = (opportunity?: Opportunity) => {
+    if (opportunity) {
+      setEditingOpportunity(opportunity);
+      setOppFormData({
+        title: opportunity.title,
+        description: opportunity.description,
+        category: opportunity.category,
+        location: opportunity.location || "",
+        deadline: opportunity.deadline || "",
+        requirements: opportunity.requirements || "",
+        is_active: opportunity.is_active,
+      });
+    } else {
+      setEditingOpportunity(null);
+      setOppFormData(emptyOpportunity);
+    }
+    setOppDialogOpen(true);
+  };
+
+  const handleSaveOpp = async () => {
+    if (!oppFormData.title || !oppFormData.description || !oppFormData.category) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setSaving(true);
+
+    const opportunityData = {
+      title: oppFormData.title,
+      description: oppFormData.description,
+      category: oppFormData.category,
+      location: oppFormData.location || null,
+      deadline: oppFormData.deadline || null,
+      requirements: oppFormData.requirements || null,
+      is_active: oppFormData.is_active,
+    };
+
+    if (editingOpportunity) {
+      const { error } = await supabase
+        .from("opportunities")
+        .update(opportunityData)
+        .eq("id", editingOpportunity.id);
+
+      if (error) {
+        toast.error("Failed to update opportunity");
+      } else {
+        toast.success("Opportunity updated");
+        setOpportunities(opportunities.map(o => 
+          o.id === editingOpportunity.id ? { ...o, ...opportunityData } : o
+        ));
+      }
+    } else {
+      const { data, error } = await supabase
+        .from("opportunities")
+        .insert(opportunityData)
+        .select()
+        .single();
+
+      if (error) {
+        toast.error("Failed to add opportunity");
+      } else {
+        toast.success("Opportunity added");
+        setOpportunities([data, ...opportunities]);
+      }
+    }
+
+    setSaving(false);
+    setOppDialogOpen(false);
+  };
+
+  const handleDeleteOpp = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this opportunity?")) return;
+
+    const { error } = await supabase.from("opportunities").delete().eq("id", id);
+
+    if (error) {
+      toast.error("Failed to delete opportunity");
+    } else {
+      toast.success("Opportunity deleted");
+      setOpportunities(opportunities.filter(o => o.id !== id));
+    }
+  };
+
+  const toggleOppActive = async (id: string, isActive: boolean) => {
+    const { error } = await supabase
+      .from("opportunities")
+      .update({ is_active: isActive })
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Failed to update opportunity");
+    } else {
+      setOpportunities(opportunities.map(o => 
+        o.id === id ? { ...o, is_active: isActive } : o
+      ));
     }
   };
 
@@ -231,171 +356,316 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="py-16 md:py-24">
+      <main className="py-12 md:py-16">
         <div className="container">
           <div className="space-y-8 animate-fade-in">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
-                  Admin Dashboard
-                </h1>
-                <p className="mt-2 text-muted-foreground">
-                  Manage fund transactions
-                </p>
-              </div>
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={() => handleOpenDialog()}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Transaction
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingTransaction ? "Edit Transaction" : "Add Transaction"}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="date">Date</Label>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="description">Description *</Label>
-                      <Input
-                        id="description"
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        placeholder="Transaction description"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="category">Category *</Label>
-                      <Input
-                        id="category"
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        placeholder="e.g., Member Support, Operations"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="type">Type</Label>
-                      <Select
-                        value={formData.transaction_type}
-                        onValueChange={(value) => setFormData({ ...formData, transaction_type: value })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="income">Income</SelectItem>
-                          <SelectItem value="expense">Expense</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">Amount *</Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={formData.amount}
-                        onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
-                        placeholder="0.00"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="recipient">Recipient Name (optional)</Label>
-                      <Input
-                        id="recipient"
-                        value={formData.recipient_name}
-                        onChange={(e) => setFormData({ ...formData, recipient_name: e.target.value })}
-                        placeholder="e.g., John D."
-                      />
-                    </div>
-                    <Button onClick={handleSave} className="w-full" disabled={saving}>
-                      {saving ? "Saving..." : editingTransaction ? "Update" : "Add"} Transaction
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
+                Admin Dashboard
+              </h1>
+              <p className="mt-2 text-muted-foreground">
+                Manage transactions and opportunities
+              </p>
             </div>
 
-            <div className="rounded-xl border border-border bg-card shadow-soft overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Recipient</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                        No transactions yet. Add your first transaction above.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    transactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell className="font-medium">
-                          {format(new Date(transaction.date), "MMM d, yyyy")}
-                        </TableCell>
-                        <TableCell>{transaction.description}</TableCell>
-                        <TableCell>
-                          <Badge variant="secondary">{transaction.category}</Badge>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {transaction.recipient_name || "—"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <span
-                            className={
-                              transaction.transaction_type === "income"
-                                ? "text-green-600"
-                                : "text-orange-600"
-                            }
+            <Tabs defaultValue="transactions" className="space-y-6">
+              <TabsList>
+                <TabsTrigger value="transactions" className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  Transactions
+                </TabsTrigger>
+                <TabsTrigger value="opportunities" className="flex items-center gap-2">
+                  <Briefcase className="h-4 w-4" />
+                  Opportunities
+                </TabsTrigger>
+              </TabsList>
+
+              {/* Transactions Tab */}
+              <TabsContent value="transactions" className="space-y-4">
+                <div className="flex justify-end">
+                  <Dialog open={txDialogOpen} onOpenChange={setTxDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button onClick={() => handleOpenTxDialog()}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Transaction
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>
+                          {editingTransaction ? "Edit Transaction" : "Add Transaction"}
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-date">Date</Label>
+                          <Input
+                            id="tx-date"
+                            type="date"
+                            value={txFormData.date}
+                            onChange={(e) => setTxFormData({ ...txFormData, date: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-description">Description *</Label>
+                          <Input
+                            id="tx-description"
+                            value={txFormData.description}
+                            onChange={(e) => setTxFormData({ ...txFormData, description: e.target.value })}
+                            placeholder="Transaction description"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-category">Category *</Label>
+                          <Input
+                            id="tx-category"
+                            value={txFormData.category}
+                            onChange={(e) => setTxFormData({ ...txFormData, category: e.target.value })}
+                            placeholder="e.g., Member Support, Operations"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-type">Type</Label>
+                          <Select
+                            value={txFormData.transaction_type}
+                            onValueChange={(value) => setTxFormData({ ...txFormData, transaction_type: value })}
                           >
-                            {transaction.transaction_type === "income" ? "+" : "-"}$
-                            {Number(transaction.amount).toLocaleString()}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleOpenDialog(transaction)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleDelete(transaction.id)}
-                            >
-                              <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="income">Income</SelectItem>
+                              <SelectItem value="expense">Expense</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-amount">Amount *</Label>
+                          <Input
+                            id="tx-amount"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={txFormData.amount}
+                            onChange={(e) => setTxFormData({ ...txFormData, amount: parseFloat(e.target.value) || 0 })}
+                            placeholder="0.00"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="tx-recipient">Recipient Name (optional)</Label>
+                          <Input
+                            id="tx-recipient"
+                            value={txFormData.recipient_name}
+                            onChange={(e) => setTxFormData({ ...txFormData, recipient_name: e.target.value })}
+                            placeholder="e.g., John D."
+                          />
+                        </div>
+                        <Button onClick={handleSaveTx} className="w-full" disabled={saving}>
+                          {saving ? "Saving..." : editingTransaction ? "Update" : "Add"} Transaction
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card shadow-soft overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Recipient</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
+                    </TableHeader>
+                    <TableBody>
+                      {transactions.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            No transactions yet.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        transactions.map((transaction) => (
+                          <TableRow key={transaction.id}>
+                            <TableCell className="font-medium">
+                              {format(new Date(transaction.date), "MMM d, yyyy")}
+                            </TableCell>
+                            <TableCell>{transaction.description}</TableCell>
+                            <TableCell>
+                              <Badge variant="secondary">{transaction.category}</Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {transaction.recipient_name || "—"}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <span className={transaction.transaction_type === "income" ? "text-green-600" : "text-orange-600"}>
+                                {transaction.transaction_type === "income" ? "+" : "-"}${Number(transaction.amount).toLocaleString()}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button variant="ghost" size="icon" onClick={() => handleOpenTxDialog(transaction)}>
+                                  <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteTx(transaction.id)}>
+                                  <Trash2 className="h-4 w-4 text-destructive" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </TabsContent>
+
+              {/* Opportunities Tab */}
+              <TabsContent value="opportunities" className="space-y-4">
+                <div className="flex justify-end">
+                  <Dialog open={oppDialogOpen} onOpenChange={setOppDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button onClick={() => handleOpenOppDialog()}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Opportunity
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg">
+                      <DialogHeader>
+                        <DialogTitle>
+                          {editingOpportunity ? "Edit Opportunity" : "Add Opportunity"}
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto">
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-title">Title *</Label>
+                          <Input
+                            id="opp-title"
+                            value={oppFormData.title}
+                            onChange={(e) => setOppFormData({ ...oppFormData, title: e.target.value })}
+                            placeholder="Opportunity title"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-description">Description *</Label>
+                          <Textarea
+                            id="opp-description"
+                            value={oppFormData.description}
+                            onChange={(e) => setOppFormData({ ...oppFormData, description: e.target.value })}
+                            placeholder="Describe the opportunity"
+                            rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-category">Category *</Label>
+                          <Input
+                            id="opp-category"
+                            value={oppFormData.category}
+                            onChange={(e) => setOppFormData({ ...oppFormData, category: e.target.value })}
+                            placeholder="e.g., Study Abroad, Work-Travel"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-location">Location</Label>
+                          <Input
+                            id="opp-location"
+                            value={oppFormData.location}
+                            onChange={(e) => setOppFormData({ ...oppFormData, location: e.target.value })}
+                            placeholder="e.g., Germany, Remote"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-deadline">Application Deadline</Label>
+                          <Input
+                            id="opp-deadline"
+                            type="date"
+                            value={oppFormData.deadline}
+                            onChange={(e) => setOppFormData({ ...oppFormData, deadline: e.target.value })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-requirements">Requirements</Label>
+                          <Textarea
+                            id="opp-requirements"
+                            value={oppFormData.requirements}
+                            onChange={(e) => setOppFormData({ ...oppFormData, requirements: e.target.value })}
+                            placeholder="List the requirements"
+                            rows={2}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="opp-active">Active (visible to subscribers)</Label>
+                          <Switch
+                            id="opp-active"
+                            checked={oppFormData.is_active}
+                            onCheckedChange={(checked) => setOppFormData({ ...oppFormData, is_active: checked })}
+                          />
+                        </div>
+                        <Button onClick={handleSaveOpp} className="w-full" disabled={saving}>
+                          {saving ? "Saving..." : editingOpportunity ? "Update" : "Add"} Opportunity
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card shadow-soft overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Location</TableHead>
+                        <TableHead>Deadline</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {opportunities.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                            No opportunities yet.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        opportunities.map((opp) => (
+                          <TableRow key={opp.id}>
+                            <TableCell className="font-medium">{opp.title}</TableCell>
+                            <TableCell>
+                              <Badge variant="secondary">{opp.category}</Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{opp.location || "—"}</TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {opp.deadline ? format(new Date(opp.deadline), "MMM d, yyyy") : "—"}
+                            </TableCell>
+                            <TableCell>
+                              <Switch
+                                checked={opp.is_active}
+                                onCheckedChange={(checked) => toggleOppActive(opp.id, checked)}
+                              />
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button variant="ghost" size="icon" onClick={() => handleOpenOppDialog(opp)}>
+                                  <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteOpp(opp.id)}>
+                                  <Trash2 className="h-4 w-4 text-destructive" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>

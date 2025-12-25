@@ -5,7 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle } from "lucide-react";
 import { format } from "date-fns";
 
 interface FundSummary {
@@ -13,6 +15,38 @@ interface FundSummary {
   totalDisbursed: number;
   balance: number;
 }
+
+interface Application {
+  id: string;
+  status: string;
+  message: string | null;
+  created_at: string;
+  opportunity: {
+    id: string;
+    title: string;
+    category: string;
+    location: string | null;
+    deadline: string | null;
+  };
+}
+
+const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
+  pending: { 
+    label: "Pending", 
+    icon: <Clock className="h-3 w-3" />, 
+    className: "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20" 
+  },
+  approved: { 
+    label: "Approved", 
+    icon: <CheckCircle className="h-3 w-3" />, 
+    className: "bg-green-500/10 text-green-600 hover:bg-green-500/20" 
+  },
+  rejected: { 
+    label: "Rejected", 
+    icon: <XCircle className="h-3 w-3" />, 
+    className: "bg-red-500/10 text-red-600 hover:bg-red-500/20" 
+  },
+};
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +57,7 @@ const Dashboard = () => {
     totalDisbursed: 0,
     balance: 0,
   });
+  const [applications, setApplications] = useState<Application[]>([]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -46,16 +81,28 @@ const Dashboard = () => {
   }, [navigate]);
 
   useEffect(() => {
-    const fetchFundSummary = async () => {
-      const { data } = await supabase
-        .from("fund_transactions")
-        .select("amount, transaction_type");
+    const fetchData = async () => {
+      const [fundResult, appResult] = await Promise.all([
+        supabase.from("fund_transactions").select("amount, transaction_type"),
+        session ? supabase
+          .from("applications")
+          .select(`
+            id,
+            status,
+            message,
+            created_at,
+            opportunity:opportunities(id, title, category, location, deadline)
+          `)
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false })
+        : Promise.resolve({ data: null }),
+      ]);
 
-      if (data) {
-        const contributions = data
+      if (fundResult.data) {
+        const contributions = fundResult.data
           .filter((t) => t.transaction_type === "income")
           .reduce((sum, t) => sum + Number(t.amount), 0);
-        const disbursed = data
+        const disbursed = fundResult.data
           .filter((t) => t.transaction_type === "expense")
           .reduce((sum, t) => sum + Number(t.amount), 0);
 
@@ -65,10 +112,14 @@ const Dashboard = () => {
           balance: contributions - disbursed,
         });
       }
+
+      if (appResult.data) {
+        setApplications(appResult.data as Application[]);
+      }
     };
 
-    fetchFundSummary();
-  }, []);
+    fetchData();
+  }, [session]);
 
   if (loading) {
     return (
@@ -139,6 +190,69 @@ const Dashboard = () => {
               </Card>
             </div>
 
+            {/* My Applications */}
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="h-5 w-5 text-primary" />
+                  My Applications
+                </CardTitle>
+                <CardDescription>
+                  Track the status of your opportunity applications
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {applications.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Briefcase className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>You haven't applied to any opportunities yet.</p>
+                    <Button variant="outline" className="mt-4" asChild>
+                      <a href="/#opportunities">Browse Opportunities</a>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Opportunity</TableHead>
+                          <TableHead>Category</TableHead>
+                          <TableHead>Location</TableHead>
+                          <TableHead>Applied</TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {applications.map((app) => {
+                          const status = statusConfig[app.status] || statusConfig.pending;
+                          return (
+                            <TableRow key={app.id}>
+                              <TableCell className="font-medium">{app.opportunity.title}</TableCell>
+                              <TableCell>
+                                <Badge variant="secondary">{app.opportunity.category}</Badge>
+                              </TableCell>
+                              <TableCell className="text-muted-foreground">
+                                {app.opportunity.location || "—"}
+                              </TableCell>
+                              <TableCell className="text-muted-foreground">
+                                {format(new Date(app.created_at), "MMM d, yyyy")}
+                              </TableCell>
+                              <TableCell>
+                                <Badge className={status.className}>
+                                  {status.icon}
+                                  <span className="ml-1">{status.label}</span>
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Quick Actions */}
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="shadow-soft">
@@ -165,7 +279,7 @@ const Dashboard = () => {
                     Your Profile
                   </CardTitle>
                   <CardDescription>
-                    Manage your account settings, update your information, and view your membership details.
+                    Manage your account settings and view your membership details.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
