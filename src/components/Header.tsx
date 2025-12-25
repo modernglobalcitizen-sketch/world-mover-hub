@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe, Shield, LogOut } from "lucide-react";
+import { Menu, X, Globe, Shield, LogOut, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 
@@ -86,6 +86,14 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
+          {session && (
+            <Button variant="ghost" size="default" asChild>
+              <a href="/dashboard" className="flex items-center gap-2">
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </a>
+            </Button>
+          )}
           {isAdmin && (
             <Button variant="ghost" size="default" asChild>
               <a href="/admin" className="flex items-center gap-2">
@@ -130,6 +138,16 @@ const Header = () => {
                 {link.name}
               </a>
             ))}
+            {session && (
+              <a
+                href="/dashboard"
+                className="text-base font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </a>
+            )}
             {isAdmin && (
               <a
                 href="/admin"
