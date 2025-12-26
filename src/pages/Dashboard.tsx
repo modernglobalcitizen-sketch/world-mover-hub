@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown } from "lucide-react";
 import { format } from "date-fns";
 
 interface FundSummary {
@@ -58,6 +58,10 @@ const Dashboard = () => {
     balance: 0,
   });
   const [applications, setApplications] = useState<Application[]>([]);
+  const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null }>({
+    isFounder: false,
+    number: null,
+  });
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -82,9 +86,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [fundResult, appResult] = await Promise.all([
+      if (!session) return;
+      
+      const [fundResult, appResult, profileResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
-        session ? supabase
+        supabase
           .from("applications")
           .select(`
             id,
@@ -94,8 +100,12 @@ const Dashboard = () => {
             opportunity:opportunities(id, title, category, location, deadline)
           `)
           .eq("user_id", session.user.id)
-          .order("created_at", { ascending: false })
-        : Promise.resolve({ data: null }),
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("profiles")
+          .select("is_founding_member, founding_member_number")
+          .eq("id", session.user.id)
+          .maybeSingle(),
       ]);
 
       if (fundResult.data) {
@@ -115,6 +125,13 @@ const Dashboard = () => {
 
       if (appResult.data) {
         setApplications(appResult.data as Application[]);
+      }
+
+      if (profileResult.data) {
+        setFoundingMember({
+          isFounder: profileResult.data.is_founding_member,
+          number: profileResult.data.founding_member_number,
+        });
       }
     };
 
@@ -138,9 +155,17 @@ const Dashboard = () => {
             {/* Welcome Section */}
             <div className="flex items-start justify-between flex-wrap gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
-                  Welcome back
-                </h1>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
+                    Welcome back
+                  </h1>
+                  {foundingMember.isFounder && (
+                    <Badge className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 gap-1">
+                      <Crown className="h-3 w-3" />
+                      Founding Member #{foundingMember.number}
+                    </Badge>
+                  )}
+                </div>
                 <p className="mt-2 text-muted-foreground">
                   {session?.user?.email}
                 </p>
