@@ -5,7 +5,7 @@ import heroImage from "@/assets/hero-network.jpg";
 const features = [
   "Community-powered platform helping people with limited passport mobility",
   "Just $15/month to access collective funding and global opportunities",
-  "Study abroad and work-travel programs made accessible to all",
+  "Giving young professionals the opportunity to network and develop internationally",
 ];
 
 const Hero = () => {
