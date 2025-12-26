@@ -129,21 +129,27 @@ export type Database = {
           country: string
           created_at: string
           email: string | null
+          founding_member_number: number | null
           id: string
+          is_founding_member: boolean
           updated_at: string
         }
         Insert: {
           country: string
           created_at?: string
           email?: string | null
+          founding_member_number?: number | null
           id: string
+          is_founding_member?: boolean
           updated_at?: string
         }
         Update: {
           country?: string
           created_at?: string
           email?: string | null
+          founding_member_number?: number | null
           id?: string
+          is_founding_member?: boolean
           updated_at?: string
         }
         Relationships: []
