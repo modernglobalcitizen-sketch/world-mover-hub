@@ -7,8 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 interface FundSummary {
   totalContributions: number;
@@ -27,6 +28,21 @@ interface Application {
     category: string;
     location: string | null;
     deadline: string | null;
+  };
+}
+
+interface SavedOpportunity {
+  id: string;
+  opportunity_id: string;
+  created_at: string;
+  opportunity: {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    location: string | null;
+    deadline: string | null;
+    is_active: boolean;
   };
 }
 
@@ -58,10 +74,12 @@ const Dashboard = () => {
     balance: 0,
   });
   const [applications, setApplications] = useState<Application[]>([]);
+  const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null }>({
     isFounder: false,
     number: null,
   });
+  const [removingId, setRemovingId] = useState<string | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -88,7 +106,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult] = await Promise.all([
+      const [fundResult, appResult, profileResult, savedResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
         supabase
           .from("applications")
@@ -106,6 +124,16 @@ const Dashboard = () => {
           .select("is_founding_member, founding_member_number")
           .eq("id", session.user.id)
           .maybeSingle(),
+        supabase
+          .from("saved_opportunities")
+          .select(`
+            id,
+            opportunity_id,
+            created_at,
+            opportunity:opportunities(id, title, description, category, location, deadline, is_active)
+          `)
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
       ]);
 
       if (fundResult.data) {
@@ -133,10 +161,31 @@ const Dashboard = () => {
           number: profileResult.data.founding_member_number,
         });
       }
+
+      if (savedResult.data) {
+        setSavedOpportunities(savedResult.data as SavedOpportunity[]);
+      }
     };
 
     fetchData();
   }, [session]);
+
+  const handleRemoveSaved = async (savedId: string) => {
+    setRemovingId(savedId);
+    const { error } = await supabase
+      .from("saved_opportunities")
+      .delete()
+      .eq("id", savedId);
+
+    if (error) {
+      toast.error("Failed to remove saved opportunity");
+      console.error(error);
+    } else {
+      setSavedOpportunities(savedOpportunities.filter(s => s.id !== savedId));
+      toast.success("Opportunity removed from saved");
+    }
+    setRemovingId(null);
+  };
 
   if (loading) {
     return (
@@ -278,6 +327,86 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
+            {/* Saved Opportunities */}
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bookmark className="h-5 w-5 text-primary" />
+                  Saved Opportunities
+                </CardTitle>
+                <CardDescription>
+                  Opportunities you've bookmarked for later
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {savedOpportunities.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Bookmark className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>You haven't saved any opportunities yet.</p>
+                    <Button variant="outline" className="mt-4" asChild>
+                      <a href="/#opportunities">Browse Opportunities</a>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {savedOpportunities.map((saved) => {
+                      const isExpired = saved.opportunity.deadline && new Date(saved.opportunity.deadline) < new Date();
+                      return (
+                        <div key={saved.id} className="flex items-start justify-between gap-4 p-4 rounded-lg border bg-card">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-medium">{saved.opportunity.title}</h4>
+                              <Badge variant="secondary" className="text-xs">
+                                {saved.opportunity.category}
+                              </Badge>
+                              {isExpired && (
+                                <Badge variant="outline" className="text-xs text-muted-foreground">
+                                  Expired
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {saved.opportunity.description}
+                            </p>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              {saved.opportunity.location && (
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="h-3 w-3" />
+                                  {saved.opportunity.location}
+                                </span>
+                              )}
+                              {saved.opportunity.deadline && (
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {format(new Date(saved.opportunity.deadline), "MMM d, yyyy")}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                              onClick={() => handleRemoveSaved(saved.id)}
+                              disabled={removingId === saved.id}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm" asChild>
+                              <a href="/#opportunities">
+                                View
+                                <ArrowRight className="h-3 w-3 ml-1" />
+                              </a>
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
             {/* Quick Actions */}
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="shadow-soft">

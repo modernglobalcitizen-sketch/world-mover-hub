@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, Briefcase, ArrowRight, CheckCircle } from "lucide-react";
+import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -27,7 +27,9 @@ const OpportunitiesSection = () => {
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
   const [appliedIds, setAppliedIds] = useState<Set<string>>(new Set());
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
   const [applyingTo, setApplyingTo] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
@@ -68,21 +70,31 @@ const OpportunitiesSection = () => {
   useEffect(() => {
     if (!session) {
       setAppliedIds(new Set());
+      setSavedIds(new Set());
       return;
     }
 
-    const fetchApplications = async () => {
-      const { data } = await supabase
-        .from("applications")
-        .select("opportunity_id")
-        .eq("user_id", session.user.id);
+    const fetchUserData = async () => {
+      const [appResult, savedResult] = await Promise.all([
+        supabase
+          .from("applications")
+          .select("opportunity_id")
+          .eq("user_id", session.user.id),
+        supabase
+          .from("saved_opportunities")
+          .select("opportunity_id")
+          .eq("user_id", session.user.id),
+      ]);
 
-      if (data) {
-        setAppliedIds(new Set(data.map(a => a.opportunity_id)));
+      if (appResult.data) {
+        setAppliedIds(new Set(appResult.data.map(a => a.opportunity_id)));
+      }
+      if (savedResult.data) {
+        setSavedIds(new Set(savedResult.data.map(s => s.opportunity_id)));
       }
     };
 
-    fetchApplications();
+    fetchUserData();
   }, [session]);
 
   const handleApply = async () => {
@@ -124,6 +136,51 @@ const OpportunitiesSection = () => {
     setDialogOpen(true);
   };
 
+  const handleSave = async (opportunityId: string) => {
+    if (!session) {
+      toast.error("Please log in to save opportunities");
+      return;
+    }
+
+    setSavingId(opportunityId);
+    const isSaved = savedIds.has(opportunityId);
+
+    if (isSaved) {
+      const { error } = await supabase
+        .from("saved_opportunities")
+        .delete()
+        .eq("user_id", session.user.id)
+        .eq("opportunity_id", opportunityId);
+
+      if (error) {
+        toast.error("Failed to unsave opportunity");
+        console.error(error);
+      } else {
+        const newSaved = new Set(savedIds);
+        newSaved.delete(opportunityId);
+        setSavedIds(newSaved);
+        toast.success("Opportunity removed from saved");
+      }
+    } else {
+      const { error } = await supabase
+        .from("saved_opportunities")
+        .insert({
+          user_id: session.user.id,
+          opportunity_id: opportunityId,
+        });
+
+      if (error) {
+        toast.error("Failed to save opportunity");
+        console.error(error);
+      } else {
+        setSavedIds(new Set([...savedIds, opportunityId]));
+        toast.success("Opportunity saved! View it on your dashboard.");
+      }
+    }
+
+    setSavingId(null);
+  };
+
   if (loading) {
     return (
       <section className="py-16 md:py-24 bg-muted/30">
@@ -144,16 +201,17 @@ const OpportunitiesSection = () => {
         <div className="space-y-8">
           <div className="max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
-              Current Opportunities
+              Opportunities Hub
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Explore curated global opportunities available to our community members.
+              Explore curated global opportunities available to our community members. Save opportunities to track them on your dashboard.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {opportunities.map((opportunity) => {
               const hasApplied = appliedIds.has(opportunity.id);
+              const isSaved = savedIds.has(opportunity.id);
               const isExpired = opportunity.deadline && new Date(opportunity.deadline) < new Date();
 
               return (
@@ -163,12 +221,29 @@ const OpportunitiesSection = () => {
                       <Badge variant="secondary" className="mb-2">
                         {opportunity.category}
                       </Badge>
-                      {hasApplied && (
-                        <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Applied
-                        </Badge>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {hasApplied && (
+                          <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Applied
+                          </Badge>
+                        )}
+                        {session && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => handleSave(opportunity.id)}
+                            disabled={savingId === opportunity.id}
+                          >
+                            {isSaved ? (
+                              <BookmarkCheck className="h-5 w-5 text-primary" />
+                            ) : (
+                              <Bookmark className="h-5 w-5" />
+                            )}
+                          </Button>
+                        )}
+                      </div>
                     </div>
                     <CardTitle className="text-xl">{opportunity.title}</CardTitle>
                     <CardDescription className="line-clamp-2">
