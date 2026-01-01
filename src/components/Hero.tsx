@@ -64,6 +64,17 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none" />
             </div>
             
+            {/* Opportunities Hub label */}
+            <div className="mt-4 text-center">
+              <Link 
+                to="#opportunities" 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm hover:bg-primary/20 transition-colors"
+              >
+                <span>Opportunities Hub</span>
+                <span className="text-xs">↓</span>
+              </Link>
+            </div>
+            
             {/* Decorative elements */}
             <div className="absolute -z-10 -top-4 -right-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute -z-10 -bottom-8 -left-8 w-48 h-48 bg-accent/10 rounded-full blur-2xl" />
