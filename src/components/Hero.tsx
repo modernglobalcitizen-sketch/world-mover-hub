@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Rocket } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-network.jpg";
 
 const features = [
@@ -36,12 +37,14 @@ const Hero = () => {
             </ul>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button variant="hero" size="lg" className="group">
-                <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
-                Join the Pilot Program
+              <Button variant="hero" size="lg" className="group" asChild>
+                <Link to="/founding-members">
+                  <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
+                  Join the Pilot Program
+                </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
-                <a href="/about">Learn More</a>
+                <Link to="/about">Learn More</Link>
               </Button>
             </div>
           </div>
