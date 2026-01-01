@@ -10,6 +10,7 @@ import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck } fr
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
+import { Link } from "react-router-dom";
 
 interface Opportunity {
   id: string;
@@ -22,7 +23,12 @@ interface Opportunity {
   is_active: boolean;
 }
 
-const OpportunitiesSection = () => {
+interface OpportunitiesSectionProps {
+  limit?: number;
+  showViewAll?: boolean;
+}
+
+const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectionProps) => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
@@ -195,21 +201,34 @@ const OpportunitiesSection = () => {
     return null;
   }
 
+  const displayedOpportunities = limit ? opportunities.slice(0, limit) : opportunities;
+  const hasMore = limit ? opportunities.length > limit : false;
+
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="container">
         <div className="space-y-8">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
-              Opportunities Hub
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Explore curated global opportunities available to our community members. Save opportunities to track them on your dashboard.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline">
+                Opportunities Hub
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Explore curated global opportunities available to our community members. Save opportunities to track them on your dashboard.
+              </p>
+            </div>
+            {showViewAll && hasMore && (
+              <Button variant="outline" asChild>
+                <Link to="/opportunities">
+                  View All Opportunities
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {opportunities.map((opportunity) => {
+            {displayedOpportunities.map((opportunity) => {
               const hasApplied = appliedIds.has(opportunity.id);
               const isSaved = savedIds.has(opportunity.id);
               const isExpired = opportunity.deadline && new Date(opportunity.deadline) < new Date();

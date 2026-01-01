@@ -1,19 +1,15 @@
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 
-const Index = () => {
+const Opportunities = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
-        <div id="opportunities">
-          <OpportunitiesSection limit={6} />
-        </div>
+        <OpportunitiesSection showViewAll={false} />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default Opportunities;
