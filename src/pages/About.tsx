@@ -1,12 +1,23 @@
 import Header from "@/components/Header";
+import aboutImage from "@/assets/about-global-moves.jpg";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="py-16 md:py-24">
-        <div className="container max-w-3xl">
+        <div className="container max-w-4xl">
           <article className="space-y-8 animate-fade-in">
+            {/* Hero Image */}
+            <div className="relative rounded-2xl overflow-hidden shadow-hover mb-12">
+              <img
+                src={aboutImage}
+                alt="Young Black professionals networking at an international conference, representing The Global Moves community"
+                className="w-full h-auto object-cover aspect-[16/9]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
+            </div>
+
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight text-headline">
               Our Mission
             </h1>
