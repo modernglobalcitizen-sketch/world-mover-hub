@@ -3,7 +3,9 @@ import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Crown, Users, Globe, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Crown, Users, Globe, Star, Rocket } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface FoundingMember {
   id: string;
@@ -55,10 +57,16 @@ const FoundingMembers = () => {
             <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-headline mb-4">
               Founding Members
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
               These pioneers were the first to believe in our mission. As founding members, 
               they have exclusive first access to the community fund and special benefits.
             </p>
+            <Button variant="hero" size="lg" className="group" asChild>
+              <Link to="/auth">
+                <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
+                Become a Founding Member
+              </Link>
+            </Button>
           </div>
 
           {/* Stats */}
