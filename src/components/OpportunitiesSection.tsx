@@ -56,16 +56,22 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
   useEffect(() => {
     const fetchOpportunities = async () => {
-      const { data, error } = await supabase
-        .from("opportunities")
-        .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching opportunities:", error);
-      } else {
-        setOpportunities(data || []);
+      try {
+        // Fetch from Airtable via edge function
+        const { data, error } = await supabase.functions.invoke('fetch-airtable-opportunities');
+        
+        if (error) {
+          console.error("Error fetching from Airtable:", error);
+          setOpportunities([]);
+        } else if (data?.opportunities) {
+          setOpportunities(data.opportunities);
+        } else {
+          console.warn("No opportunities returned from Airtable");
+          setOpportunities([]);
+        }
+      } catch (err) {
+        console.error("Error invoking edge function:", err);
+        setOpportunities([]);
       }
       setLoading(false);
     };
