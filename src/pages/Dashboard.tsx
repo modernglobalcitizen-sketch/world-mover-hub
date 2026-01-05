@@ -7,7 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -46,6 +50,16 @@ interface SavedOpportunity {
   };
 }
 
+interface FundApplication {
+  id: string;
+  amount_requested: number;
+  purpose: string;
+  description: string;
+  status: string;
+  admin_notes: string | null;
+  created_at: string;
+}
+
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
   pending: { 
     label: "Pending", 
@@ -75,11 +89,21 @@ const Dashboard = () => {
   });
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
+  const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null }>({
     isFounder: false,
     number: null,
   });
   const [removingId, setRemovingId] = useState<string | null>(null);
+  
+  // Fund application form
+  const [fundDialogOpen, setFundDialogOpen] = useState(false);
+  const [fundFormData, setFundFormData] = useState({
+    amount_requested: "",
+    purpose: "",
+    description: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -106,7 +130,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult, savedResult] = await Promise.all([
+      const [fundResult, appResult, profileResult, savedResult, fundAppResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
         supabase
           .from("applications")
@@ -132,6 +156,11 @@ const Dashboard = () => {
             created_at,
             opportunity:opportunities(id, title, description, category, location, deadline, is_active)
           `)
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("fund_applications")
+          .select("*")
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
       ]);
@@ -165,6 +194,10 @@ const Dashboard = () => {
       if (savedResult.data) {
         setSavedOpportunities(savedResult.data as SavedOpportunity[]);
       }
+
+      if (fundAppResult.data) {
+        setFundApplications(fundAppResult.data as FundApplication[]);
+      }
     };
 
     fetchData();
@@ -185,6 +218,44 @@ const Dashboard = () => {
       toast.success("Opportunity removed from saved");
     }
     setRemovingId(null);
+  };
+
+  const handleSubmitFundApplication = async () => {
+    if (!fundFormData.amount_requested || !fundFormData.purpose || !fundFormData.description) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    const amount = parseFloat(fundFormData.amount_requested);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    setSubmitting(true);
+
+    const { data, error } = await supabase
+      .from("fund_applications")
+      .insert({
+        user_id: session!.user.id,
+        amount_requested: amount,
+        purpose: fundFormData.purpose,
+        description: fundFormData.description,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      toast.error("Failed to submit application");
+      console.error(error);
+    } else {
+      toast.success("Funding application submitted successfully!");
+      setFundApplications([data, ...fundApplications]);
+      setFundFormData({ amount_requested: "", purpose: "", description: "" });
+      setFundDialogOpen(false);
+    }
+
+    setSubmitting(false);
   };
 
   if (loading) {
@@ -316,6 +387,116 @@ const Dashboard = () => {
                                   {status.icon}
                                   <span className="ml-1">{status.label}</span>
                                 </Badge>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Fund Applications */}
+            <Card className="shadow-soft">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <HandCoins className="h-5 w-5 text-primary" />
+                    My Funding Applications
+                  </CardTitle>
+                  <CardDescription>
+                    Apply for funding from the community fund
+                  </CardDescription>
+                </div>
+                <Dialog open={fundDialogOpen} onOpenChange={setFundDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Apply for Funding
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Apply for Community Funding</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="fund-amount">Amount Requested ($) *</Label>
+                        <Input
+                          id="fund-amount"
+                          type="number"
+                          min="1"
+                          step="0.01"
+                          value={fundFormData.amount_requested}
+                          onChange={(e) => setFundFormData({ ...fundFormData, amount_requested: e.target.value })}
+                          placeholder="Enter amount"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="fund-purpose">Purpose *</Label>
+                        <Input
+                          id="fund-purpose"
+                          value={fundFormData.purpose}
+                          onChange={(e) => setFundFormData({ ...fundFormData, purpose: e.target.value })}
+                          placeholder="e.g., Visa fees, Flight tickets, Tuition"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="fund-description">Detailed Description *</Label>
+                        <Textarea
+                          id="fund-description"
+                          value={fundFormData.description}
+                          onChange={(e) => setFundFormData({ ...fundFormData, description: e.target.value })}
+                          placeholder="Explain why you need this funding and how it will help you..."
+                          rows={4}
+                        />
+                      </div>
+                      <Button onClick={handleSubmitFundApplication} className="w-full" disabled={submitting}>
+                        {submitting ? "Submitting..." : "Submit Application"}
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </CardHeader>
+              <CardContent>
+                {fundApplications.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <HandCoins className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>You haven't applied for funding yet.</p>
+                    <p className="text-sm mt-2">Apply to receive support from the community fund.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Purpose</TableHead>
+                          <TableHead>Amount</TableHead>
+                          <TableHead>Applied</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Notes</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {fundApplications.map((app) => {
+                          const status = statusConfig[app.status] || statusConfig.pending;
+                          return (
+                            <TableRow key={app.id}>
+                              <TableCell className="font-medium">{app.purpose}</TableCell>
+                              <TableCell>${Number(app.amount_requested).toLocaleString()}</TableCell>
+                              <TableCell className="text-muted-foreground">
+                                {format(new Date(app.created_at), "MMM d, yyyy")}
+                              </TableCell>
+                              <TableCell>
+                                <Badge className={status.className}>
+                                  {status.icon}
+                                  <span className="ml-1">{status.label}</span>
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-muted-foreground max-w-[200px] truncate">
+                                {app.admin_notes || "—"}
                               </TableCell>
                             </TableRow>
                           );
