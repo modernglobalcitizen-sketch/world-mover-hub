@@ -12,10 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, RefreshCw } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, RefreshCw, HandCoins } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Transaction {
   id: string;
@@ -36,6 +37,18 @@ interface Opportunity {
   deadline: string | null;
   requirements: string | null;
   is_active: boolean;
+  created_at: string;
+}
+
+interface FundApplication {
+  id: string;
+  user_id: string;
+  user_email?: string;
+  amount_requested: number;
+  purpose: string;
+  description: string;
+  status: string;
+  admin_notes: string | null;
   created_at: string;
 }
 
@@ -61,6 +74,7 @@ const emptyOpportunity = {
 const Admin = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
@@ -75,6 +89,11 @@ const Admin = () => {
   const [oppDialogOpen, setOppDialogOpen] = useState(false);
   const [editingOpportunity, setEditingOpportunity] = useState<Opportunity | null>(null);
   const [oppFormData, setOppFormData] = useState(emptyOpportunity);
+  
+  // Fund application review
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [reviewingApplication, setReviewingApplication] = useState<FundApplication | null>(null);
+  const [reviewFormData, setReviewFormData] = useState({ status: "pending", admin_notes: "" });
   
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -129,13 +148,30 @@ const Admin = () => {
     if (!session || checkingAuth || !isAdmin) return;
 
     const fetchData = async () => {
-      const [txResult, oppResult] = await Promise.all([
+      const [txResult, oppResult, fundAppResult] = await Promise.all([
         supabase.from("fund_transactions").select("*").order("date", { ascending: false }),
         supabase.from("opportunities").select("*").order("created_at", { ascending: false }),
+        supabase.from("fund_applications").select("*").order("created_at", { ascending: false }),
       ]);
 
       if (txResult.data) setTransactions(txResult.data);
       if (oppResult.data) setOpportunities(oppResult.data);
+      
+      // Fetch user emails for fund applications
+      if (fundAppResult.data) {
+        const appsWithEmails = await Promise.all(
+          fundAppResult.data.map(async (app) => {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("email")
+              .eq("id", app.user_id)
+              .maybeSingle();
+            return { ...app, user_email: profile?.email || "Unknown" };
+          })
+        );
+        setFundApplications(appsWithEmails);
+      }
+      
       setLoading(false);
     };
 
@@ -349,6 +385,41 @@ const Admin = () => {
     setSyncing(false);
   };
 
+  // Fund application handlers
+  const handleOpenReviewDialog = (app: FundApplication) => {
+    setReviewingApplication(app);
+    setReviewFormData({ status: app.status, admin_notes: app.admin_notes || "" });
+    setReviewDialogOpen(true);
+  };
+
+  const handleUpdateFundApplication = async () => {
+    if (!reviewingApplication) return;
+
+    setSaving(true);
+
+    const { error } = await supabase
+      .from("fund_applications")
+      .update({
+        status: reviewFormData.status,
+        admin_notes: reviewFormData.admin_notes || null,
+      })
+      .eq("id", reviewingApplication.id);
+
+    if (error) {
+      toast.error("Failed to update application");
+    } else {
+      toast.success("Application updated");
+      setFundApplications(fundApplications.map(a =>
+        a.id === reviewingApplication.id
+          ? { ...a, status: reviewFormData.status, admin_notes: reviewFormData.admin_notes || null }
+          : a
+      ));
+      setReviewDialogOpen(false);
+    }
+
+    setSaving(false);
+  };
+
   if (checkingAuth || loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -404,6 +475,15 @@ const Admin = () => {
                 <TabsTrigger value="opportunities" className="flex items-center gap-2">
                   <Briefcase className="h-4 w-4" />
                   Opportunities
+                </TabsTrigger>
+                <TabsTrigger value="fund-applications" className="flex items-center gap-2">
+                  <HandCoins className="h-4 w-4" />
+                  Fund Applications
+                  {fundApplications.filter(a => a.status === "pending").length > 0 && (
+                    <Badge variant="destructive" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs">
+                      {fundApplications.filter(a => a.status === "pending").length}
+                    </Badge>
+                  )}
                 </TabsTrigger>
               </TabsList>
 
@@ -699,6 +779,135 @@ const Admin = () => {
                     </TableBody>
                   </Table>
                 </div>
+              </TabsContent>
+
+              {/* Fund Applications Tab */}
+              <TabsContent value="fund-applications" className="space-y-4">
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <HandCoins className="h-5 w-5 text-primary" />
+                      Community Fund Applications
+                    </CardTitle>
+                    <CardDescription>
+                      Review and approve funding requests from members
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {fundApplications.length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <HandCoins className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No funding applications yet.</p>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Applicant</TableHead>
+                              <TableHead>Purpose</TableHead>
+                              <TableHead>Amount</TableHead>
+                              <TableHead>Date</TableHead>
+                              <TableHead>Status</TableHead>
+                              <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {fundApplications.map((app) => (
+                              <TableRow key={app.id}>
+                                <TableCell className="font-medium">{app.user_email}</TableCell>
+                                <TableCell>{app.purpose}</TableCell>
+                                <TableCell className="font-semibold">${Number(app.amount_requested).toLocaleString()}</TableCell>
+                                <TableCell className="text-muted-foreground">
+                                  {format(new Date(app.created_at), "MMM d, yyyy")}
+                                </TableCell>
+                                <TableCell>
+                                  <Badge 
+                                    variant={app.status === "approved" ? "default" : app.status === "rejected" ? "destructive" : "secondary"}
+                                    className={app.status === "approved" ? "bg-green-500/10 text-green-600" : app.status === "rejected" ? "bg-red-500/10 text-red-600" : "bg-yellow-500/10 text-yellow-600"}
+                                  >
+                                    {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                                  </Badge>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <Button variant="ghost" size="sm" onClick={() => handleOpenReviewDialog(app)}>
+                                    Review
+                                  </Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Review Dialog */}
+                <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
+                  <DialogContent className="max-w-lg">
+                    <DialogHeader>
+                      <DialogTitle>Review Funding Application</DialogTitle>
+                    </DialogHeader>
+                    {reviewingApplication && (
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
+                          <div className="flex justify-between">
+                            <span className="text-sm text-muted-foreground">Applicant</span>
+                            <span className="font-medium">{reviewingApplication.user_email}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-muted-foreground">Amount Requested</span>
+                            <span className="font-semibold text-primary">${Number(reviewingApplication.amount_requested).toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-muted-foreground">Purpose</span>
+                            <span className="font-medium">{reviewingApplication.purpose}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm text-muted-foreground">Applied</span>
+                            <span>{format(new Date(reviewingApplication.created_at), "MMM d, yyyy")}</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description from Applicant</Label>
+                          <p className="text-sm text-muted-foreground p-3 bg-muted/30 rounded-lg">
+                            {reviewingApplication.description}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="review-status">Decision</Label>
+                          <Select
+                            value={reviewFormData.status}
+                            onValueChange={(value) => setReviewFormData({ ...reviewFormData, status: value })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="approved">Approved</SelectItem>
+                              <SelectItem value="rejected">Rejected</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="review-notes">Admin Notes (visible to applicant)</Label>
+                          <Textarea
+                            id="review-notes"
+                            value={reviewFormData.admin_notes}
+                            onChange={(e) => setReviewFormData({ ...reviewFormData, admin_notes: e.target.value })}
+                            placeholder="Add notes or feedback for the applicant..."
+                            rows={3}
+                          />
+                        </div>
+                        <Button onClick={handleUpdateFundApplication} className="w-full" disabled={saving}>
+                          {saving ? "Saving..." : "Update Application"}
+                        </Button>
+                      </div>
+                    )}
+                  </DialogContent>
+                </Dialog>
               </TabsContent>
             </Tabs>
           </div>

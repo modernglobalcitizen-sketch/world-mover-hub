@@ -52,6 +52,42 @@ export type Database = {
           },
         ]
       }
+      fund_applications: {
+        Row: {
+          admin_notes: string | null
+          amount_requested: number
+          created_at: string
+          description: string
+          id: string
+          purpose: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount_requested: number
+          created_at?: string
+          description: string
+          id?: string
+          purpose: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          amount_requested?: number
+          created_at?: string
+          description?: string
+          id?: string
+          purpose?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       fund_transactions: {
         Row: {
           amount: number
