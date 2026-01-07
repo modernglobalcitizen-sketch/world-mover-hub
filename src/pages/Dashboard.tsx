@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -90,13 +90,17 @@ const Dashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
-  const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null }>({
+  const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null }>({
     isFounder: false,
     number: null,
+    displayName: null,
   });
-  const [removingId, setRemovingId] = useState<string | null>(null);
+  const [displayNameDialogOpen, setDisplayNameDialogOpen] = useState(false);
+  const [newDisplayName, setNewDisplayName] = useState("");
+  const [savingDisplayName, setSavingDisplayName] = useState(false);
   
   // Fund application form
+  const [removingId, setRemovingId] = useState<string | null>(null);
   const [fundDialogOpen, setFundDialogOpen] = useState(false);
   const [fundFormData, setFundFormData] = useState({
     amount_requested: "",
@@ -145,7 +149,7 @@ const Dashboard = () => {
           .order("created_at", { ascending: false }),
         supabase
           .from("profiles")
-          .select("is_founding_member, founding_member_number")
+          .select("is_founding_member, founding_member_number, display_name")
           .eq("id", session.user.id)
           .maybeSingle(),
         supabase
@@ -188,7 +192,9 @@ const Dashboard = () => {
         setFoundingMember({
           isFounder: profileResult.data.is_founding_member,
           number: profileResult.data.founding_member_number,
+          displayName: profileResult.data.display_name,
         });
+        setNewDisplayName(profileResult.data.display_name || "");
       }
 
       if (savedResult.data) {
@@ -218,6 +224,26 @@ const Dashboard = () => {
       toast.success("Opportunity removed from saved");
     }
     setRemovingId(null);
+  };
+
+  const handleSaveDisplayName = async () => {
+    if (!session) return;
+    
+    setSavingDisplayName(true);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ display_name: newDisplayName.trim() || null })
+      .eq("id", session.user.id);
+
+    if (error) {
+      toast.error("Failed to update display name");
+      console.error(error);
+    } else {
+      setFoundingMember({ ...foundingMember, displayName: newDisplayName.trim() || null });
+      toast.success("Display name updated!");
+      setDisplayNameDialogOpen(false);
+    }
+    setSavingDisplayName(false);
   };
 
   const handleSubmitFundApplication = async () => {
@@ -280,10 +306,46 @@ const Dashboard = () => {
                     Welcome back
                   </h1>
                   {foundingMember.isFounder && (
-                    <Badge className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 gap-1">
-                      <Crown className="h-3 w-3" />
-                      Founding Member #{foundingMember.number}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 gap-1">
+                        <Crown className="h-3 w-3" />
+                        Founding Member #{foundingMember.number}
+                      </Badge>
+                      <Dialog open={displayNameDialogOpen} onOpenChange={setDisplayNameDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 px-2">
+                            <Pencil className="h-3 w-3 mr-1" />
+                            {foundingMember.displayName ? "Edit Name" : "Add Name"}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Set Display Name</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <p className="text-sm text-muted-foreground">
+                              This name will be shown publicly on the Founding Members page. Leave blank to show only your member number.
+                            </p>
+                            <div className="space-y-2">
+                              <Label htmlFor="displayName">Display Name</Label>
+                              <Input
+                                id="displayName"
+                                value={newDisplayName}
+                                onChange={(e) => setNewDisplayName(e.target.value)}
+                                placeholder="Enter your display name"
+                              />
+                            </div>
+                            <Button 
+                              onClick={handleSaveDisplayName} 
+                              className="w-full"
+                              disabled={savingDisplayName}
+                            >
+                              {savingDisplayName ? "Saving..." : "Save Display Name"}
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   )}
                 </div>
                 <p className="mt-2 text-muted-foreground">
