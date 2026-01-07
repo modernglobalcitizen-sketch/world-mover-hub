@@ -49,7 +49,7 @@ const faqs = [
   },
 ];
 
-const FAQ = () => {
+const HowItWorks = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -57,10 +57,10 @@ const FAQ = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
-              Frequently Asked Questions
+              How Does the Platform Work?
             </h1>
             <p className="text-lg text-muted-foreground">
-              Find answers to common questions about The Global Moves and our programs.
+              Learn how The Global Moves connects young professionals with global opportunities.
             </p>
           </div>
 
@@ -94,4 +94,4 @@ const FAQ = () => {
   );
 };
 
-export default FAQ;
+export default HowItWorks;
