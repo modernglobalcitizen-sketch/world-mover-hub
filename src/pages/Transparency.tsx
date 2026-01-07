@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -60,9 +61,9 @@ const Transparency = () => {
   const balance = totalIncome - totalExpenses;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="py-16 md:py-24">
+      <main className="flex-1 py-16 md:py-24">
         <div className="container">
           <div className="space-y-8 animate-fade-in">
             <div className="max-w-3xl">
@@ -172,6 +173,7 @@ const Transparency = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
