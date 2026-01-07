@@ -11,6 +11,7 @@ interface FoundingMember {
   id: string;
   country: string;
   founding_member_number: number | null;
+  display_name: string | null;
   created_at: string;
 }
 
@@ -22,7 +23,7 @@ const FoundingMembers = () => {
     const fetchFoundingMembers = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, country, founding_member_number, created_at")
+        .select("id, country, founding_member_number, display_name, created_at")
         .eq("is_founding_member", true)
         .order("founding_member_number", { ascending: true });
 
@@ -173,7 +174,7 @@ const FoundingMembers = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-medium text-foreground truncate">
-                          Founding Member #{member.founding_member_number}
+                          {member.display_name || `Founding Member #${member.founding_member_number}`}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant="secondary" className="text-xs">
