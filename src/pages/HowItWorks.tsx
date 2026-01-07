@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is The Global Moves?",
     answer:
-      "The Global Moves is a nonprofit organization dedicated to giving young professionals from the Global South the opportunity to network and develop internationally. We showcase global opportunities and provide funding support through our community fund when members are accepted to external programs.",
+      "The Global Moves is a not for profit organization dedicated to giving young professionals from the Global South the opportunity to network and develop internationally. We showcase global opportunities and provide funding support through our community fund when members are accepted to external programs.",
   },
   {
     question: "Who can apply for opportunities?",
