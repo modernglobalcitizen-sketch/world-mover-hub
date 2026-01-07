@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -39,6 +41,8 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
   const [message, setMessage] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
+  const [searchCountry, setSearchCountry] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -197,12 +201,28 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
     );
   }
 
+  // Get unique categories from opportunities
+  const categories = useMemo(() => {
+    const cats = [...new Set(opportunities.map(o => o.category))];
+    return cats.sort();
+  }, [opportunities]);
+
+  // Filter opportunities based on search and category
+  const filteredOpportunities = useMemo(() => {
+    return opportunities.filter(opportunity => {
+      const matchesCountry = !searchCountry || 
+        (opportunity.location && opportunity.location.toLowerCase().includes(searchCountry.toLowerCase()));
+      const matchesCategory = selectedCategory === "all" || opportunity.category === selectedCategory;
+      return matchesCountry && matchesCategory;
+    });
+  }, [opportunities, searchCountry, selectedCategory]);
+
+  const displayedOpportunities = limit ? filteredOpportunities.slice(0, limit) : filteredOpportunities;
+  const hasMore = limit ? filteredOpportunities.length > limit : false;
+
   if (opportunities.length === 0) {
     return null;
   }
-
-  const displayedOpportunities = limit ? opportunities.slice(0, limit) : opportunities;
-  const hasMore = limit ? opportunities.length > limit : false;
 
   return (
     <section className="py-16 md:py-24 bg-muted/30">
@@ -227,7 +247,38 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
             )}
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Search and Filter Controls */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by country..."
+                value={searchCountry}
+                onChange={(e) => setSearchCountry(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectValue placeholder="Program type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Programs</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {displayedOpportunities.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              No opportunities found matching your search criteria.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedOpportunities.map((opportunity) => {
               const hasApplied = appliedIds.has(opportunity.id);
               const isSaved = savedIds.has(opportunity.id);
@@ -352,7 +403,8 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                 </Card>
               );
             })}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
