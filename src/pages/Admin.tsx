@@ -362,7 +362,19 @@ const Admin = () => {
   const handleSyncAirtable = async () => {
     setSyncing(true);
     try {
-      const { data, error } = await supabase.functions.invoke('sync-airtable-opportunities');
+      // Get current session for auth header
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast.error('Authentication required');
+        setSyncing(false);
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('sync-airtable-opportunities', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
       
       if (error) {
         console.error('Sync error:', error);

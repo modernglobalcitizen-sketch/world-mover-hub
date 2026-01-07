@@ -12,21 +12,77 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
+      throw new Error('Missing Supabase configuration');
+    }
+
+    // Verify authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: 'Missing authorization' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Create client with user's auth token to verify identity
+    const userSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    // Verify user is authenticated
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await userSupabase.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims) {
+      console.error('Auth error:', claimsError);
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const userId = claimsData.claims.sub;
+    console.log(`Sync requested by user: ${userId}`);
+
+    // Check if user is admin using service role (to bypass RLS)
+    const adminSupabase = createClient(supabaseUrl, supabaseServiceKey);
+    const { data: roleData, error: roleError } = await adminSupabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    if (roleError) {
+      console.error('Role check error:', roleError);
+      return new Response(JSON.stringify({ error: 'Failed to verify permissions' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (!roleData) {
+      console.log(`User ${userId} attempted sync without admin role`);
+      return new Response(JSON.stringify({ error: 'Admin access required' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log(`Admin user ${userId} authorized for sync`);
+
+    // Now proceed with Airtable sync using service role
     const apiToken = Deno.env.get('AIRTABLE_API_TOKEN');
     const baseId = Deno.env.get('AIRTABLE_BASE_ID');
     const tableName = Deno.env.get('AIRTABLE_TABLE_NAME');
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!apiToken || !baseId || !tableName) {
       throw new Error('Missing Airtable configuration');
     }
-
-    if (!supabaseUrl || !supabaseServiceKey) {
-      throw new Error('Missing Supabase configuration');
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     console.log(`Syncing opportunities from Airtable base: ${baseId}, table: ${tableName}`);
 
@@ -67,7 +123,7 @@ serve(async (req) => {
     }
 
     // Deactivate existing opportunities before inserting new ones
-    const { error: deactivateError } = await supabase
+    const { error: deactivateError } = await adminSupabase
       .from('opportunities')
       .update({ is_active: false })
       .eq('is_active', true);
@@ -77,7 +133,7 @@ serve(async (req) => {
     }
 
     // Insert new opportunities
-    const { data: insertedData, error: insertError } = await supabase
+    const { data: insertedData, error: insertError } = await adminSupabase
       .from('opportunities')
       .insert(opportunities)
       .select();
