@@ -33,6 +33,11 @@ const faqs = [
       "We maintain full transparency in our operations. Visit our Transparency page to see detailed breakdowns of how donations and funds are allocated to support our programs and participants.",
   },
   {
+    question: "What does the fund pay for?",
+    answer:
+      "The fund covers program fees, flights, visa fees (we encourage applying to programs in countries with favorable relations to your home country to prevent visa rejections), insurance, transportation, and accommodation.",
+  },
+  {
     question: "What types of opportunities are available?",
     answer:
       "We showcase various external opportunities including international conferences, networking events, mentorship programs, professional development workshops, and cross-border collaboration projects. Once you're accepted to a program, you can apply for funding from our community fund.",
