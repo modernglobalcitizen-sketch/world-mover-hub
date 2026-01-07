@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 
 interface FoundingMember {
   id: string;
-  email: string | null;
   country: string;
   founding_member_number: number | null;
   created_at: string;
@@ -23,7 +22,7 @@ const FoundingMembers = () => {
     const fetchFoundingMembers = async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, email, country, founding_member_number, created_at")
+        .select("id, country, founding_member_number, created_at")
         .eq("is_founding_member", true)
         .order("founding_member_number", { ascending: true });
 
@@ -35,13 +34,6 @@ const FoundingMembers = () => {
 
     fetchFoundingMembers();
   }, []);
-
-  const getMaskedEmail = (email: string | null) => {
-    if (!email) return "Anonymous";
-    const [name, domain] = email.split("@");
-    if (name.length <= 2) return `${name[0]}***@${domain}`;
-    return `${name.slice(0, 2)}***@${domain}`;
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -181,7 +173,7 @@ const FoundingMembers = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-medium text-foreground truncate">
-                          {getMaskedEmail(member.email)}
+                          Founding Member #{member.founding_member_number}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant="secondary" className="text-xs">
