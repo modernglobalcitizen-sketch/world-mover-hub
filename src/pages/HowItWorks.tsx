@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is The Global Moves?",
     answer:
-      "The Global Moves is a nonprofit organization dedicated to giving young professionals from the Global South the opportunity to network and develop internationally. We connect talented individuals with global opportunities that were previously inaccessible to them.",
+      "The Global Moves is a nonprofit organization dedicated to giving young professionals from the Global South the opportunity to network and develop internationally. We showcase global opportunities and provide funding support through our community fund when members are accepted to external programs.",
   },
   {
     question: "Who can apply for opportunities?",
@@ -35,7 +35,7 @@ const faqs = [
   {
     question: "What types of opportunities are available?",
     answer:
-      "We offer various opportunities including international conferences, networking events, mentorship programs, professional development workshops, and cross-border collaboration projects.",
+      "We showcase various external opportunities including international conferences, networking events, mentorship programs, professional development workshops, and cross-border collaboration projects. Once you're accepted to a program, you can apply for funding from our community fund.",
   },
   {
     question: "How can I support The Global Moves?",
