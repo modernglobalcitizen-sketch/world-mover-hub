@@ -25,7 +25,7 @@ const faqs = [
   {
     question: "Is there a cost to join?",
     answer:
-      "Basic membership and access to opportunities is free. Some specialized programs may have associated costs, but we work to provide scholarships and financial assistance to ensure accessibility for all qualified candidates.",
+      "Membership is $15/month. Some specialized programs may have associated costs, but we work to provide scholarships and financial assistance to ensure accessibility for all qualified candidates.",
   },
   {
     question: "How are funds used?",
