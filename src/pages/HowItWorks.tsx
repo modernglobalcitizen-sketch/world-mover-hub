@@ -40,7 +40,7 @@ const faqs = [
   {
     question: "How can I support The Global Moves?",
     answer:
-      "You can support us by becoming a Founding Member, donating to our programs, volunteering your time and expertise, or spreading the word about our mission within your network.",
+      "You can support us by becoming a Founding Member, donating to our programs, or spreading the word about our mission within your network.",
   },
   {
     question: "How do I contact The Global Moves?",
