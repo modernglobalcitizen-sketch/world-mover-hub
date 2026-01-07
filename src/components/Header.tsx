@@ -10,7 +10,7 @@ const navLinks = [
   { name: "Founding Members", href: "/founding-members" },
   { name: "Transparency", href: "/transparency" },
   { name: "How It Works", href: "/how-it-works" },
-  { name: "Contact", href: "/contact" },
+  { name: "Resources", href: "/resources" },
 ];
 
 const Header = () => {
