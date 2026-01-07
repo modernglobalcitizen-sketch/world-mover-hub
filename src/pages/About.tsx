@@ -1,11 +1,12 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import aboutImage from "@/assets/about-global-moves.jpg";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="py-16 md:py-24">
+      <main className="flex-1 py-16 md:py-24">
         <div className="container max-w-4xl">
           <article className="space-y-8 animate-fade-in">
             {/* Hero Image */}
@@ -56,6 +57,7 @@ const About = () => {
           </article>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

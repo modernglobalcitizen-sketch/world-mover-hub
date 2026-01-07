@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import {
   Accordion,
   AccordionContent,
@@ -56,9 +57,9 @@ const faqs = [
 
 const HowItWorks = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="container py-16 md:py-24">
+      <main className="flex-1 container py-16 md:py-24">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
@@ -95,6 +96,7 @@ const HowItWorks = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

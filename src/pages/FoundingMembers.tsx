@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -37,9 +38,9 @@ const FoundingMembers = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="py-12 md:py-20">
+      <main className="flex-1 py-12 md:py-20">
         <div className="container">
           {/* Hero Section */}
           <div className="text-center mb-12 animate-fade-in">
@@ -190,6 +191,7 @@ const FoundingMembers = () => {
           </Card>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
