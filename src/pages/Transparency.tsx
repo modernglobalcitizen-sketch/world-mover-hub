@@ -16,6 +16,17 @@ interface Transaction {
   recipient_name: string | null;
 }
 
+const getInitials = (name: string | null): string => {
+  if (!name) return "—";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return parts[0].charAt(0).toUpperCase() + ".";
+  }
+  const firstInitial = parts[0].charAt(0).toUpperCase();
+  const lastInitial = parts[parts.length - 1].charAt(0).toUpperCase();
+  return `${firstInitial}.${lastInitial}.`;
+};
+
 const Transparency = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -138,7 +149,7 @@ const Transparency = () => {
                           <Badge variant="secondary">{transaction.category}</Badge>
                         </TableCell>
                         <TableCell className="text-muted-foreground">
-                          {transaction.recipient_name || "—"}
+                          {getInitials(transaction.recipient_name)}
                         </TableCell>
                         <TableCell className="text-right">
                           <span
