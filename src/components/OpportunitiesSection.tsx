@@ -191,16 +191,6 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
     setSavingId(null);
   };
 
-  if (loading) {
-    return (
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="container">
-          <div className="text-center text-muted-foreground">Loading opportunities...</div>
-        </div>
-      </section>
-    );
-  }
-
   // Get unique categories from opportunities
   const categories = useMemo(() => {
     const cats = [...new Set(opportunities.map(o => o.category))];
@@ -219,6 +209,16 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
   const displayedOpportunities = limit ? filteredOpportunities.slice(0, limit) : filteredOpportunities;
   const hasMore = limit ? filteredOpportunities.length > limit : false;
+
+  if (loading) {
+    return (
+      <section className="py-16 md:py-24 bg-muted/30">
+        <div className="container">
+          <div className="text-center text-muted-foreground">Loading opportunities...</div>
+        </div>
+      </section>
+    );
+  }
 
   if (opportunities.length === 0) {
     return null;
