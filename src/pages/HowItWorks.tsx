@@ -25,7 +25,7 @@ const faqs = [
   {
     question: "Is there a cost to join?",
     answer:
-      "Membership is $15/month. Some specialized programs may have associated costs, but we work to provide scholarships and financial assistance to ensure accessibility for all qualified candidates.",
+      "Membership is $15/month. Some programs may have application fees, which can be confirmed on the site where the program is hosted. We work to provide scholarships and financial assistance to ensure accessibility for all qualified candidates.",
   },
   {
     question: "How are funds used?",
