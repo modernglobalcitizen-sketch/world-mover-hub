@@ -55,23 +55,32 @@ export type Database = {
       breakout_rooms: {
         Row: {
           created_at: string
+          created_by: string | null
           description: string | null
           field: string
           id: string
+          is_private: boolean
+          max_members: number | null
           name: string
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           description?: string | null
           field: string
           id?: string
+          is_private?: boolean
+          max_members?: number | null
           name: string
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           description?: string | null
           field?: string
           id?: string
+          is_private?: boolean
+          max_members?: number | null
           name?: string
         }
         Relationships: []
@@ -222,6 +231,38 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      room_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string
+          room_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string
+          room_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string
+          room_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "breakout_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       room_messages: {
         Row: {
