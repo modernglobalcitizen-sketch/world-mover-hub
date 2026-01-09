@@ -347,7 +347,7 @@ const Auth = () => {
               variant="hero"
               size="lg"
               className="w-full"
-              disabled={loading}
+              disabled={loading || (!isLogin && (!country || !fieldOfWork || opportunityInterests.length === 0))}
             >
               {loading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
