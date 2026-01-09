@@ -166,9 +166,11 @@ export type Database = {
           created_at: string
           display_name: string | null
           email: string | null
+          field_of_work: string | null
           founding_member_number: number | null
           id: string
           is_founding_member: boolean
+          opportunity_interests: string[] | null
           updated_at: string
         }
         Insert: {
@@ -176,9 +178,11 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          field_of_work?: string | null
           founding_member_number?: number | null
           id: string
           is_founding_member?: boolean
+          opportunity_interests?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -186,9 +190,11 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          field_of_work?: string | null
           founding_member_number?: number | null
           id?: string
           is_founding_member?: boolean
+          opportunity_interests?: string[] | null
           updated_at?: string
         }
         Relationships: []

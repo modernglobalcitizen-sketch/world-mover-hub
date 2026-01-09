@@ -5,9 +5,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Globe, Loader2 } from "lucide-react";
 import { z } from "zod";
+
+const fields = [
+  "Technology & IT",
+  "Healthcare & Medicine",
+  "Education & Research",
+  "Business & Finance",
+  "Arts & Creative",
+  "Engineering",
+  "Science",
+  "Law & Policy",
+  "Non-profit & Social Impact",
+  "Agriculture & Environment",
+  "Media & Communications",
+  "Other"
+];
+
+const opportunityTypes = [
+  { id: "grant", label: "Grants & Funding" },
+  { id: "competition", label: "Competitions" },
+  { id: "internship", label: "Internships" },
+  { id: "training", label: "Training & Workshops" },
+  { id: "conference", label: "Conferences & Events" },
+  { id: "other", label: "Other" },
+];
 
 const countries = [
   "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
@@ -35,6 +60,9 @@ const loginSchema = z.object({
 
 const signupSchema = loginSchema.extend({
   country: z.string().min(1, { message: "Please select your country" }),
+  fieldOfWork: z.string().min(1, { message: "Please select your field" }),
+  opportunityInterests: z.array(z.string()).min(1, { message: "Please select at least one opportunity type" }),
+  otherOpportunity: z.string().optional(),
 });
 
 const Auth = () => {
@@ -42,6 +70,9 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
+  const [fieldOfWork, setFieldOfWork] = useState("");
+  const [opportunityInterests, setOpportunityInterests] = useState<string[]>([]);
+  const [otherOpportunity, setOtherOpportunity] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
@@ -100,7 +131,14 @@ const Auth = () => {
           });
         }
       } else {
-        const validation = signupSchema.safeParse({ email, password, country });
+        const validation = signupSchema.safeParse({ 
+          email, 
+          password, 
+          country, 
+          fieldOfWork,
+          opportunityInterests,
+          otherOpportunity
+        });
         if (!validation.success) {
           const fieldErrors: Record<string, string> = {};
           validation.error.errors.forEach((err) => {
@@ -113,6 +151,11 @@ const Auth = () => {
           return;
         }
 
+        // Build final opportunity interests array
+        const finalInterests = opportunityInterests.includes("other") && otherOpportunity.trim()
+          ? [...opportunityInterests.filter(i => i !== "other"), otherOpportunity.trim()]
+          : opportunityInterests;
+
         const redirectUrl = `${window.location.origin}/`;
         
         const { error } = await supabase.auth.signUp({
@@ -122,6 +165,8 @@ const Auth = () => {
             emailRedirectTo: redirectUrl,
             data: {
               country: country,
+              field_of_work: fieldOfWork,
+              opportunity_interests: finalInterests,
             },
           },
         });
@@ -217,24 +262,84 @@ const Auth = () => {
             </div>
 
             {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
-                <Select value={country} onValueChange={setCountry}>
-                  <SelectTrigger className={errors.country ? "border-destructive" : ""}>
-                    <SelectValue placeholder="Select your country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countries.map((c) => (
-                      <SelectItem key={c} value={c}>
-                        {c}
-                      </SelectItem>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="country">Country</Label>
+                  <Select value={country} onValueChange={setCountry}>
+                    <SelectTrigger className={errors.country ? "border-destructive" : ""}>
+                      <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countries.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.country && (
+                    <p className="text-sm text-destructive">{errors.country}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="fieldOfWork">What field are you in?</Label>
+                  <Select value={fieldOfWork} onValueChange={setFieldOfWork}>
+                    <SelectTrigger className={errors.fieldOfWork ? "border-destructive" : ""}>
+                      <SelectValue placeholder="Select your field" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fields.map((f) => (
+                        <SelectItem key={f} value={f}>
+                          {f}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {errors.fieldOfWork && (
+                    <p className="text-sm text-destructive">{errors.fieldOfWork}</p>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  <Label>What opportunities are you looking for?</Label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {opportunityTypes.map((type) => (
+                      <div key={type.id} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={type.id}
+                          checked={opportunityInterests.includes(type.id)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setOpportunityInterests([...opportunityInterests, type.id]);
+                            } else {
+                              setOpportunityInterests(opportunityInterests.filter(i => i !== type.id));
+                              if (type.id === "other") setOtherOpportunity("");
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor={type.id}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                        >
+                          {type.label}
+                        </label>
+                      </div>
                     ))}
-                  </SelectContent>
-                </Select>
-                {errors.country && (
-                  <p className="text-sm text-destructive">{errors.country}</p>
-                )}
-              </div>
+                  </div>
+                  {opportunityInterests.includes("other") && (
+                    <Input
+                      placeholder="Please specify other opportunities..."
+                      value={otherOpportunity}
+                      onChange={(e) => setOtherOpportunity(e.target.value)}
+                      className="mt-2"
+                    />
+                  )}
+                  {errors.opportunityInterests && (
+                    <p className="text-sm text-destructive">{errors.opportunityInterests}</p>
+                  )}
+                </div>
+              </>
             )}
 
             <Button
