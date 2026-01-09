@@ -1,12 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Rocket } from "lucide-react";
+import { CheckCircle, Rocket, Users, Globe, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-network.jpg";
 
 const features = [
-  "Community-powered platform helping people with limited passport mobility",
-  "Just $15/month to access collective funding and global opportunities",
-  "Giving young professionals the opportunity to network and develop internationally",
+  {
+    icon: Users,
+    text: "Join breakout rooms by goal — see who's online, share opportunities, stay accountable",
+  },
+  {
+    icon: Globe,
+    text: "Connect with others navigating global work, study, and travel with limited passport access",
+  },
+  {
+    icon: Wallet,
+    text: "A portion of every subscription funds members' international moves",
+  },
 ];
 
 const Hero = () => {
@@ -18,9 +27,12 @@ const Hero = () => {
           <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight text-headline leading-tight">
-                Access Global Opportunities{" "}
-                <span className="text-subtle font-normal">— With a weak passport</span>
+                Unlock Global Opportunities{" "}
+                <span className="text-subtle font-normal">— Together</span>
               </h1>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
+                A membership platform where people navigating global work, study, and travel with limited passport access connect, stay accountable, and unlock opportunities together.
+              </p>
             </div>
 
             <ul className="space-y-4">
@@ -30,8 +42,8 @@ const Hero = () => {
                   className="flex items-start gap-3 text-muted-foreground"
                   style={{ animationDelay: `${(index + 1) * 100}ms` }}
                 >
-                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-base md:text-lg">{feature}</span>
+                  <feature.icon className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span className="text-base md:text-lg">{feature.text}</span>
                 </li>
               ))}
             </ul>
@@ -40,7 +52,7 @@ const Hero = () => {
               <Button variant="hero" size="lg" className="group" asChild>
                 <Link to="/founding-members">
                   <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
-                  Join the Pilot Program
+                  Become a Member
                 </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
