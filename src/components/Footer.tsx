@@ -40,8 +40,8 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/transparency" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Transparency
+                <a href="/community-fund" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Community Fund
                 </a>
               </li>
             </ul>
