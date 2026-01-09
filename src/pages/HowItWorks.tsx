@@ -11,47 +11,52 @@ const faqs = [
   {
     question: "What is The Global Moves?",
     answer:
-      "The Global Moves is a not for profit organization dedicated to giving young professionals from the Global South the opportunity to network and develop internationally. We showcase global opportunities and provide funding support through our community fund when members are accepted to external programs.",
+      "The Global Moves is a membership platform for people navigating global work, study, and travel with limited passport access. Members connect, stay accountable, and unlock opportunities together. A portion of every subscription goes toward a community fund that helps accelerate selected members' international moves.",
   },
   {
-    question: "Who can apply for opportunities?",
+    question: "What are Breakout Rooms?",
     answer:
-      "Our programs are designed for young professionals from the Global South who are looking to expand their professional networks, gain international experience, and develop their careers on a global stage.",
+      "Breakout Rooms are goal-based spaces where members connect with others pursuing similar objectives—whether that's landing a remote job, getting into a master's program abroad, or planning a visa-friendly travel route. You can join public rooms or create private rooms for focused collaboration with specific members.",
   },
   {
-    question: "How do I become a Founding Member?",
+    question: "How do online presence indicators work?",
     answer:
-      "Founding Members are early supporters who believe in our mission. You can apply through our Founding Members page. Founding Members receive exclusive benefits and play a key role in shaping our organization's future.",
+      "When you're active on the platform, a green dot appears next to your name in Breakout Rooms. This helps members know who's online and available to chat, share advice, or collaborate in real-time. It creates a sense of community and makes it easier to connect when you need support.",
   },
   {
-    question: "Is there a cost to join?",
+    question: "What is the Community Fund?",
     answer:
-      "Membership is $15/month. Some programs may have application fees, which can be confirmed on the site where the program is hosted. We work to provide scholarships and financial assistance to ensure accessibility for all qualified candidates.",
+      "A portion of every $15/month membership subscription goes into the Community Fund. This pooled resource helps cover expenses like program fees, flights, visa fees, insurance, transportation, and accommodation for members who are accepted to international opportunities but need financial support to participate.",
   },
   {
-    question: "How are funds used?",
+    question: "How do I apply for Community Fund support?",
     answer:
-      "We maintain full transparency in our operations. Visit our Transparency page to see detailed breakdowns of how donations and funds are allocated to support our programs and participants.",
+      "Once you're accepted to an external program or opportunity, you can apply for funding through your dashboard. Our team reviews applications based on need, alignment with your goals, and fund availability. We encourage applying to programs in visa-friendly countries to maximize your chances of success.",
   },
   {
-    question: "What does the fund pay for?",
+    question: "Who can become a member?",
     answer:
-      "The fund covers program fees, flights, visa fees (we encourage applying to programs in countries with favorable relations to your home country to prevent visa rejections), insurance, transportation, and accommodation.",
+      "Our platform is designed for people from the Global South who face passport limitations when pursuing international opportunities. Whether you're seeking remote work, graduate programs, conferences, or cross-border collaborations, you'll find others here who understand your journey.",
   },
   {
-    question: "What types of opportunities are available?",
+    question: "What can I do in Breakout Rooms?",
     answer:
-      "We showcase various external opportunities including international conferences, networking events, mentorship programs, professional development workshops, and cross-border collaboration projects. Once you're accepted to a program, you can apply for funding from our community fund.",
+      "In Breakout Rooms, you can chat with fellow members, share real opportunities you've discovered, get advice on applications and visas, celebrate wins together, and hold each other accountable to your goals. Private rooms let you create focused spaces for specific collaborations.",
   },
   {
-    question: "How can I support The Global Moves?",
+    question: "How much does membership cost?",
     answer:
-      "You can support us by becoming a Founding Member, donating to our programs, or spreading the word about our mission within your network.",
+      "Membership is $15/month. This gives you full access to all Breakout Rooms, the ability to create private rooms, real-time presence features, and the knowledge that part of your subscription supports the Community Fund helping other members achieve their goals.",
   },
   {
-    question: "How do I contact The Global Moves?",
+    question: "What types of opportunities are shared?",
     answer:
-      "You can reach us through our Contact page. We welcome inquiries about partnerships, programs, volunteering, and general questions about our organization.",
+      "Members share a wide range of opportunities including remote job openings, scholarship programs, international conferences, fellowship opportunities, visa-friendly travel tips, and professional development resources. The focus is on practical, vetted opportunities that work for people with passport limitations.",
+  },
+  {
+    question: "How can I support The Global Moves beyond membership?",
+    answer:
+      "You can become a Founding Member for exclusive benefits and a role in shaping our future, donate directly to the Community Fund, or spread the word within your network. Every bit of support helps more members unlock international opportunities.",
   },
 ];
 
