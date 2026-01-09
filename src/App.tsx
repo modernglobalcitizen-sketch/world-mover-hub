@@ -15,6 +15,7 @@ import HowItWorks from "./pages/HowItWorks";
 import Opportunities from "./pages/Opportunities";
 import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
+import BreakoutRooms from "./pages/BreakoutRooms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/breakout-rooms" element={<BreakoutRooms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
