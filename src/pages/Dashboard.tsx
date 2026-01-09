@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -353,10 +353,16 @@ const Dashboard = () => {
                 </p>
               </div>
               <div className="flex flex-col items-end gap-2">
-                <Button variant="outline" size="sm" onClick={() => navigate("/profile")} className="gap-2">
-                  <Settings className="h-4 w-4" />
-                  Edit Profile
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={() => navigate("/breakout-rooms")} className="gap-2">
+                    <MessageCircle className="h-4 w-4" />
+                    Breakout Rooms
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => navigate("/profile")} className="gap-2">
+                    <Settings className="h-4 w-4" />
+                    Edit Profile
+                  </Button>
+                </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
                   Member since {session?.user?.created_at && format(new Date(session.user.created_at), "MMM yyyy")}

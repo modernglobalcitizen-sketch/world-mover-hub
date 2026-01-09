@@ -52,6 +52,30 @@ export type Database = {
           },
         ]
       }
+      breakout_rooms: {
+        Row: {
+          created_at: string
+          description: string | null
+          field: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          field: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          field?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       fund_applications: {
         Row: {
           admin_notes: string | null
@@ -198,6 +222,80 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      room_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          room_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          room_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          room_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "breakout_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      room_shared_opportunities: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          opportunity_id: string
+          room_id: string
+          shared_by: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          opportunity_id: string
+          room_id: string
+          shared_by: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          opportunity_id?: string
+          room_id?: string
+          shared_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_shared_opportunities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "room_shared_opportunities_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "breakout_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       saved_opportunities: {
         Row: {
