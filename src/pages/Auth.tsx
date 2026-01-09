@@ -63,6 +63,14 @@ const signupSchema = loginSchema.extend({
   fieldOfWork: z.string().min(1, { message: "Please select your field" }),
   opportunityInterests: z.array(z.string()).min(1, { message: "Please select at least one opportunity type" }),
   otherOpportunity: z.string().optional(),
+}).refine((data) => {
+  if (data.opportunityInterests.includes("other")) {
+    return data.otherOpportunity && data.otherOpportunity.trim().length > 0;
+  }
+  return true;
+}, {
+  message: "Please specify your other opportunity",
+  path: ["otherOpportunity"],
 });
 
 const Auth = () => {
@@ -347,7 +355,7 @@ const Auth = () => {
               variant="hero"
               size="lg"
               className="w-full"
-              disabled={loading || (!isLogin && (!country || !fieldOfWork || opportunityInterests.length === 0))}
+              disabled={loading || (!isLogin && (!country || !fieldOfWork || opportunityInterests.length === 0 || (opportunityInterests.includes("other") && !otherOpportunity.trim())))}
             >
               {loading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
