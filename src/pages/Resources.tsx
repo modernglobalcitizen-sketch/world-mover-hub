@@ -143,12 +143,6 @@ const resources = [
     type: "Guide",
   },
   {
-    title: "Visa & Immigration Tips",
-    description: "Essential information for navigating international moves and work permits.",
-    icon: FileText,
-    type: "Article",
-  },
-  {
     title: "Member Success Stories",
     description: "Watch videos from members who have successfully relocated through our network.",
     icon: Video,
