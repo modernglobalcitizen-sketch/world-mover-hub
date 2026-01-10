@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BookOpen, FileText, Video, ExternalLink, Globe, Compass, Award, Languages, Plane } from "lucide-react";
+import { BookOpen, Video, ExternalLink, Globe, Compass, Award, Languages, Plane } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
