@@ -1,8 +1,32 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BookOpen, FileText, Video, ExternalLink } from "lucide-react";
+import { BookOpen, FileText, Video, ExternalLink, Globe } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+
+const countryGuideLinks = [
+  {
+    title: "World Bank Country Data",
+    description: "Facts, figures, and economic indicators",
+    url: "https://data.worldbank.org/country",
+  },
+  {
+    title: "Wikivoyage",
+    description: "Travel guides written by locals",
+    url: "https://www.wikivoyage.org/",
+  },
+  {
+    title: "World Travel Guide",
+    description: "Comprehensive country guides",
+    url: "https://www.worldtravelguide.net/country-guides/",
+  },
+  {
+    title: "Countrypedia",
+    description: "Workforce and employment insights",
+    url: "https://www.globalexpansion.com/countrypedia",
+  },
+];
 
 const resources = [
   {
@@ -22,12 +46,6 @@ const resources = [
     description: "Watch videos from members who have successfully relocated through our network.",
     icon: Video,
     type: "Video",
-  },
-  {
-    title: "Country Guides",
-    description: "Detailed guides on living and working in different countries around the world.",
-    icon: FileText,
-    type: "Guide",
   },
 ];
 
@@ -77,6 +95,50 @@ const Resources = () => {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* Country Guides Section */}
+            <div className="max-w-4xl mx-auto mt-12">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Globe className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                      Guide
+                    </span>
+                  </div>
+                  <CardTitle className="text-xl">Country Guides</CardTitle>
+                  <CardDescription>
+                    Detailed guides on living and working in different countries around the world.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Separator className="mb-4" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {countryGuideLinks.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all"
+                      >
+                        <ExternalLink className="h-4 w-4 mt-0.5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                        <div>
+                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                            {link.title}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {link.description}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Coming Soon Notice */}
