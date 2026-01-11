@@ -232,6 +232,47 @@ export type Database = {
         }
         Relationships: []
       }
+      room_invitations: {
+        Row: {
+          created_at: string
+          id: string
+          invited_by: string
+          invited_user_id: string
+          message: string | null
+          responded_at: string | null
+          room_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invited_by: string
+          invited_user_id: string
+          message?: string | null
+          responded_at?: string | null
+          room_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invited_by?: string
+          invited_user_id?: string
+          message?: string | null
+          responded_at?: string | null
+          room_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_invitations_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "breakout_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       room_members: {
         Row: {
           id: string
@@ -393,6 +434,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      has_pending_invitation: {
+        Args: { _room_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
