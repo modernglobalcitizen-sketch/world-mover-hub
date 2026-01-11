@@ -8,11 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search } from "lucide-react";
+import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search, Share2 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
 import { Link } from "react-router-dom";
+import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
 
 interface Opportunity {
   id: string;
@@ -291,7 +292,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                       <Badge variant="secondary" className="mb-2">
                         {opportunity.category}
                       </Badge>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
                         {hasApplied && (
                           <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
                             <CheckCircle className="h-3 w-3 mr-1" />
@@ -299,19 +300,25 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                           </Badge>
                         )}
                         {session && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => handleSave(opportunity.id)}
-                            disabled={savingId === opportunity.id}
-                          >
-                            {isSaved ? (
-                              <BookmarkCheck className="h-5 w-5 text-primary" />
-                            ) : (
-                              <Bookmark className="h-5 w-5" />
-                            )}
-                          </Button>
+                          <>
+                            <ShareOpportunityDialog
+                              opportunityId={opportunity.id}
+                              opportunityTitle={opportunity.title}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => handleSave(opportunity.id)}
+                              disabled={savingId === opportunity.id}
+                            >
+                              {isSaved ? (
+                                <BookmarkCheck className="h-5 w-5 text-primary" />
+                              ) : (
+                                <Bookmark className="h-5 w-5" />
+                              )}
+                            </Button>
+                          </>
                         )}
                       </div>
                     </div>

@@ -11,9 +11,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle, UserPlus, Check, X } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle, UserPlus, Check, X, Share2 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
 
 interface FundSummary {
   totalContributions: number;
@@ -811,6 +812,10 @@ const Dashboard = () => {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
+                            <ShareOpportunityDialog
+                              opportunityId={saved.opportunity.id}
+                              opportunityTitle={saved.opportunity.title}
+                            />
                             <Button
                               variant="ghost"
                               size="icon"
