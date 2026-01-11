@@ -599,23 +599,44 @@ const BreakoutRooms = () => {
       return;
     }
 
-    // Add member
-    const { error: memberError } = await supabase.from("room_members").insert({
+    // Check if already invited
+    const { data: existingInvite } = await supabase
+      .from("room_invitations")
+      .select("id, status")
+      .eq("room_id", selectedRoom.id)
+      .eq("invited_user_id", profileData.id)
+      .single();
+
+    if (existingInvite) {
+      toast({
+        title: existingInvite.status === "pending" ? "Already invited" : "Previously invited",
+        description: existingInvite.status === "pending" 
+          ? "This user already has a pending invitation."
+          : `This user has already ${existingInvite.status} an invitation.`,
+        variant: "destructive",
+      });
+      setInviting(false);
+      return;
+    }
+
+    // Create invitation instead of direct membership
+    const { error: inviteError } = await supabase.from("room_invitations").insert({
       room_id: selectedRoom.id,
-      user_id: profileData.id,
-      role: "member",
+      invited_by: user.id,
+      invited_user_id: profileData.id,
+      status: "pending",
     });
 
-    if (memberError) {
+    if (inviteError) {
       toast({
-        title: "Failed to add member",
-        description: memberError.message,
+        title: "Failed to send invitation",
+        description: inviteError.message,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Member added!",
-        description: "The user has been added to the room.",
+        title: "Invitation sent!",
+        description: "The user will be notified and can accept or decline from their dashboard.",
       });
       setInviteDialogOpen(false);
       setInviteEmail("");

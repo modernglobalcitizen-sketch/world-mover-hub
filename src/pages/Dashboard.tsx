@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle, UserPlus, Check, X } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 
@@ -60,6 +60,24 @@ interface FundApplication {
   created_at: string;
 }
 
+interface RoomInvitation {
+  id: string;
+  room_id: string;
+  invited_by: string;
+  status: string;
+  message: string | null;
+  created_at: string;
+  room?: {
+    name: string;
+    field: string;
+    description: string | null;
+  };
+  inviter?: {
+    display_name: string | null;
+    email: string | null;
+  };
+}
+
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
   pending: { 
     label: "Pending", 
@@ -90,6 +108,7 @@ const Dashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
+  const [roomInvitations, setRoomInvitations] = useState<RoomInvitation[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null }>({
     isFounder: false,
     number: null,
@@ -108,6 +127,7 @@ const Dashboard = () => {
     description: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [respondingToInvite, setRespondingToInvite] = useState<string | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -134,7 +154,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult, savedResult, fundAppResult] = await Promise.all([
+      const [fundResult, appResult, profileResult, savedResult, fundAppResult, invitationsResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
         supabase
           .from("applications")
@@ -166,6 +186,12 @@ const Dashboard = () => {
           .from("fund_applications")
           .select("*")
           .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("room_invitations")
+          .select("*")
+          .eq("invited_user_id", session.user.id)
+          .eq("status", "pending")
           .order("created_at", { ascending: false }),
       ]);
 
@@ -203,6 +229,30 @@ const Dashboard = () => {
 
       if (fundAppResult.data) {
         setFundApplications(fundAppResult.data as FundApplication[]);
+      }
+
+      // Fetch room and inviter details for invitations
+      if (invitationsResult.data && invitationsResult.data.length > 0) {
+        const roomIds = [...new Set(invitationsResult.data.map(i => i.room_id))];
+        const inviterIds = [...new Set(invitationsResult.data.map(i => i.invited_by))];
+        
+        const [roomsResult, invitersResult] = await Promise.all([
+          supabase.from("breakout_rooms").select("id, name, field, description").in("id", roomIds),
+          supabase.from("profiles").select("id, display_name, email").in("id", inviterIds),
+        ]);
+
+        const roomsMap = new Map(roomsResult.data?.map(r => [r.id, r]) || []);
+        const invitersMap = new Map(invitersResult.data?.map(p => [p.id, p]) || []);
+
+        const invitationsWithDetails = invitationsResult.data.map(inv => ({
+          ...inv,
+          room: roomsMap.get(inv.room_id) || null,
+          inviter: invitersMap.get(inv.invited_by) || null,
+        }));
+
+        setRoomInvitations(invitationsWithDetails as RoomInvitation[]);
+      } else {
+        setRoomInvitations([]);
       }
     };
 
@@ -282,6 +332,57 @@ const Dashboard = () => {
     }
 
     setSubmitting(false);
+  };
+
+  const handleRespondToInvitation = async (invitationId: string, accept: boolean) => {
+    if (!session) return;
+    
+    setRespondingToInvite(invitationId);
+    
+    const invitation = roomInvitations.find(i => i.id === invitationId);
+    if (!invitation) {
+      setRespondingToInvite(null);
+      return;
+    }
+
+    if (accept) {
+      // First add user as member
+      const { error: memberError } = await supabase.from("room_members").insert({
+        room_id: invitation.room_id,
+        user_id: session.user.id,
+        role: "member",
+      });
+
+      if (memberError) {
+        toast.error("Failed to join room");
+        console.error(memberError);
+        setRespondingToInvite(null);
+        return;
+      }
+    }
+
+    // Update invitation status
+    const { error: updateError } = await supabase
+      .from("room_invitations")
+      .update({ 
+        status: accept ? "accepted" : "declined",
+        responded_at: new Date().toISOString(),
+      })
+      .eq("id", invitationId);
+
+    if (updateError) {
+      toast.error("Failed to update invitation");
+      console.error(updateError);
+    } else {
+      toast.success(accept ? "You've joined the room!" : "Invitation declined");
+      setRoomInvitations(roomInvitations.filter(i => i.id !== invitationId));
+      
+      if (accept) {
+        navigate("/breakout-rooms");
+      }
+    }
+
+    setRespondingToInvite(null);
   };
 
   if (loading) {
@@ -408,6 +509,70 @@ const Dashboard = () => {
                 </CardHeader>
               </Card>
             </div>
+
+            {/* Room Invitations */}
+            {roomInvitations.length > 0 && (
+              <Card className="shadow-soft border-primary/20 bg-primary/5">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <UserPlus className="h-5 w-5 text-primary" />
+                    Pending Room Invitations
+                    <Badge variant="secondary" className="ml-2">{roomInvitations.length}</Badge>
+                  </CardTitle>
+                  <CardDescription>
+                    You've been invited to join private breakout rooms
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {roomInvitations.map((invitation) => (
+                      <div 
+                        key={invitation.id} 
+                        className="flex items-center justify-between p-4 rounded-lg bg-background border gap-4"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-foreground">
+                            {invitation.room?.name || "Unknown Room"}
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            {invitation.room?.field} • Invited by {invitation.inviter?.display_name || invitation.inviter?.email?.split("@")[0] || "Unknown"}
+                          </p>
+                          {invitation.room?.description && (
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                              {invitation.room.description}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Invited {format(new Date(invitation.created_at), "MMM d, yyyy")}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleRespondToInvitation(invitation.id, false)}
+                            disabled={respondingToInvite === invitation.id}
+                            className="gap-1"
+                          >
+                            <X className="h-4 w-4" />
+                            Decline
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleRespondToInvitation(invitation.id, true)}
+                            disabled={respondingToInvite === invitation.id}
+                            className="gap-1"
+                          >
+                            <Check className="h-4 w-4" />
+                            Accept
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* My Applications */}
             <Card className="shadow-soft">
