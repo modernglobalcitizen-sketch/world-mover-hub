@@ -354,10 +354,17 @@ const Dashboard = () => {
       });
 
       if (memberError) {
-        toast.error("Failed to join room");
-        console.error(memberError);
-        setRespondingToInvite(null);
-        return;
+        // If the user is already a member (unique constraint), we can still mark the invite as accepted.
+        const alreadyMember =
+          (memberError as any).code === "23505" ||
+          memberError.message?.toLowerCase().includes("duplicate key");
+
+        if (!alreadyMember) {
+          toast.error(memberError.message || "Failed to join room");
+          console.error(memberError);
+          setRespondingToInvite(null);
+          return;
+        }
       }
     }
 
