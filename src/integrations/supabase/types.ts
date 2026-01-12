@@ -431,32 +431,19 @@ export type Database = {
       }
     }
     Views: {
-      founding_members_public: {
-        Row: {
-          country: string | null
-          created_at: string | null
-          display_name: string | null
-          founding_member_number: number | null
-          id: string | null
-        }
-        Insert: {
-          country?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          founding_member_number?: number | null
-          id?: string | null
-        }
-        Update: {
-          country?: string | null
-          created_at?: string | null
-          display_name?: string | null
-          founding_member_number?: number | null
-          id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
+      get_founding_members_public: {
+        Args: never
+        Returns: {
+          country: string
+          created_at: string
+          display_name: string
+          founding_member_number: number
+          id: string
+        }[]
+      }
       has_pending_invitation: {
         Args: { _room_id: string; _user_id: string }
         Returns: boolean
