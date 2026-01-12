@@ -5,8 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Crown, Users, Globe, Star, Rocket } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Crown, Users, Globe, Star, Rocket, UserCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface FoundingMember {
   id: string;
@@ -19,14 +20,35 @@ interface FoundingMember {
 const FoundingMembers = () => {
   const [members, setMembers] = useState<FoundingMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<{ id: string; hasDisplayName: boolean; isFoundingMember: boolean } | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkCurrentUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("id, display_name, is_founding_member")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (profile) {
+          setCurrentUser({
+            id: profile.id,
+            hasDisplayName: !!profile.display_name && profile.display_name.trim() !== "",
+            isFoundingMember: profile.is_founding_member
+          });
+        }
+      }
+    };
+    checkCurrentUser();
+  }, []);
 
   useEffect(() => {
     const fetchFoundingMembers = async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, country, founding_member_number, display_name, created_at")
-        .eq("is_founding_member", true)
-        .order("founding_member_number", { ascending: true });
+      // Use the secure RPC function that excludes email addresses
+      const { data, error } = await supabase.rpc("get_founding_members_public");
 
       if (!error && data) {
         setMembers(data);
@@ -62,6 +84,27 @@ const FoundingMembers = () => {
               </Link>
             </Button>
           </div>
+
+          {/* Display Name Prompt for Founding Members */}
+          {currentUser?.isFoundingMember && !currentUser?.hasDisplayName && (
+            <Alert className="mb-8 border-amber-500/50 bg-amber-500/10">
+              <UserCircle className="h-4 w-4 text-amber-600" />
+              <AlertDescription className="flex items-center justify-between">
+                <span className="text-foreground">
+                  <strong>Set your display name!</strong> As a founding member, your name will appear on this public page. 
+                  Add a display name to personalize your listing.
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="ml-4 shrink-0"
+                  onClick={() => navigate("/profile")}
+                >
+                  Update Profile
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
 
           {/* Stats */}
           <div className="grid sm:grid-cols-3 gap-4 mb-12">
