@@ -26,7 +26,8 @@ import {
   UserPlus,
   UserMinus,
   Circle,
-  Crown
+  Crown,
+  X
 } from "lucide-react";
 
 interface Room {
@@ -137,6 +138,8 @@ const BreakoutRooms = () => {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviting, setInviting] = useState(false);
   const [allProfiles, setAllProfiles] = useState<any[]>([]);
+  const [pendingInvitations, setPendingInvitations] = useState<any[]>([]);
+  const [cancellingInvitation, setCancellingInvitation] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const presenceChannelRef = useRef<any>(null);
   const navigate = useNavigate();
@@ -327,9 +330,41 @@ const BreakoutRooms = () => {
       }
     };
 
+    const fetchPendingInvitations = async () => {
+      if (!selectedRoom.is_private || selectedRoom.created_by !== user?.id) {
+        setPendingInvitations([]);
+        return;
+      }
+      
+      const { data: invitationsData, error } = await supabase
+        .from("room_invitations")
+        .select("*")
+        .eq("room_id", selectedRoom.id)
+        .eq("status", "pending")
+        .order("created_at", { ascending: false });
+
+      if (!error && invitationsData) {
+        const userIds = [...new Set(invitationsData.map(i => i.invited_user_id))];
+        const { data: profilesData } = await supabase
+          .from("profiles")
+          .select("id, display_name, email")
+          .in("id", userIds);
+        
+        const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+        
+        const invitationsWithProfiles = invitationsData.map(inv => ({
+          ...inv,
+          profiles: profilesMap.get(inv.invited_user_id) || null
+        }));
+        
+        setPendingInvitations(invitationsWithProfiles);
+      }
+    };
+
     fetchMessages();
     fetchSharedOpportunities();
     fetchRoomMembers();
+    fetchPendingInvitations();
 
     // Subscribe to realtime messages
     const messagesChannel = supabase
@@ -417,10 +452,28 @@ const BreakoutRooms = () => {
       )
       .subscribe();
 
+    // Subscribe to room invitations changes (for room creators)
+    const invitationsChannel = supabase
+      .channel(`room-invitations-${selectedRoom.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "room_invitations",
+          filter: `room_id=eq.${selectedRoom.id}`,
+        },
+        () => {
+          fetchPendingInvitations();
+        }
+      )
+      .subscribe();
+
     return () => {
       supabase.removeChannel(messagesChannel);
       supabase.removeChannel(opportunitiesChannel);
       supabase.removeChannel(membersChannel);
+      supabase.removeChannel(invitationsChannel);
     };
   }, [selectedRoom]);
 
@@ -738,6 +791,30 @@ const BreakoutRooms = () => {
         .order("name");
       setRooms(updatedRooms || []);
     }
+  };
+
+  const handleCancelInvitation = async (invitationId: string) => {
+    setCancellingInvitation(invitationId);
+    
+    const { error } = await supabase
+      .from("room_invitations")
+      .delete()
+      .eq("id", invitationId);
+
+    if (error) {
+      toast({
+        title: "Failed to cancel invitation",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Invitation cancelled",
+        description: "The invitation has been cancelled.",
+      });
+      setPendingInvitations(prev => prev.filter(inv => inv.id !== invitationId));
+    }
+    setCancellingInvitation(null);
   };
 
   const getUserDisplayName = (profiles: { display_name: string | null; email: string | null } | undefined) => {
@@ -1177,6 +1254,52 @@ const BreakoutRooms = () => {
                               )}
                             </div>
                           ))}
+                          
+                          {/* Pending Invitations Section (for room owners) */}
+                          {isRoomOwner && pendingInvitations.length > 0 && (
+                            <div className="pt-4 mt-4 border-t">
+                              <p className="text-sm font-medium mb-3 text-muted-foreground">
+                                Pending Invitations ({pendingInvitations.length})
+                              </p>
+                              <div className="space-y-2">
+                                {pendingInvitations.map((invitation) => (
+                                  <div
+                                    key={invitation.id}
+                                    className="flex items-center justify-between p-2 rounded-lg bg-muted/30 border border-dashed"
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                        <span className="text-xs font-medium text-muted-foreground">
+                                          {getUserDisplayName(invitation.profiles).charAt(0).toUpperCase()}
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium">
+                                          {getUserDisplayName(invitation.profiles)}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                          Invited {new Date(invitation.created_at).toLocaleDateString()}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="text-destructive hover:text-destructive"
+                                      onClick={() => handleCancelInvitation(invitation.id)}
+                                      disabled={cancellingInvitation === invitation.id}
+                                    >
+                                      {cancellingInvitation === invitation.id ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                      ) : (
+                                        "Cancel"
+                                      )}
+                                    </Button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                           
                           {/* Room Actions */}
                           <div className="pt-4 mt-4 border-t space-y-2">
