@@ -431,7 +431,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      founding_members_public: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          display_name: string | null
+          founding_member_number: number | null
+          id: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          founding_member_number?: number | null
+          id?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          founding_member_number?: number | null
+          id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_pending_invitation: {
