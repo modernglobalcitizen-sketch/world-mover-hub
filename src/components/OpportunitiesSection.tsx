@@ -3,12 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search, Share2, ExternalLink } from "lucide-react";
+import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -38,11 +35,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
   const [session, setSession] = useState<Session | null>(null);
   const [appliedIds, setAppliedIds] = useState<Set<string>>(new Set());
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
-  const [applyingTo, setApplyingTo] = useState<string | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
   const [searchCountry, setSearchCountry] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -108,45 +101,6 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
     fetchUserData();
   }, [session]);
-
-  const handleApply = async () => {
-    if (!session || !selectedOpportunity) {
-      toast.error("Please log in to apply");
-      return;
-    }
-
-    setApplyingTo(selectedOpportunity.id);
-
-    const { error } = await supabase
-      .from("applications")
-      .insert({
-        user_id: session.user.id,
-        opportunity_id: selectedOpportunity.id,
-        message: message.trim() || null,
-      });
-
-    if (error) {
-      if (error.code === "23505") {
-        toast.error("You've already applied to this opportunity");
-      } else {
-        toast.error("Failed to submit application");
-        console.error(error);
-      }
-    } else {
-      toast.success("Application submitted successfully!");
-      setAppliedIds(new Set([...appliedIds, selectedOpportunity.id]));
-      setDialogOpen(false);
-      setMessage("");
-    }
-
-    setApplyingTo(null);
-  };
-
-  const openApplyDialog = (opportunity: Opportunity) => {
-    setSelectedOpportunity(opportunity);
-    setMessage("");
-    setDialogOpen(true);
-  };
 
   const handleSave = async (opportunityId: string) => {
     if (!session) {
@@ -287,135 +241,76 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
               const isExpired = opportunity.deadline && new Date(opportunity.deadline) < new Date();
 
               return (
-                <Card key={opportunity.id} className="shadow-soft hover:shadow-hover transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2">
-                      <Badge variant="secondary" className="mb-2">
-                        {opportunity.category}
-                      </Badge>
-                      <div className="flex items-center gap-1">
-                        {hasApplied && (
-                          <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
-                            <CheckCircle className="h-3 w-3 mr-1" />
-                            Applied
-                          </Badge>
-                        )}
-                        {session && (
-                          <>
-                            <ShareOpportunityDialog
-                              opportunityId={opportunity.id}
-                              opportunityTitle={opportunity.title}
-                            />
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => handleSave(opportunity.id)}
-                              disabled={savingId === opportunity.id}
-                            >
-                              {isSaved ? (
-                                <BookmarkCheck className="h-5 w-5 text-primary" />
-                              ) : (
-                                <Bookmark className="h-5 w-5" />
-                              )}
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <CardTitle className="text-xl">{opportunity.title}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {opportunity.about}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                      {opportunity.location && (
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          {opportunity.location}
-                        </span>
-                      )}
-                      {opportunity.deadline && (
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {format(new Date(opportunity.deadline), "MMM d, yyyy")}
-                        </span>
-                      )}
-                    </div>
-
-                    {opportunity.link ? (
-                      <Button asChild className="w-full">
-                        <a href={opportunity.link} target="_blank" rel="noopener noreferrer">
-                          View Program
-                          <ExternalLink className="h-4 w-4 ml-2" />
-                        </a>
-                      </Button>
-                    ) : session ? (
-                      hasApplied ? (
-                        <Button variant="secondary" disabled className="w-full">
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Application Submitted
-                        </Button>
-                      ) : isExpired ? (
-                        <Button variant="secondary" disabled className="w-full">
-                          Deadline Passed
-                        </Button>
-                      ) : (
-                        <Dialog open={dialogOpen && selectedOpportunity?.id === opportunity.id} onOpenChange={(open) => {
-                          if (!open) setDialogOpen(false);
-                        }}>
-                          <DialogTrigger asChild>
-                            <Button className="w-full" onClick={() => openApplyDialog(opportunity)}>
-                              Apply Now
-                              <ArrowRight className="h-4 w-4 ml-2" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Apply for {opportunity.title}</DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-4 py-4">
-                              <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                                <p className="text-sm text-muted-foreground">{opportunity.about}</p>
-                                {opportunity.requirements && (
-                                  <div className="pt-2 border-t border-border">
-                                    <p className="text-xs font-medium text-foreground mb-1">Requirements:</p>
-                                    <p className="text-xs text-muted-foreground">{opportunity.requirements}</p>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="space-y-2">
-                                <Label htmlFor="message">Why are you interested? (optional)</Label>
-                                <Textarea
-                                  id="message"
-                                  value={message}
-                                  onChange={(e) => setMessage(e.target.value)}
-                                  placeholder="Tell us briefly why you'd like to pursue this opportunity..."
-                                  rows={4}
+                <Link key={opportunity.id} to={`/opportunities/${opportunity.id}`} className="block">
+                  <Card className="shadow-soft hover:shadow-hover transition-shadow h-full cursor-pointer">
+                    <CardHeader>
+                      <div className="flex items-start justify-between gap-2">
+                        <Badge variant="secondary" className="mb-2">
+                          {opportunity.category}
+                        </Badge>
+                        <div className="flex items-center gap-1">
+                          {hasApplied && (
+                            <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                              Applied
+                            </Badge>
+                          )}
+                          {session && (
+                            <>
+                              <div onClick={(e) => e.preventDefault()}>
+                                <ShareOpportunityDialog
+                                  opportunityId={opportunity.id}
+                                  opportunityTitle={opportunity.title}
                                 />
                               </div>
-                              <Button 
-                                onClick={handleApply} 
-                                className="w-full" 
-                                disabled={applyingTo === opportunity.id}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleSave(opportunity.id);
+                                }}
+                                disabled={savingId === opportunity.id}
                               >
-                                {applyingTo === opportunity.id ? "Submitting..." : "Submit Application"}
+                                {isSaved ? (
+                                  <BookmarkCheck className="h-5 w-5 text-primary" />
+                                ) : (
+                                  <Bookmark className="h-5 w-5" />
+                                )}
                               </Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      )
-                    ) : (
-                      <Button variant="outline" asChild className="w-full">
-                        <a href="/auth">
-                          Login to Apply
-                          <ArrowRight className="h-4 w-4 ml-2" />
-                        </a>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl">{opportunity.title}</CardTitle>
+                      <CardDescription className="line-clamp-2">
+                        {opportunity.about}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                        {opportunity.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {opportunity.location}
+                          </span>
+                        )}
+                        {opportunity.deadline && (
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            {format(new Date(opportunity.deadline), "MMM d, yyyy")}
+                          </span>
+                        )}
+                      </div>
+
+                      <Button className="w-full" variant="outline">
+                        View Details
+                        <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
-                    )}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
               );
             })}
             </div>
