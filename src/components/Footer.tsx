@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Globe } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
+import SocialLinks from "@/components/SocialLinks";
 
 const Footer = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -58,9 +59,10 @@ const Footer = () => {
                 The Global Moves
               </span>
             </a>
-            <p className="text-sm text-muted-foreground max-w-md">
+            <p className="text-sm text-muted-foreground max-w-md mb-6">
               Empowering individuals to explore global opportunities through a trusted network and transparent community fund.
             </p>
+            <SocialLinks variant="footer" />
           </div>
 
           {/* Quick Links */}
