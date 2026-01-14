@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import FoundingMembers from "./pages/FoundingMembers";
 import HowItWorks from "./pages/HowItWorks";
 import Opportunities from "./pages/Opportunities";
+import OpportunityDetail from "./pages/OpportunityDetail";
 import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
 import BreakoutRooms from "./pages/BreakoutRooms";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/founding-members" element={<FoundingMembers />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/opportunities" element={<Opportunities />} />
+          <Route path="/opportunities/:id" element={<OpportunityDetail />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/breakout-rooms" element={<BreakoutRooms />} />
