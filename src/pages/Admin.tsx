@@ -36,6 +36,9 @@ interface Opportunity {
   location: string | null;
   deadline: string | null;
   requirements: string | null;
+  eligibility: string | null;
+  benefits: string | null;
+  about: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -68,6 +71,9 @@ const emptyOpportunity = {
   location: "",
   deadline: "",
   requirements: "",
+  eligibility: "",
+  benefits: "",
+  about: "",
   is_active: true,
 };
 
@@ -271,6 +277,9 @@ const Admin = () => {
         location: opportunity.location || "",
         deadline: opportunity.deadline || "",
         requirements: opportunity.requirements || "",
+        eligibility: opportunity.eligibility || "",
+        benefits: opportunity.benefits || "",
+        about: opportunity.about || "",
         is_active: opportunity.is_active,
       });
     } else {
@@ -295,6 +304,9 @@ const Admin = () => {
       location: oppFormData.location || null,
       deadline: oppFormData.deadline || null,
       requirements: oppFormData.requirements || null,
+      eligibility: oppFormData.eligibility || null,
+      benefits: oppFormData.benefits || null,
+      about: oppFormData.about || null,
       is_active: oppFormData.is_active,
     };
 
@@ -721,6 +733,36 @@ const Admin = () => {
                             onChange={(e) => setOppFormData({ ...oppFormData, requirements: e.target.value })}
                             placeholder="List the requirements"
                             rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-eligibility">Eligibility</Label>
+                          <Textarea
+                            id="opp-eligibility"
+                            value={oppFormData.eligibility}
+                            onChange={(e) => setOppFormData({ ...oppFormData, eligibility: e.target.value })}
+                            placeholder="Who is eligible to apply"
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-benefits">Benefits</Label>
+                          <Textarea
+                            id="opp-benefits"
+                            value={oppFormData.benefits}
+                            onChange={(e) => setOppFormData({ ...oppFormData, benefits: e.target.value })}
+                            placeholder="What benefits are offered"
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-about">About</Label>
+                          <Textarea
+                            id="opp-about"
+                            value={oppFormData.about}
+                            onChange={(e) => setOppFormData({ ...oppFormData, about: e.target.value })}
+                            placeholder="Additional information about this opportunity"
+                            rows={3}
                           />
                         </div>
                         <div className="flex items-center justify-between">
