@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
 import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
+import SocialShareButtons from "@/components/SocialShareButtons";
 
 interface Opportunity {
   id: string;
@@ -260,6 +261,14 @@ const OpportunityDetail = () => {
                   />
                 </>
               )}
+            </div>
+
+            <div className="mb-8">
+              <SocialShareButtons
+                url={window.location.href}
+                title={opportunity.title}
+                description={opportunity.about}
+              />
             </div>
 
             <Card>

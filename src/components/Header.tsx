@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Globe, Shield, LogOut, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
+import SocialLinks from "@/components/SocialLinks";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -99,6 +100,8 @@ const Header = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
+          <SocialLinks variant="header" />
+          <div className="w-px h-6 bg-border mx-1" />
           {session && (
             <Button variant="ghost" size="default" asChild>
               <a href="/dashboard" className="flex items-center gap-2">
@@ -191,6 +194,9 @@ const Header = () => {
                 <a href="/auth">Login / Sign Up</a>
               </Button>
             )}
+            <div className="mt-4 pt-4 border-t border-border flex justify-center">
+              <SocialLinks variant="footer" />
+            </div>
           </nav>
         </div>
       )}
