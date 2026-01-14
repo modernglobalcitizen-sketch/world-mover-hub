@@ -43,7 +43,7 @@ interface SavedOpportunity {
   opportunity: {
     id: string;
     title: string;
-    description: string;
+    about: string;
     category: string;
     location: string | null;
     deadline: string | null;
@@ -179,7 +179,7 @@ const Dashboard = () => {
             id,
             opportunity_id,
             created_at,
-            opportunity:opportunities(id, title, description, category, location, deadline, is_active)
+            opportunity:opportunities(id, title, about, category, location, deadline, is_active)
           `)
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
@@ -794,7 +794,7 @@ const Dashboard = () => {
                               )}
                             </div>
                             <p className="text-sm text-muted-foreground line-clamp-2">
-                              {saved.opportunity.description}
+                              {saved.opportunity.about}
                             </p>
                             <div className="flex items-center gap-4 text-xs text-muted-foreground">
                               {saved.opportunity.location && (

@@ -18,7 +18,7 @@ import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
 interface Opportunity {
   id: string;
   title: string;
-  description: string;
+  about: string;
   category: string;
   location: string | null;
   deadline: string | null;
@@ -324,7 +324,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                     </div>
                     <CardTitle className="text-xl">{opportunity.title}</CardTitle>
                     <CardDescription className="line-clamp-2">
-                      {opportunity.description}
+                      {opportunity.about}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -369,7 +369,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                             </DialogHeader>
                             <div className="space-y-4 py-4">
                               <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-                                <p className="text-sm text-muted-foreground">{opportunity.description}</p>
+                                <p className="text-sm text-muted-foreground">{opportunity.about}</p>
                                 {opportunity.requirements && (
                                   <div className="pt-2 border-t border-border">
                                     <p className="text-xs font-medium text-foreground mb-1">Requirements:</p>
