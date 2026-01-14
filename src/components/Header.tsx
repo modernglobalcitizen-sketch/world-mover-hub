@@ -8,9 +8,12 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Founding Members", href: "/founding-members" },
-  { name: "Community Fund", href: "/community-fund" },
   { name: "How It Works", href: "/how-it-works" },
   { name: "Resources", href: "/resources" },
+];
+
+const adminOnlyLinks = [
+  { name: "Community Fund", href: "/community-fund" },
 ];
 
 const Header = () => {
@@ -84,6 +87,15 @@ const Header = () => {
               {link.name}
             </a>
           ))}
+          {isAdmin && adminOnlyLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+            >
+              {link.name}
+            </a>
+          ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
@@ -130,6 +142,16 @@ const Header = () => {
         <div className="md:hidden border-t border-border bg-background">
           <nav className="container py-4 flex flex-col gap-4">
             {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-base font-medium text-muted-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
+            {isAdmin && adminOnlyLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
