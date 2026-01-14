@@ -31,14 +31,13 @@ interface Transaction {
 interface Opportunity {
   id: string;
   title: string;
-  description: string;
   category: string;
   location: string | null;
   deadline: string | null;
   requirements: string | null;
   eligibility: string | null;
   benefits: string | null;
-  about: string | null;
+  about: string;
   is_active: boolean;
   created_at: string;
 }
@@ -66,7 +65,6 @@ const emptyTransaction = {
 
 const emptyOpportunity = {
   title: "",
-  description: "",
   category: "",
   location: "",
   deadline: "",
@@ -272,14 +270,13 @@ const Admin = () => {
       setEditingOpportunity(opportunity);
       setOppFormData({
         title: opportunity.title,
-        description: opportunity.description,
         category: opportunity.category,
         location: opportunity.location || "",
         deadline: opportunity.deadline || "",
         requirements: opportunity.requirements || "",
         eligibility: opportunity.eligibility || "",
         benefits: opportunity.benefits || "",
-        about: opportunity.about || "",
+        about: opportunity.about,
         is_active: opportunity.is_active,
       });
     } else {
@@ -290,7 +287,7 @@ const Admin = () => {
   };
 
   const handleSaveOpp = async () => {
-    if (!oppFormData.title || !oppFormData.description || !oppFormData.category) {
+    if (!oppFormData.title || !oppFormData.about || !oppFormData.category) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -299,14 +296,13 @@ const Admin = () => {
 
     const opportunityData = {
       title: oppFormData.title,
-      description: oppFormData.description,
       category: oppFormData.category,
       location: oppFormData.location || null,
       deadline: oppFormData.deadline || null,
       requirements: oppFormData.requirements || null,
       eligibility: oppFormData.eligibility || null,
       benefits: oppFormData.benefits || null,
-      about: oppFormData.about || null,
+      about: oppFormData.about,
       is_active: oppFormData.is_active,
     };
 
@@ -686,16 +682,6 @@ const Admin = () => {
                             value={oppFormData.title}
                             onChange={(e) => setOppFormData({ ...oppFormData, title: e.target.value })}
                             placeholder="Opportunity title"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="opp-description">Description *</Label>
-                          <Textarea
-                            id="opp-description"
-                            value={oppFormData.description}
-                            onChange={(e) => setOppFormData({ ...oppFormData, description: e.target.value })}
-                            placeholder="Describe the opportunity"
-                            rows={3}
                           />
                         </div>
                         <div className="space-y-2">

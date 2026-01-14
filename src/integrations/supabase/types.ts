@@ -156,12 +156,11 @@ export type Database = {
       }
       opportunities: {
         Row: {
-          about: string | null
+          about: string
           benefits: string | null
           category: string
           created_at: string
           deadline: string | null
-          description: string
           eligibility: string | null
           id: string
           is_active: boolean
@@ -171,12 +170,11 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          about?: string | null
+          about: string
           benefits?: string | null
           category: string
           created_at?: string
           deadline?: string | null
-          description: string
           eligibility?: string | null
           id?: string
           is_active?: boolean
@@ -186,12 +184,11 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          about?: string | null
+          about?: string
           benefits?: string | null
           category?: string
           created_at?: string
           deadline?: string | null
-          description?: string
           eligibility?: string | null
           id?: string
           is_active?: boolean
