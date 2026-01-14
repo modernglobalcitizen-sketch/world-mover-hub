@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search, Share2 } from "lucide-react";
+import { MapPin, Calendar, ArrowRight, CheckCircle, Bookmark, BookmarkCheck, Search, Share2, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -23,6 +23,7 @@ interface Opportunity {
   location: string | null;
   deadline: string | null;
   requirements: string | null;
+  link: string | null;
   is_active: boolean;
 }
 
@@ -343,7 +344,14 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                       )}
                     </div>
 
-                    {session ? (
+                    {opportunity.link ? (
+                      <Button asChild className="w-full">
+                        <a href={opportunity.link} target="_blank" rel="noopener noreferrer">
+                          View Program
+                          <ExternalLink className="h-4 w-4 ml-2" />
+                        </a>
+                      </Button>
+                    ) : session ? (
                       hasApplied ? (
                         <Button variant="secondary" disabled className="w-full">
                           <CheckCircle className="h-4 w-4 mr-2" />

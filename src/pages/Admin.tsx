@@ -38,6 +38,7 @@ interface Opportunity {
   eligibility: string | null;
   benefits: string | null;
   about: string;
+  link: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -72,6 +73,7 @@ const emptyOpportunity = {
   eligibility: "",
   benefits: "",
   about: "",
+  link: "",
   is_active: true,
 };
 
@@ -277,6 +279,7 @@ const Admin = () => {
         eligibility: opportunity.eligibility || "",
         benefits: opportunity.benefits || "",
         about: opportunity.about,
+        link: opportunity.link || "",
         is_active: opportunity.is_active,
       });
     } else {
@@ -303,6 +306,7 @@ const Admin = () => {
       eligibility: oppFormData.eligibility || null,
       benefits: oppFormData.benefits || null,
       about: oppFormData.about,
+      link: oppFormData.link || null,
       is_active: oppFormData.is_active,
     };
 
@@ -749,6 +753,16 @@ const Admin = () => {
                             onChange={(e) => setOppFormData({ ...oppFormData, about: e.target.value })}
                             placeholder="Additional information about this opportunity"
                             rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="opp-link">External Link</Label>
+                          <Input
+                            id="opp-link"
+                            type="url"
+                            value={oppFormData.link}
+                            onChange={(e) => setOppFormData({ ...oppFormData, link: e.target.value })}
+                            placeholder="https://example.com/apply"
                           />
                         </div>
                         <div className="flex items-center justify-between">

@@ -164,6 +164,7 @@ export type Database = {
           eligibility: string | null
           id: string
           is_active: boolean
+          link: string | null
           location: string | null
           requirements: string | null
           title: string
@@ -178,6 +179,7 @@ export type Database = {
           eligibility?: string | null
           id?: string
           is_active?: boolean
+          link?: string | null
           location?: string | null
           requirements?: string | null
           title: string
@@ -192,6 +194,7 @@ export type Database = {
           eligibility?: string | null
           id?: string
           is_active?: boolean
+          link?: string | null
           location?: string | null
           requirements?: string | null
           title?: string
