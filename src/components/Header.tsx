@@ -11,6 +11,7 @@ const navLinks = [
   { name: "Founding Members", href: "/founding-members" },
   { name: "How It Works", href: "/how-it-works" },
   { name: "Resources", href: "/resources" },
+  { name: "Donate", href: "/donate" },
 ];
 
 const adminOnlyLinks = [
