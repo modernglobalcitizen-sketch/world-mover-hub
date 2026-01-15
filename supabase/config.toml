@@ -1,7 +1,1 @@
 project_id = "ezmughqpucdfuzldljtu"
-
-[functions.fetch-airtable-opportunities]
-verify_jwt = false
-
-[functions.sync-airtable-opportunities]
-verify_jwt = false
