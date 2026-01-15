@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, RefreshCw, HandCoins } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -102,7 +102,7 @@ const Admin = () => {
   const [reviewFormData, setReviewFormData] = useState({ status: "pending", admin_notes: "" });
   
   const [saving, setSaving] = useState(false);
-  const [syncing, setSyncing] = useState(false);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -371,44 +371,6 @@ const Admin = () => {
     }
   };
 
-  const handleSyncAirtable = async () => {
-    setSyncing(true);
-    try {
-      // Get current session for auth header
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        toast.error('Authentication required');
-        setSyncing(false);
-        return;
-      }
-
-      const { data, error } = await supabase.functions.invoke('sync-airtable-opportunities', {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
-      
-      if (error) {
-        console.error('Sync error:', error);
-        toast.error('Failed to sync from Airtable');
-      } else if (data?.error) {
-        toast.error(data.error);
-      } else {
-        toast.success(`Synced ${data?.synced || 0} opportunities from Airtable`);
-        // Refresh opportunities list
-        const { data: oppData } = await supabase
-          .from("opportunities")
-          .select("*")
-          .order("created_at", { ascending: false });
-        if (oppData) setOpportunities(oppData);
-      }
-    } catch (err) {
-      console.error('Sync error:', err);
-      toast.error('Failed to sync from Airtable');
-    }
-    setSyncing(false);
-  };
-
   // Fund application handlers
   const handleOpenReviewDialog = (app: FundApplication) => {
     setReviewingApplication(app);
@@ -656,15 +618,7 @@ const Admin = () => {
 
               {/* Opportunities Tab */}
               <TabsContent value="opportunities" className="space-y-4">
-                <div className="flex justify-end gap-2">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleSyncAirtable} 
-                    disabled={syncing}
-                  >
-                    <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
-                    {syncing ? 'Syncing...' : 'Sync from Airtable'}
-                  </Button>
+                <div className="flex justify-end">
                   <Dialog open={oppDialogOpen} onOpenChange={setOppDialogOpen}>
                     <DialogTrigger asChild>
                       <Button onClick={() => handleOpenOppDialog()}>
