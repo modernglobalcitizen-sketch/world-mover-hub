@@ -84,6 +84,11 @@ const Footer = () => {
                   Opportunities
                 </a>
               </li>
+              <li>
+                <a href="/donate" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Donate
+                </a>
+              </li>
               {isAdmin && (
                 <li>
                   <a href="/community-fund" className="text-sm text-muted-foreground hover:text-primary transition-colors">
