@@ -68,7 +68,7 @@ const Donate = () => {
               <Heart className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Support the Diaspora Community
+              Support from the Diaspora Community
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Your donation helps us provide resources, opportunities, and support to community members 
