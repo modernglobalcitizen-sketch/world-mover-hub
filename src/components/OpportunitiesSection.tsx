@@ -156,8 +156,11 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
   // Filter opportunities based on search and category
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter(opportunity => {
+      const locationLower = opportunity.location?.toLowerCase() || "";
+      const isGlobal = locationLower.includes("global");
       const matchesCountry = !searchCountry || 
-        (opportunity.location && opportunity.location.toLowerCase().includes(searchCountry.toLowerCase()));
+        isGlobal ||
+        locationLower.includes(searchCountry.toLowerCase());
       const matchesCategory = selectedCategory === "all" || opportunity.category === selectedCategory;
       return matchesCountry && matchesCategory;
     });
