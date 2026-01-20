@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
+import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
         </div>
+        <HomeBreakoutRooms />
       </main>
       <Footer />
     </div>
