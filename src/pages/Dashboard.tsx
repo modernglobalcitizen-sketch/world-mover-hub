@@ -15,6 +15,7 @@ import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clo
 import { format } from "date-fns";
 import { toast } from "sonner";
 import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
+import BreakoutRoomsSuggestion from "@/components/BreakoutRoomsSuggestion";
 
 interface FundSummary {
   totalContributions: number;
@@ -110,10 +111,11 @@ const Dashboard = () => {
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
   const [roomInvitations, setRoomInvitations] = useState<RoomInvitation[]>([]);
-  const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null }>({
+  const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null; fieldOfWork: string | null }>({
     isFounder: false,
     number: null,
     displayName: null,
+    fieldOfWork: null,
   });
   const [displayNameDialogOpen, setDisplayNameDialogOpen] = useState(false);
   const [newDisplayName, setNewDisplayName] = useState("");
@@ -170,7 +172,7 @@ const Dashboard = () => {
           .order("created_at", { ascending: false }),
         supabase
           .from("profiles")
-          .select("is_founding_member, founding_member_number, display_name")
+          .select("is_founding_member, founding_member_number, display_name, field_of_work")
           .eq("id", session.user.id)
           .maybeSingle(),
         supabase
@@ -220,6 +222,7 @@ const Dashboard = () => {
           isFounder: profileResult.data.is_founding_member,
           number: profileResult.data.founding_member_number,
           displayName: profileResult.data.display_name,
+          fieldOfWork: profileResult.data.field_of_work,
         });
         setNewDisplayName(profileResult.data.display_name || "");
       }
@@ -580,6 +583,14 @@ const Dashboard = () => {
                   </div>
                 </CardContent>
               </Card>
+            )}
+
+            {/* Breakout Rooms Suggestion based on user's field */}
+            {session && foundingMember.fieldOfWork && (
+              <BreakoutRoomsSuggestion 
+                userField={foundingMember.fieldOfWork} 
+                userId={session.user.id} 
+              />
             )}
 
             {/* My Applications */}
