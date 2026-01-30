@@ -74,7 +74,7 @@ const Header = () => {
             <Globe className="h-5 w-5" />
           </div>
           <span className="text-xl font-display font-semibold text-foreground">
-            The Global Moves
+            Global Moves Network
           </span>
         </a>
 

@@ -68,7 +68,7 @@ const Contact = () => {
                   Get in Touch
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
-                  Have questions about The Global Moves? Want to learn more about how you can join our community? We'd love to hear from you.
+                  Have questions about Global Moves Network? Want to learn more about how you can join our community? We'd love to hear from you.
                 </p>
               </div>
 

@@ -19,9 +19,9 @@ import {
 
 const faqs = [
   {
-    question: "What is The Global Moves?",
+    question: "What is Global Moves Network?",
     answer:
-      "The Global Moves is a membership platform for people navigating global work, study, and travel with limited passport access. Members connect, stay accountable, and unlock opportunities together. A portion of every subscription goes toward a community fund that helps accelerate selected members' international moves.",
+      "Global Moves Network is a membership platform for people navigating global work, study, and travel with limited passport access. Members connect, stay accountable, and unlock opportunities together. A portion of every subscription goes toward a community fund that helps accelerate selected members' international moves.",
   },
   {
     question: "What are Breakout Rooms?",
@@ -64,7 +64,7 @@ const faqs = [
       "Members share a wide range of opportunities including remote job openings, scholarship programs, international conferences, fellowship opportunities, visa-friendly travel tips, and professional development resources. The focus is on practical, vetted opportunities that work for people with passport limitations.",
   },
   {
-    question: "How can I support The Global Moves beyond membership?",
+    question: "How can I support Global Moves Network beyond membership?",
     answer:
       "You can become a Founding Member for exclusive benefits and a role in shaping our future, donate directly to the Community Fund, or spread the word within your network. Every bit of support helps more members unlock international opportunities.",
   },
@@ -121,7 +121,7 @@ const HowItWorks = () => {
               How Does the Platform Work?
             </h1>
             <p className="text-lg text-muted-foreground">
-              Learn how The Global Moves connects you with opportunities and helps fund your international journey.
+              Learn how Global Moves Network connects you with opportunities and helps fund your international journey.
             </p>
           </div>
 
