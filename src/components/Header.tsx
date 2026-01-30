@@ -74,7 +74,7 @@ const Header = () => {
           <img 
             src={logoImage} 
             alt="Global Moves Network logo" 
-            className="h-10 w-10 transition-transform group-hover:scale-105"
+            className="h-12 w-12 transition-transform group-hover:scale-110 drop-shadow-md"
           />
           <span className="text-xl font-display font-semibold text-foreground">
             Global Moves Network
