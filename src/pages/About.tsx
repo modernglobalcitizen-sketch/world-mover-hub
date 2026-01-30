@@ -37,19 +37,19 @@ const About = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-hover mb-12">
               <img
                 src={aboutImage}
-                alt="Young Black professionals networking at an international conference, representing The Global Moves community"
+                alt="Young Black professionals networking at an international conference, representing Global Moves Network community"
                 className="w-full h-auto object-cover aspect-[16/9]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent pointer-events-none" />
             </div>
 
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight text-headline">
-              About The Global Moves
+              About Global Moves Network
             </h1>
             
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
               <p className="text-xl font-medium text-foreground">
-                The Global Moves is a membership platform where people navigating global work, study, and travel with limited passport access connect, stay accountable, and unlock opportunities together.
+                Global Moves Network is a membership platform where people navigating global work, study, and travel with limited passport access connect, stay accountable, and unlock opportunities together.
               </p>
               
               <p>
@@ -101,7 +101,7 @@ const About = () => {
             
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
               <p>
-                The Global Moves was born from a simple observation: incredible talent exists everywhere, but access to global opportunities doesn't. Our founders, having experienced the barriers of limited passport mobility firsthand, realized that individual effort alone wasn't enough — collective action was the answer.
+                Global Moves Network was born from a simple observation: incredible talent exists everywhere, but access to global opportunities doesn't. Our founders, having experienced the barriers of limited passport mobility firsthand, realized that individual effort alone wasn't enough — collective action was the answer.
               </p>
               
               <p>
@@ -109,7 +109,7 @@ const About = () => {
               </p>
               
               <p>
-                Today, The Global Moves continues to grow through transparency, member participation, and our shared commitment to making international mobility a reality for those who need it most. Every member who succeeds becomes part of the solution, contributing back to help the next generation of global movers.
+                Today, Global Moves Network continues to grow through transparency, member participation, and our shared commitment to making international mobility a reality for those who need it most. Every member who succeeds becomes part of the solution, contributing back to help the next generation of global movers.
               </p>
             </div>
           </article>

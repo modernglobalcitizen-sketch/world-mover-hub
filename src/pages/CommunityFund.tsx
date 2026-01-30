@@ -76,7 +76,7 @@ const fundCovers = [
 ];
 
 const eligibilityCriteria = [
-  "Active membership with The Global Moves ($15/month)",
+  "Active membership with Global Moves Network ($15/month)",
   "Accepted to an external program, conference, fellowship, or opportunity",
   "Program is in a visa-accessible country for your passport",
   "Unable to fully self-fund the participation costs",

@@ -56,7 +56,7 @@ const Footer = () => {
                 <Globe className="h-5 w-5" />
               </div>
               <span className="text-xl font-display font-semibold text-foreground">
-                The Global Moves
+                Global Moves Network
               </span>
             </a>
             <p className="text-sm text-muted-foreground max-w-md mb-6">
@@ -120,7 +120,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-border">
           <p className="text-sm text-muted-foreground text-center">
-            © {new Date().getFullYear()} The Global Moves. All rights reserved.
+            © {new Date().getFullYear()} Global Moves Network. All rights reserved.
           </p>
         </div>
       </div>
