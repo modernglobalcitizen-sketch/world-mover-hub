@@ -12,6 +12,15 @@ const PAYPAL_API_URL = Deno.env.get('PAYPAL_MODE') === 'live'
 async function getPayPalAccessToken(): Promise<string> {
   const clientId = Deno.env.get('PAYPAL_CLIENT_ID')
   const clientSecret = Deno.env.get('PAYPAL_CLIENT_SECRET')
+  const paypalMode = Deno.env.get('PAYPAL_MODE')
+  
+  console.log('PayPal config check:', {
+    mode: paypalMode,
+    api: PAYPAL_API_URL,
+    clientIdPrefix: clientId?.substring(0, 10) + '...',
+    clientIdLen: clientId?.length,
+    clientSecretLen: clientSecret?.length,
+  })
   
   if (!clientId || !clientSecret) {
     throw new Error('PayPal credentials not configured')
