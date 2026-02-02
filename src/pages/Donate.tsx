@@ -36,12 +36,12 @@ const Donate = () => {
               <Heart className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Support From the Diaspora
+              Support the Community Fund
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Your generous donation helps fund scholarships, visa support, and resources 
-              for community members pursuing international opportunities. Every contribution 
-              makes a difference.
+              Your donation goes directly to our Community Fund, which provides monthly 
+              financial support to selected members pursuing global opportunities. Every 
+              contribution helps someone take their next step.
             </p>
           </div>
         </section>
@@ -146,33 +146,33 @@ const Donate = () => {
         {/* Impact Section */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold mb-8">Your Donation Impact</h2>
+            <h2 className="text-2xl font-bold mb-8">How the Community Fund Works</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="space-y-3">
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                   <Users className="h-7 w-7 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg">Visa Support</h3>
+                <h3 className="font-semibold text-lg">Monthly Support</h3>
                 <p className="text-muted-foreground">
-                  Help members cover visa application fees and travel costs for international opportunities
+                  Each month, selected community members receive financial support for their global pursuits
                 </p>
               </div>
               <div className="space-y-3">
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                   <Heart className="h-7 w-7 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg">Emergency Fund</h3>
+                <h3 className="font-semibold text-lg">Visa & Travel</h3>
                 <p className="text-muted-foreground">
-                  Provide emergency assistance to members facing unexpected challenges abroad
+                  Cover visa application fees, travel costs, and proof of funds for international opportunities
                 </p>
               </div>
               <div className="space-y-3">
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
                   <Globe className="h-7 w-7 text-primary" />
                 </div>
-                <h3 className="font-semibold text-lg">Scholarships</h3>
+                <h3 className="font-semibold text-lg">Transparent Use</h3>
                 <p className="text-muted-foreground">
-                  Fund scholarships and educational resources for members pursuing global experiences
+                  All fund usage is tracked transparently so you can see exactly how donations help
                 </p>
               </div>
             </div>
@@ -183,12 +183,11 @@ const Donate = () => {
         <section className="py-12">
           <div className="container mx-auto px-4 text-center max-w-2xl">
             <p className="text-muted-foreground italic">
-              "Every donation, no matter the size, helps someone in our community take 
-              their next step toward an international opportunity. Thank you for being 
-              part of this journey."
+              "From the diaspora, for the diaspora — your generosity powers dreams and 
+              opens doors for community members around the world."
             </p>
             <p className="text-sm text-muted-foreground mt-4">
-              — The Global Moves Team
+              — The Global Moves Network
             </p>
           </div>
         </section>
