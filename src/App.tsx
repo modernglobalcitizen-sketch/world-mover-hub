@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import CommunityFund from "./pages/CommunityFund";
 import Donate from "./pages/Donate";
+import DonateThankYou from "./pages/DonateThankYou";
 import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/community-fund" element={<CommunityFund />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/donate/thank-you" element={<DonateThankYou />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />
