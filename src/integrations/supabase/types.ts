@@ -491,7 +491,84 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      fund_applications_user: {
+        Row: {
+          amount_requested: number | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          purpose: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_requested?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          purpose?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_requested?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string | null
+          purpose?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      subscriptions_safe: {
+        Row: {
+          amount: number | null
+          canceled_at: string | null
+          created_at: string | null
+          currency: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          email: string | null
+          id: string | null
+          plan_id: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          canceled_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          email?: string | null
+          id?: string | null
+          plan_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          canceled_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          email?: string | null
+          id?: string | null
+          plan_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_founding_members_public: {
