@@ -58,7 +58,7 @@ interface FundApplication {
   purpose: string;
   description: string;
   status: string;
-  admin_notes: string | null;
+  admin_notes?: string | null; // Optional - only visible to admins via base table
   created_at: string;
 }
 
@@ -186,7 +186,7 @@ const Dashboard = () => {
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
         supabase
-          .from("fund_applications")
+          .from("fund_applications_user")
           .select("*")
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
