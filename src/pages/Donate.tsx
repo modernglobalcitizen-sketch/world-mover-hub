@@ -16,10 +16,8 @@ const Donate = () => {
   const [donationType, setDonationType] = useState<"once" | "monthly">("once");
 
   const handleDonate = () => {
-    const amount = selectedAmount || parseInt(customAmount) || 25;
-    // PayPal donation link with amount parameter
-    const paypalUrl = `https://www.paypal.com/paypalme/globalmoves/${amount}`;
-    window.open(paypalUrl, "_blank");
+    // PayPal donation page
+    window.open("https://www.paypal.com/ncp/payment/KC97XC2UMQRYU", "_blank");
   };
 
   const displayAmount = selectedAmount || parseInt(customAmount) || 0;
