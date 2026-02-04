@@ -443,7 +443,7 @@ const Auth = () => {
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
               <div className="flex items-center gap-2 mb-2">
                 <CreditCard className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-primary">$10/month membership</span>
+                <span className="font-semibold text-primary">$15/month membership</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 Get full access to opportunities, breakout rooms, and community resources. 
@@ -578,7 +578,7 @@ const Auth = () => {
               ) : (
                 <>
                   <CreditCard className="h-4 w-4 mr-2" />
-                  Continue to Payment ($10/month)
+                  Continue to Payment ($15/month)
                 </>
               )}
             </Button>
