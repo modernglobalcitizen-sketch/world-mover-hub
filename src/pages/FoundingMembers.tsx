@@ -17,6 +17,30 @@ interface FoundingMember {
   created_at: string;
 }
 
+// Convert country name to flag emoji using ISO country codes
+const countryToFlag = (country: string): string => {
+  const countryFlags: Record<string, string> = {
+    "Afghanistan": "🇦🇫", "Albania": "🇦🇱", "Algeria": "🇩🇿", "Argentina": "🇦🇷",
+    "Australia": "🇦🇺", "Austria": "🇦🇹", "Bangladesh": "🇧🇩", "Belgium": "🇧🇪",
+    "Brazil": "🇧🇷", "Canada": "🇨🇦", "Chile": "🇨🇱", "China": "🇨🇳",
+    "Colombia": "🇨🇴", "Czech Republic": "🇨🇿", "Denmark": "🇩🇰", "Egypt": "🇪🇬",
+    "Ethiopia": "🇪🇹", "Finland": "🇫🇮", "France": "🇫🇷", "Germany": "🇩🇪",
+    "Ghana": "🇬🇭", "Greece": "🇬🇷", "Hungary": "🇭🇺", "India": "🇮🇳",
+    "Indonesia": "🇮🇩", "Iran": "🇮🇷", "Iraq": "🇮🇶", "Ireland": "🇮🇪",
+    "Israel": "🇮🇱", "Italy": "🇮🇹", "Japan": "🇯🇵", "Kenya": "🇰🇪",
+    "Malaysia": "🇲🇾", "Mexico": "🇲🇽", "Morocco": "🇲🇦", "Netherlands": "🇳🇱",
+    "New Zealand": "🇳🇿", "Nigeria": "🇳🇬", "Norway": "🇳🇴", "Pakistan": "🇵🇰",
+    "Peru": "🇵🇪", "Philippines": "🇵🇭", "Poland": "🇵🇱", "Portugal": "🇵🇹",
+    "Romania": "🇷🇴", "Russia": "🇷🇺", "Saudi Arabia": "🇸🇦", "Singapore": "🇸🇬",
+    "South Africa": "🇿🇦", "South Korea": "🇰🇷", "Spain": "🇪🇸", "Sweden": "🇸🇪",
+    "Switzerland": "🇨🇭", "Taiwan": "🇹🇼", "Thailand": "🇹🇭", "Turkey": "🇹🇷",
+    "Ukraine": "🇺🇦", "United Arab Emirates": "🇦🇪", "United Kingdom": "🇬🇧",
+    "United States": "🇺🇸", "Venezuela": "🇻🇪", "Vietnam": "🇻🇳", "Zimbabwe": "🇿🇼",
+    "UAE": "🇦🇪", "UK": "🇬🇧", "USA": "🇺🇸", "US": "🇺🇸"
+  };
+  return countryFlags[country] || "🌍";
+};
+
 const FoundingMembers = () => {
   const [members, setMembers] = useState<FoundingMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -221,7 +245,8 @@ const FoundingMembers = () => {
                           {member.display_name || "Founding Member"}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge variant="secondary" className="text-xs flex items-center gap-1">
+                            <span>{countryToFlag(member.country)}</span>
                             {member.country}
                           </Badge>
                         </div>
