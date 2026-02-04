@@ -78,34 +78,16 @@ const journeySteps = [
     color: "bg-blue-500",
   },
   {
-    icon: Users,
-    title: "Join Breakout Rooms",
-    description: "Connect with members pursuing similar goals in public or private rooms",
-    color: "bg-purple-500",
-  },
-  {
     icon: Search,
     title: "Discover Opportunities",
     description: "Browse and share conferences, fellowships, scholarships, and remote jobs",
     color: "bg-amber-500",
   },
   {
-    icon: FileCheck,
-    title: "Get Accepted",
-    description: "Apply to opportunities and receive acceptance from external programs",
-    color: "bg-green-500",
-  },
-  {
-    icon: Send,
-    title: "Apply for Funding",
-    description: "Submit a Community Fund application through your dashboard",
-    color: "bg-rose-500",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Get Funded & Go!",
-    description: "Receive funding for flights, visas, accommodation, and more",
-    color: "bg-primary",
+    icon: Users,
+    title: "Join Breakout Rooms",
+    description: "Connect with members pursuing similar goals in public or private rooms",
+    color: "bg-purple-500",
   },
 ];
 
@@ -136,7 +118,7 @@ const HowItWorks = () => {
 
             {/* Desktop Version - Horizontal Flow */}
             <div className="hidden lg:block">
-              <div className="grid grid-cols-6 gap-4">
+              <div className="grid grid-cols-3 gap-8">
                 {journeySteps.map((step, index) => (
                   <div key={step.title} className="relative">
                     {/* Card */}
