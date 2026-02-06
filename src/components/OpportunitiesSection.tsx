@@ -242,77 +242,105 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
               const hasApplied = appliedIds.has(opportunity.id);
               const isSaved = savedIds.has(opportunity.id);
               const isExpired = opportunity.deadline && new Date(opportunity.deadline) < new Date();
+              const isLoggedIn = !!session;
 
-              return (
-                <Link key={opportunity.id} to={`/opportunities/${opportunity.id}`} className="block">
-                  <Card className="shadow-soft hover:shadow-hover transition-shadow h-full cursor-pointer">
-                    <CardHeader>
-                      <div className="flex items-start justify-between gap-2">
-                        <Badge variant="secondary" className="mb-2">
-                          {opportunity.category}
-                        </Badge>
-                        <div className="flex items-center gap-1">
-                          {hasApplied && (
-                            <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
-                              <CheckCircle className="h-3 w-3 mr-1" />
-                              Applied
-                            </Badge>
-                          )}
-                          {session && (
-                            <>
-                              <div onClick={(e) => e.preventDefault()}>
-                                <ShareOpportunityDialog
-                                  opportunityId={opportunity.id}
-                                  opportunityTitle={opportunity.title}
-                                />
-                              </div>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="h-8 w-8"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleSave(opportunity.id);
-                                }}
-                                disabled={savingId === opportunity.id}
-                              >
-                                {isSaved ? (
-                                  <BookmarkCheck className="h-5 w-5 text-primary" />
-                                ) : (
-                                  <Bookmark className="h-5 w-5" />
-                                )}
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <CardTitle className="text-xl">{opportunity.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {opportunity.about}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                        {opportunity.location && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {opportunity.location}
-                          </span>
+              // Obscure title for non-logged-in users
+              const obscureTitle = (title: string) => {
+                if (isLoggedIn) return title;
+                const words = title.split(' ');
+                return words.map((word, i) => {
+                  if (i === 0 || word.length <= 3) return word;
+                  return word.slice(0, 2) + '•'.repeat(Math.min(word.length - 2, 4));
+                }).join(' ');
+              };
+
+              const cardContent = (
+                <Card className="shadow-soft hover:shadow-hover transition-shadow h-full cursor-pointer">
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-2">
+                      <Badge variant="secondary" className="mb-2">
+                        {opportunity.category}
+                      </Badge>
+                      <div className="flex items-center gap-1">
+                        {hasApplied && (
+                          <Badge className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Applied
+                          </Badge>
                         )}
-                        {opportunity.deadline && (
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            {format(new Date(opportunity.deadline), "MMM d, yyyy")}
-                          </span>
+                        {session && (
+                          <>
+                            <div onClick={(e) => e.preventDefault()}>
+                              <ShareOpportunityDialog
+                                opportunityId={opportunity.id}
+                                opportunityTitle={opportunity.title}
+                              />
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSave(opportunity.id);
+                              }}
+                              disabled={savingId === opportunity.id}
+                            >
+                              {isSaved ? (
+                                <BookmarkCheck className="h-5 w-5 text-primary" />
+                              ) : (
+                                <Bookmark className="h-5 w-5" />
+                              )}
+                            </Button>
+                          </>
                         )}
                       </div>
+                    </div>
+                    <CardTitle className={`text-xl ${!isLoggedIn ? 'select-none' : ''}`}>
+                      {obscureTitle(opportunity.title)}
+                    </CardTitle>
+                    <CardDescription className={`line-clamp-2 ${!isLoggedIn ? 'blur-[2px] select-none' : ''}`}>
+                      {opportunity.about}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className={`flex flex-wrap gap-3 text-sm text-muted-foreground ${!isLoggedIn ? 'blur-[2px]' : ''}`}>
+                      {opportunity.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          {opportunity.location}
+                        </span>
+                      )}
+                      {opportunity.deadline && (
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          {format(new Date(opportunity.deadline), "MMM d, yyyy")}
+                        </span>
+                      )}
+                    </div>
 
+                    {isLoggedIn ? (
                       <Button className="w-full" variant="outline">
                         View Details
                         <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
-                    </CardContent>
-                  </Card>
+                    ) : (
+                      <Button className="w-full" variant="default">
+                        Sign Up to View
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+
+              return isLoggedIn ? (
+                <Link key={opportunity.id} to={`/opportunities/${opportunity.id}`} className="block">
+                  {cardContent}
+                </Link>
+              ) : (
+                <Link key={opportunity.id} to="/auth" className="block">
+                  {cardContent}
                 </Link>
               );
             })}
