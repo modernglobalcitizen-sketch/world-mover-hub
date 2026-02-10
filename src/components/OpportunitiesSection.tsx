@@ -232,6 +232,20 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
             </Select>
           </div>
 
+          {!session && (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="space-y-1 text-center sm:text-left">
+                <p className="font-semibold text-foreground">🔒 Sign up to unlock full opportunity details</p>
+                <p className="text-sm text-muted-foreground">
+                  Get access to application links, deadlines, eligibility criteria, and save opportunities to your dashboard.
+                </p>
+              </div>
+              <Button asChild className="shrink-0">
+                <Link to="/auth">Sign Up Free</Link>
+              </Button>
+            </div>
+          )}
+
           {displayedOpportunities.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               No opportunities found matching your search criteria.
