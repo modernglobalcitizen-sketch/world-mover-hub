@@ -19,6 +19,7 @@ import OpportunityDetail from "./pages/OpportunityDetail";
 import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
 import BreakoutRooms from "./pages/BreakoutRooms";
+import Ebook from "./pages/Ebook";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/breakout-rooms" element={<BreakoutRooms />} />
+          <Route path="/ebook" element={<Ebook />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
