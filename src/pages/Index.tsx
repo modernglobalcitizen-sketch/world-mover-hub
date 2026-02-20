@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
+import EbookSection from "@/components/EbookSection";
 
 const Index = () => {
   return (
@@ -10,6 +11,7 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <Hero />
+        <EbookSection />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
         </div>
