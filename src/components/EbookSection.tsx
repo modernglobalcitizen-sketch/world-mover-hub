@@ -1,5 +1,6 @@
 import { BookOpen, Plane, Briefcase, GraduationCap, Globe, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ebookCover from "@/assets/ebook-cover.png";
 
 const benefits = [
   { icon: Plane, text: "A first-time international traveler" },
@@ -39,10 +40,11 @@ const EbookSection = () => {
 
           {/* Right: CTA Card */}
           <div className="bg-card text-card-foreground rounded-2xl p-8 shadow-lg space-y-6 text-center">
-            <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-              <BookOpen className="w-10 h-10 text-primary" />
-            </div>
-            <h3 className="text-2xl font-bold font-serif">Get Your Copy</h3>
+            <img
+              src={ebookCover}
+              alt="Your International Guide to Work, Volunteer, and Travel by Kenisha Archer"
+              className="w-full rounded-lg shadow-md"
+            />
             <p className="text-3xl font-bold text-primary">$25</p>
             <p className="text-muted-foreground text-sm">
               Instant access after payment via PayPal
