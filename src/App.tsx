@@ -20,6 +20,7 @@ import Resources from "./pages/Resources";
 import Profile from "./pages/Profile";
 import BreakoutRooms from "./pages/BreakoutRooms";
 import Ebook from "./pages/Ebook";
+import EbookDownload from "./pages/EbookDownload";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/breakout-rooms" element={<BreakoutRooms />} />
           <Route path="/ebook" element={<Ebook />} />
+          <Route path="/ebook/download" element={<EbookDownload />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
