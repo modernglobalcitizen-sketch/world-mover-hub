@@ -48,8 +48,8 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/breakout-rooms" element={<BreakoutRooms />} />
-          <Route path="/ebook" element={<Ebook />} />
-          <Route path="/ebook/download" element={<EbookDownload />} />
+          <Route path="/ebooks" element={<Ebook />} />
+          <Route path="/ebooks/download" element={<EbookDownload />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

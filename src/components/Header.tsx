@@ -11,7 +11,7 @@ const navLinks = [
   { name: "About", href: "/about" },
   { name: "Founding Members", href: "/founding-members" },
   { name: "How It Works", href: "/how-it-works" },
-  { name: "Ebook", href: "/ebook" },
+  { name: "Ebooks", href: "/ebooks" },
   { name: "Resources", href: "/resources" },
   { name: "Donate", href: "/donate" },
 ];
