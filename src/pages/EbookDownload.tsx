@@ -47,7 +47,7 @@ const EbookDownload = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                 <Button asChild variant="outline">
-                  <Link to="/ebook">
+                  <Link to="/ebooks">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Ebook
                   </Link>
