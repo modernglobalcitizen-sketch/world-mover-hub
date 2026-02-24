@@ -110,11 +110,11 @@ const Footer = () => {
                   Get in Touch
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/founding-members" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Become a Member
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

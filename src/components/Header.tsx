@@ -9,7 +9,7 @@ import logoImage from "@/assets/logo.png";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Founding Members", href: "/founding-members" },
+  // { name: "Founding Members", href: "/founding-members" },
   { name: "How It Works", href: "/how-it-works" },
   { name: "Ebooks", href: "/ebooks" },
   { name: "Resources", href: "/resources" },
