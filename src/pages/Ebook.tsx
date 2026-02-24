@@ -28,7 +28,7 @@ const ebooks: EbookItem[] = [
     cover: workVisasCover,
     price: "$25",
     description: "Discover the countries that actually want you — with the highest work visa approval rates and how to apply.",
-    comingSoon: true,
+    paypalLink: "https://www.paypal.com/ncp/payment/USBYCBHF2X25N",
   },
 ];
 
