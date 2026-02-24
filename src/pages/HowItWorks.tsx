@@ -21,7 +21,7 @@ const faqs = [
   {
     question: "What is Global Moves Network?",
     answer:
-      "Global Moves Network is a membership platform for people navigating global work, study, and travel with limited passport access. Members connect, stay accountable, and unlock opportunities together. A portion of every subscription goes toward a community fund that helps accelerate selected members' international moves.",
+      "Global Moves Network is a membership platform for people navigating global work, study, and travel with limited passport access. Members connect, stay accountable, and unlock opportunities together through curated resources, breakout rooms, and shared knowledge.",
   },
   {
     question: "What are Breakout Rooms?",
@@ -32,16 +32,6 @@ const faqs = [
     question: "How do online presence indicators work?",
     answer:
       "When you're active on the platform, a green dot appears next to your name in Breakout Rooms. This helps members know who's online and available to chat, share advice, or collaborate in real-time. It creates a sense of community and makes it easier to connect when you need support.",
-  },
-  {
-    question: "What is the Community Fund?",
-    answer:
-      "A portion of every $15/month membership subscription goes into the Community Fund. This pooled resource helps cover expenses like program fees, flights, visa fees, insurance, transportation, and accommodation for members who are accepted to international opportunities but need financial support to participate.",
-  },
-  {
-    question: "How do I apply for Community Fund support?",
-    answer:
-      "Once you're accepted to an external program or opportunity, you can apply for funding through your dashboard. Our team reviews applications based on need, alignment with your goals, and fund availability. We encourage applying to programs in visa-friendly countries to maximize your chances of success.",
   },
   {
     question: "Who can become a member?",

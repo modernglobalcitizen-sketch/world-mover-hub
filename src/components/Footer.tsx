@@ -62,7 +62,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-sm text-muted-foreground max-w-md mb-6">
-              Empowering individuals to explore global opportunities through a trusted network and transparent community fund.
+              Empowering individuals to explore global opportunities through a trusted network and shared resources.
             </p>
             <SocialLinks variant="footer" />
           </div>
@@ -91,13 +91,7 @@ const Footer = () => {
                   Donate
                 </a>
               </li>
-              {isAdmin && (
-                <li>
-                  <a href="/community-fund" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    Community Fund
-                  </a>
-                </li>
-              )}
+              {/* Community Fund link removed */}
             </ul>
           </div>
 
