@@ -12,7 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users } from "lucide-react";
+import AffiliateAdmin from "@/components/AffiliateAdmin";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -471,6 +472,10 @@ const Admin = () => {
                     </Badge>
                   )}
                 </TabsTrigger>
+                <TabsTrigger value="affiliates" className="flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Affiliates
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -916,6 +921,10 @@ const Admin = () => {
                     )}
                   </DialogContent>
                 </Dialog>
+              </TabsContent>
+
+              <TabsContent value="affiliates">
+                <AffiliateAdmin />
               </TabsContent>
             </Tabs>
           </div>
