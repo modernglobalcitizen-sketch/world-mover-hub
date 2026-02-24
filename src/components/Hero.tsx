@@ -14,7 +14,7 @@ const features = [
   },
   {
     icon: Wallet,
-    text: "A portion of every subscription funds members' international moves",
+    text: "Access curated opportunities, visa guides, free certifications, and career resources worldwide",
   },
 ];
 
