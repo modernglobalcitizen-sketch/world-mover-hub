@@ -1,11 +1,10 @@
-import { Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Instagram, Linkedin, Youtube } from "lucide-react";
 
 interface SocialLinksProps {
   variant?: "header" | "footer";
 }
 
 const socialLinks = [
-  { name: "Twitter", href: "https://twitter.com/theglobalmoves", icon: Twitter },
   { name: "Instagram", href: "https://www.instagram.com/globalmovesnetwork/", icon: Instagram },
   { name: "LinkedIn", href: "https://www.linkedin.com/in/kenisha-archer-69091333/", icon: Linkedin },
   { name: "YouTube", href: "https://www.youtube.com/@theglobalmovesnetwork/", icon: Youtube },
