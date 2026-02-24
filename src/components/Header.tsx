@@ -16,8 +16,8 @@ const navLinks = [
   { name: "Donate", href: "/donate" },
 ];
 
-const adminOnlyLinks = [
-  { name: "Community Fund", href: "/community-fund" },
+const adminOnlyLinks: { name: string; href: string }[] = [
+  // { name: "Community Fund", href: "/community-fund" },
 ];
 
 const Header = () => {

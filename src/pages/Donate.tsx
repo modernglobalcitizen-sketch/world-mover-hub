@@ -34,12 +34,11 @@ const Donate = () => {
               <Heart className="h-8 w-8 text-primary" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Support the Community Fund
+              Support Global Moves Network
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Your donation goes directly to our Community Fund, which provides monthly 
-              financial support to selected members pursuing global opportunities. Every 
-              contribution helps someone take their next step.
+              Your donation helps us maintain and grow the platform, curate opportunities, 
+              and support members pursuing global goals. Every contribution makes a difference.
             </p>
           </div>
         </section>
@@ -144,7 +143,7 @@ const Donate = () => {
         {/* Impact Section */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-2xl font-bold mb-8">How the Community Fund Works</h2>
+            <h2 className="text-2xl font-bold mb-8">How Your Donation Helps</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="space-y-3">
                 <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
