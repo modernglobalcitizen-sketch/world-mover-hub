@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ArrowRight, BookOpen, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -33,6 +35,15 @@ const ebooks: EbookItem[] = [
 ];
 
 const Ebook = () => {
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const ref = searchParams.get("ref");
+    if (ref) {
+      localStorage.setItem("affiliate_ref", ref.toUpperCase());
+    }
+  }, [searchParams]);
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />

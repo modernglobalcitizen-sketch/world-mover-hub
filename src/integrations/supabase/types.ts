@@ -14,6 +14,89 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_sales: {
+        Row: {
+          affiliate_id: string
+          buyer_email: string | null
+          commission_amount: number
+          created_at: string
+          ebook_title: string
+          id: string
+          notes: string | null
+          paid_at: string | null
+          sale_amount: number
+          status: string
+        }
+        Insert: {
+          affiliate_id: string
+          buyer_email?: string | null
+          commission_amount: number
+          created_at?: string
+          ebook_title: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          sale_amount?: number
+          status?: string
+        }
+        Update: {
+          affiliate_id?: string
+          buyer_email?: string | null
+          commission_amount?: number
+          created_at?: string
+          ebook_title?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          sale_amount?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_sales_affiliate_id_fkey"
+            columns: ["affiliate_id"]
+            isOneToOne: false
+            referencedRelation: "affiliates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      affiliates: {
+        Row: {
+          commission_rate: number
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean
+          name: string
+          referral_code: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          commission_rate?: number
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean
+          name: string
+          referral_code: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          commission_rate?: number
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          referral_code?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       applications: {
         Row: {
           created_at: string
