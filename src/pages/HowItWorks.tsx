@@ -46,7 +46,7 @@ const faqs = [
   {
     question: "How much does membership cost?",
     answer:
-      "Membership is $15/month. This gives you full access to all Breakout Rooms, the ability to create private rooms, real-time presence features, and the knowledge that part of your subscription supports the Community Fund helping other members achieve their goals.",
+      "Membership is $15/month. This gives you full access to all Breakout Rooms, the ability to create private rooms, real-time presence features, curated opportunities, and resources to help you navigate global work and travel.",
   },
   {
     question: "What types of opportunities are shared?",
@@ -56,7 +56,7 @@ const faqs = [
   {
     question: "How can I support Global Moves Network beyond membership?",
     answer:
-      "You can become a Founding Member for exclusive benefits and a role in shaping our future, donate directly to the Community Fund, or spread the word within your network. Every bit of support helps more members unlock international opportunities.",
+      "You can donate directly to support the platform, share opportunities with your network, or spread the word. Every bit of support helps more members unlock international opportunities.",
   },
 ];
 
