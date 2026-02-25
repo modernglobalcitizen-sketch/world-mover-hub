@@ -74,10 +74,10 @@ const NewsletterPopup = () => {
             <Mail className="h-7 w-7 text-primary" />
           </div>
           <h3 className="text-xl font-display font-semibold text-foreground">
-            Stay in the Loop
+            Your First $1,000 Online Plan
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            Get the latest global opportunities, resources, and community updates delivered to your inbox.
+            Enter your email for access to this webinar. Start earning online.
           </p>
         </div>
 
