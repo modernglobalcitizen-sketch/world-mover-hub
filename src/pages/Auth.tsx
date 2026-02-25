@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Globe, Loader2, CreditCard, CheckCircle2, XCircle } from "lucide-react";
+import { Globe, Loader2 } from "lucide-react";
 import { z } from "zod";
 
 const fields = [
@@ -80,11 +80,8 @@ const signupSchema = loginSchema.extend({
   path: ["otherOpportunity"],
 });
 
-type SignupStep = 'form' | 'payment' | 'creating';
-
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [signupStep, setSignupStep] = useState<SignupStep>('form');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
@@ -93,152 +90,8 @@ const Auth = () => {
   const [otherOpportunity, setOtherOpportunity] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'success' | 'cancelled' | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [searchParams] = useSearchParams();
-
-  // Check for payment return
-  useEffect(() => {
-    const payment = searchParams.get('payment');
-    // PayPal returns subscription_id in the URL
-    const subIdFromUrl = searchParams.get('subscription_id');
-    // We also store it in sessionStorage as backup
-    const subIdFromStorage = sessionStorage.getItem('pendingSubscriptionId');
-    const subId = subIdFromUrl || subIdFromStorage;
-    
-    if (payment === 'success' && subId) {
-      setPaymentStatus('success');
-      setSubscriptionId(subId);
-      setIsLogin(false);
-      setSignupStep('creating');
-      
-      // Load saved signup data from sessionStorage
-      const savedData = sessionStorage.getItem('pendingSignup');
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        setEmail(data.email || '');
-        setPassword(data.password || '');
-        setCountry(data.country || '');
-        setFieldOfWork(data.fieldOfWork || '');
-        setOpportunityInterests(data.opportunityInterests || []);
-        setOtherOpportunity(data.otherOpportunity || '');
-      }
-    } else if (payment === 'cancelled') {
-      setPaymentStatus('cancelled');
-      setIsLogin(false);
-      setSignupStep('form');
-      sessionStorage.removeItem('pendingSubscriptionId');
-      toast({
-        title: "Payment cancelled",
-        description: "Your payment was cancelled. Please try again to complete signup.",
-        variant: "destructive",
-      });
-    }
-  }, [searchParams, toast]);
-
-  // Handle account creation after successful payment
-  useEffect(() => {
-    if (paymentStatus === 'success' && subscriptionId && signupStep === 'creating') {
-      createAccountAfterPayment();
-    }
-  }, [paymentStatus, subscriptionId, signupStep]);
-
-  const createAccountAfterPayment = async () => {
-    setLoading(true);
-    
-    try {
-      // Verify subscription is active
-      const verifyResponse = await supabase.functions.invoke('paypal-subscription', {
-        body: {
-          action: 'verify-subscription',
-          subscriptionId: subscriptionId,
-        },
-      });
-
-      if (verifyResponse.error || !verifyResponse.data?.verified) {
-        toast({
-          title: "Payment verification failed",
-          description: "We couldn't verify your payment. Please contact support.",
-          variant: "destructive",
-        });
-        setSignupStep('form');
-        setLoading(false);
-        return;
-      }
-
-      // Get saved signup data
-      const savedData = sessionStorage.getItem('pendingSignup');
-      if (!savedData) {
-        toast({
-          title: "Session expired",
-          description: "Please fill in your details again.",
-          variant: "destructive",
-        });
-        setSignupStep('form');
-        setLoading(false);
-        return;
-      }
-
-      const signupData = JSON.parse(savedData);
-      
-      // Build final opportunity interests array
-      const finalInterests = signupData.opportunityInterests.includes("other") && signupData.otherOpportunity?.trim()
-        ? [...signupData.opportunityInterests.filter((i: string) => i !== "other"), signupData.otherOpportunity.trim()]
-        : signupData.opportunityInterests;
-
-      // Create account via edge function
-      const createResponse = await supabase.functions.invoke('paypal-subscription', {
-        body: {
-          action: 'link-user',
-          subscriptionId: subscriptionId,
-          signupData: {
-            email: signupData.email,
-            password: signupData.password,
-            country: signupData.country,
-            fieldOfWork: signupData.fieldOfWork,
-            opportunityInterests: finalInterests,
-          },
-        },
-      });
-
-      if (createResponse.error || !createResponse.data?.success) {
-        toast({
-          title: "Account creation failed",
-          description: createResponse.data?.error || "Please try again or contact support.",
-          variant: "destructive",
-        });
-        setSignupStep('form');
-        setLoading(false);
-        return;
-      }
-
-      // Clear saved data
-      sessionStorage.removeItem('pendingSignup');
-
-      toast({
-        title: "Welcome to Global Moves Network!",
-        description: "Your account has been created. Please sign in.",
-      });
-
-      // Switch to login
-      setIsLogin(true);
-      setSignupStep('form');
-      setPaymentStatus(null);
-      
-    } catch (error) {
-      console.error('Account creation error:', error);
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-      setSignupStep('form');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -293,14 +146,9 @@ const Auth = () => {
           });
         }
       } else {
-        // Signup flow - validate form first
+        // Signup flow
         const validation = signupSchema.safeParse({ 
-          email, 
-          password, 
-          country, 
-          fieldOfWork,
-          opportunityInterests,
-          otherOpportunity
+          email, password, country, fieldOfWork, opportunityInterests, otherOpportunity
         });
         if (!validation.success) {
           const fieldErrors: Record<string, string> = {};
@@ -314,41 +162,35 @@ const Auth = () => {
           return;
         }
 
-        // Save signup data to sessionStorage
-        sessionStorage.setItem('pendingSignup', JSON.stringify({
+        const finalInterests = opportunityInterests.includes("other") && otherOpportunity.trim()
+          ? [...opportunityInterests.filter(i => i !== "other"), otherOpportunity.trim()]
+          : opportunityInterests;
+
+        const { error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
-          country,
-          fieldOfWork,
-          opportunityInterests,
-          otherOpportunity: otherOpportunity.trim(),
-        }));
-
-        // Create PayPal subscription
-        const response = await supabase.functions.invoke('paypal-subscription', {
-          body: {
-            action: 'create-subscription',
-            email: email.trim(),
+          options: {
+            data: {
+              country,
+              field_of_work: fieldOfWork,
+              opportunity_interests: finalInterests,
+            },
           },
         });
 
-        if (response.error || !response.data?.approvalUrl) {
+        if (error) {
           toast({
-            title: "Payment setup failed",
-            description: response.data?.error || "Please try again.",
+            title: "Signup failed",
+            description: error.message,
             variant: "destructive",
           });
-          setLoading(false);
-          return;
+        } else {
+          toast({
+            title: "Check your email",
+            description: "We've sent you a confirmation link to verify your account.",
+          });
+          setIsLogin(true);
         }
-
-        // Store subscription ID for return
-        const returnUrl = new URL(response.data.approvalUrl);
-        sessionStorage.setItem('pendingSubscriptionId', response.data.subscriptionId);
-
-        // Redirect to PayPal
-        window.location.href = response.data.approvalUrl;
-        return;
       }
     } catch (error) {
       toast({
@@ -360,57 +202,6 @@ const Auth = () => {
       setLoading(false);
     }
   };
-
-  // Show creating account state
-  if (signupStep === 'creating') {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="w-full max-w-md space-y-8 animate-fade-in">
-          <div className="text-center">
-            <a href="/" className="inline-flex items-center gap-3 group">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-transform group-hover:scale-105">
-                <Globe className="h-6 w-6" />
-              </div>
-              <span className="text-2xl font-display font-semibold text-foreground">
-                The Global Moves
-              </span>
-            </a>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-card p-8 shadow-soft text-center">
-            {loading ? (
-              <>
-                <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Creating Your Account</h2>
-                <p className="text-muted-foreground">
-                  Please wait while we set up your membership...
-                </p>
-              </>
-            ) : paymentStatus === 'success' ? (
-              <>
-                <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Payment Successful!</h2>
-                <p className="text-muted-foreground">
-                  Your account is being created...
-                </p>
-              </>
-            ) : (
-              <>
-                <XCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
-                <p className="text-muted-foreground mb-4">
-                  Please try again or contact support.
-                </p>
-                <Button onClick={() => { setSignupStep('form'); setPaymentStatus(null); }}>
-                  Try Again
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -432,25 +223,11 @@ const Auth = () => {
           <h1 className="text-2xl font-display font-bold text-center text-foreground mb-2">
             {isLogin ? "Welcome back" : "Join the movement"}
           </h1>
-          <p className="text-center text-muted-foreground mb-4">
+          <p className="text-center text-muted-foreground mb-6">
             {isLogin
               ? "Sign in to access your account"
-              : "Create an account to get started"}
+              : "Create a free account to get started"}
           </p>
-
-          {/* Pricing info for signup */}
-          {!isLogin && (
-            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
-              <div className="flex items-center gap-2 mb-2">
-                <CreditCard className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-primary">$15/month membership</span>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Get full access to opportunities, breakout rooms, and community resources. 
-                Cancel anytime.
-              </p>
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
@@ -576,10 +353,7 @@ const Auth = () => {
               ) : isLogin ? (
                 "Sign In"
               ) : (
-                <>
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Continue to Payment ($15/month)
-                </>
+                "Create Free Account"
               )}
             </Button>
           </form>
@@ -590,7 +364,6 @@ const Auth = () => {
               onClick={() => {
                 setIsLogin(!isLogin);
                 setErrors({});
-                setPaymentStatus(null);
               }}
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
