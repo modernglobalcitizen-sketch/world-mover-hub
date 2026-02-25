@@ -4,10 +4,12 @@ import Hero from "@/components/Hero";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import EbookSection from "@/components/EbookSection";
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <NewsletterPopup />
       <Header />
       <main className="flex-1">
         <Hero />

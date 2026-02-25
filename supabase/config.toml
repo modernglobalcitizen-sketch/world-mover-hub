@@ -2,3 +2,6 @@ project_id = "ezmughqpucdfuzldljtu"
 
 [functions.paypal-subscription]
 verify_jwt = false
+
+[functions.newsletter-subscribe]
+verify_jwt = false
