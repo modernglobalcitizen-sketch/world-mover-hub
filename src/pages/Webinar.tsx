@@ -37,7 +37,7 @@ const Webinar = () => {
             </p>
             <Button size="lg" onClick={handleRegister} className="bg-primary-foreground text-secondary hover:bg-primary-foreground/90 font-semibold text-lg px-10 py-6 h-auto">
               <Play className="mr-2 h-5 w-5" />
-              Register Now — $25
+              Register Now — $30
             </Button>
           </div>
         </section>
@@ -73,10 +73,10 @@ const Webinar = () => {
               Ready to Start Earning Online?
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              Secure your spot for just $25. Limited seats available.
+              Secure your spot for just $30. Limited seats available.
             </p>
             <Button size="lg" onClick={handleRegister} className="font-semibold text-lg px-10 py-6 h-auto">
-              Register & Pay $25
+              Register & Pay $30
             </Button>
             <p className="mt-4 text-sm text-muted-foreground">
               Secure payment via PayPal. Confirmation sent to your email.
