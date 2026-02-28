@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 
 const highlights = [
   { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
-  { icon: Users, text: "Real strategies used by diaspora professionals worldwide" },
+  { icon: Users, text: "Learn the invaluable skills AND how to use them" },
   { icon: DollarSign, text: "Step-by-step plan you can start implementing today" },
-  { icon: Clock, text: "90-minute live session with Q&A" },
+  { icon: Clock, text: "1-hour live session with Q&A" },
 ];
 
 const Webinar = () => {
