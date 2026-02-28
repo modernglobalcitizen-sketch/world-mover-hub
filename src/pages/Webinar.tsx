@@ -9,6 +9,8 @@ const highlights = [
   { icon: Users, text: "Learn the invaluable skills AND how to use them" },
   { icon: DollarSign, text: "Step-by-step plan you can start implementing today" },
   { icon: Clock, text: "1-hour live session with Q&A" },
+  { icon: Globe, text: "Networking virtually and building an impressive online presence" },
+  { icon: Users, text: "Transferrable skills and where to find work" },
 ];
 
 const Webinar = () => {
