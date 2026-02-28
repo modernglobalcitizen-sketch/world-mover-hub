@@ -23,6 +23,7 @@ import Ebook from "./pages/Ebook";
 import EbookDownload from "./pages/EbookDownload";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import RemoteWork from "./pages/RemoteWork";
+import Webinar from "./pages/Webinar";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/ebooks/download" element={<EbookDownload />} />
           <Route path="/affiliate" element={<AffiliateDashboard />} />
           <Route path="/remote-work" element={<RemoteWork />} />
+          <Route path="/webinar" element={<Webinar />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
