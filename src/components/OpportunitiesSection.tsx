@@ -258,15 +258,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
               const isExpired = opportunity.deadline && new Date(opportunity.deadline) < new Date();
               const isLoggedIn = !!session;
 
-              // Obscure title for non-logged-in users
-              const obscureTitle = (title: string) => {
-                if (isLoggedIn) return title;
-                const words = title.split(' ');
-                return words.map((word, i) => {
-                  if (i === 0 || word.length <= 3) return word;
-                  return word.slice(0, 2) + '•'.repeat(Math.min(word.length - 2, 4));
-                }).join(' ');
-              };
+
 
               const cardContent = (
                 <Card className="shadow-soft hover:shadow-hover transition-shadow h-full cursor-pointer">
@@ -310,15 +302,15 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
                         )}
                       </div>
                     </div>
-                    <CardTitle className={`text-xl ${!isLoggedIn ? 'select-none' : ''}`}>
-                      {obscureTitle(opportunity.title)}
+                    <CardTitle className="text-xl">
+                      {opportunity.title}
                     </CardTitle>
-                    <CardDescription className={`line-clamp-2 ${!isLoggedIn ? 'blur-[2px] select-none' : ''}`}>
+                    <CardDescription className="line-clamp-2">
                       {opportunity.about}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className={`flex flex-wrap gap-3 text-sm text-muted-foreground ${!isLoggedIn ? 'blur-[2px]' : ''}`}>
+                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                       {opportunity.location && (
                         <span className="flex items-center gap-1">
                           <MapPin className="h-4 w-4" />
