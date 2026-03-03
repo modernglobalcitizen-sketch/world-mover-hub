@@ -5,12 +5,37 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
+// Simple in-memory rate limiter (per function instance)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5; // max requests
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+
+function isRateLimited(identifier: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(identifier);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(identifier, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Rate limit by IP
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (isRateLimited(clientIp)) {
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const MAILERLITE_API_KEY = Deno.env.get('MAILERLITE_API_KEY');
     if (!MAILERLITE_API_KEY) {
       throw new Error('MAILERLITE_API_KEY is not configured');
@@ -18,12 +43,17 @@ serve(async (req) => {
 
     const { email, name } = await req.json();
 
-    if (!email || typeof email !== 'string' || !email.includes('@')) {
+    // Strict email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || typeof email !== 'string' || !emailRegex.test(email) || email.length > 255) {
       return new Response(
         JSON.stringify({ error: 'Valid email is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // Validate name if provided
+    const safeName = (typeof name === 'string' ? name.trim().slice(0, 100) : undefined);
 
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -33,9 +63,9 @@ serve(async (req) => {
         'Accept': 'application/json',
       },
       body: JSON.stringify({
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         fields: {
-          name: name?.trim() || undefined,
+          name: safeName || undefined,
         },
       }),
     });
@@ -43,8 +73,7 @@ serve(async (req) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('MailerLite API error:', JSON.stringify(data));
-      throw new Error(`MailerLite API call failed [${response.status}]: ${JSON.stringify(data)}`);
+      throw new Error(`MailerLite API call failed`);
     }
 
     return new Response(
@@ -52,10 +81,8 @@ serve(async (req) => {
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error: unknown) {
-    console.error('Newsletter subscribe error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: errorMessage }),
+      JSON.stringify({ error: 'Subscription failed. Please try again later.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
