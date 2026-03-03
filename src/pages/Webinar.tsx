@@ -1,6 +1,12 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Play, CheckCircle, Clock, DollarSign, Users, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -14,8 +20,45 @@ const highlights = [
 ];
 
 const Webinar = () => {
-  const handleRegister = () => {
-    window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email || !email.includes("@")) {
+      toast({ title: "Please enter a valid email address", variant: "destructive" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Subscribe to MailerLite
+      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: { email: email.trim(), name: name.trim() },
+      });
+
+      if (error) {
+        console.error("MailerLite subscription error:", error);
+        // Don't block registration if newsletter fails
+      }
+
+      // Open PayPal in new tab
+      window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
+
+      // Navigate to thank-you page
+      navigate("/webinar/thank-you");
+    } catch (err) {
+      console.error("Registration error:", err);
+      // Still proceed even if MailerLite fails
+      window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
+      navigate("/webinar/thank-you");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -35,10 +78,6 @@ const Webinar = () => {
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-8">
               A step-by-step blueprint for building your first online income stream — designed for the global diaspora.
             </p>
-            <Button size="lg" onClick={handleRegister} className="bg-primary-foreground text-secondary hover:bg-primary-foreground/90 font-semibold text-lg px-10 py-6 h-auto">
-              <Play className="mr-2 h-5 w-5" />
-              Register Now — $30
-            </Button>
           </div>
         </section>
 
@@ -63,9 +102,9 @@ const Webinar = () => {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* Registration Form */}
         <section className="py-16 md:py-20 bg-card">
-          <div className="container mx-auto px-4 max-w-2xl text-center">
+          <div className="container mx-auto px-4 max-w-md text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
               <CheckCircle className="h-8 w-8 text-primary" />
             </div>
@@ -75,9 +114,39 @@ const Webinar = () => {
             <p className="text-muted-foreground mb-8 text-lg">
               Secure your spot for just $30. Limited seats available.
             </p>
-            <Button size="lg" onClick={handleRegister} className="font-semibold text-lg px-10 py-6 h-auto">
-              Register & Pay $30
-            </Button>
+
+            <form onSubmit={handleRegister} className="space-y-4 text-left">
+              <div>
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <Button
+                type="submit"
+                size="lg"
+                disabled={isSubmitting}
+                className="w-full font-semibold text-lg py-6 h-auto"
+              >
+                <Play className="mr-2 h-5 w-5" />
+                {isSubmitting ? "Processing..." : "Register & Pay $30"}
+              </Button>
+            </form>
+
             <p className="mt-4 text-sm text-muted-foreground">
               Secure payment via PayPal. Confirmation sent to your email.
             </p>
