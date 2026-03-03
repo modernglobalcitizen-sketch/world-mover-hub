@@ -48,7 +48,6 @@ interface RoomMember {
   joined_at: string;
   profiles?: {
     display_name: string | null;
-    email: string | null;
   };
 }
 
@@ -60,7 +59,6 @@ interface Message {
   created_at: string;
   profiles?: {
     display_name: string | null;
-    email: string | null;
   };
 }
 
@@ -78,7 +76,6 @@ interface SharedOpportunity {
   };
   profiles?: {
     display_name: string | null;
-    email: string | null;
   };
 }
 
@@ -251,7 +248,7 @@ const BreakoutRooms = () => {
         const userIds = [...new Set(messagesData.map(m => m.user_id))];
         const { data: profilesData } = await supabase
           .from("profiles")
-          .select("id, display_name, email")
+          .select("id, display_name")
           .in("id", userIds);
         
         const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
@@ -284,7 +281,7 @@ const BreakoutRooms = () => {
         const userIds = [...new Set(sharedData.map(s => s.shared_by))];
         const { data: profilesData } = await supabase
           .from("profiles")
-          .select("id, display_name, email")
+          .select("id, display_name")
           .in("id", userIds);
         
         const oppsMap = new Map(oppsData?.map(o => [o.id, o]) || []);
@@ -316,7 +313,7 @@ const BreakoutRooms = () => {
         const userIds = [...new Set(membersData.map(m => m.user_id))];
         const { data: profilesData } = await supabase
           .from("profiles")
-          .select("id, display_name, email")
+          .select("id, display_name")
           .in("id", userIds);
         
         const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
@@ -347,7 +344,7 @@ const BreakoutRooms = () => {
         const userIds = [...new Set(invitationsData.map(i => i.invited_user_id))];
         const { data: profilesData } = await supabase
           .from("profiles")
-          .select("id, display_name, email")
+          .select("id, display_name")
           .in("id", userIds);
         
         const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
@@ -382,7 +379,7 @@ const BreakoutRooms = () => {
           // Fetch the profile for this user
           const { data: profileData } = await supabase
             .from("profiles")
-            .select("id, display_name, email")
+            .select("id, display_name")
             .eq("id", newMsg.user_id)
             .single();
           
@@ -420,7 +417,7 @@ const BreakoutRooms = () => {
           // Fetch profile
           const { data: profileData } = await supabase
             .from("profiles")
-            .select("id, display_name, email")
+            .select("id, display_name")
             .eq("id", newShared.shared_by)
             .single();
           
@@ -613,13 +610,13 @@ const BreakoutRooms = () => {
     setInviting(true);
 
     // Find user by email
-    const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select("id, email")
-      .eq("email", inviteEmail.trim().toLowerCase())
-      .single();
+    const { data: lookupData, error: lookupError } = await supabase.functions.invoke("lookup-user", {
+      body: { email: inviteEmail.trim().toLowerCase() },
+    });
 
-    if (profileError || !profileData) {
+    const profileData = lookupData?.user_id ? { id: lookupData.user_id } : null;
+
+    if (lookupError || !profileData) {
       toast({
         title: "User not found",
         description: "No user found with that email address.",
@@ -817,9 +814,9 @@ const BreakoutRooms = () => {
     setCancellingInvitation(null);
   };
 
-  const getUserDisplayName = (profiles: { display_name: string | null; email: string | null } | undefined) => {
+  const getUserDisplayName = (profiles: { display_name: string | null } | undefined) => {
     if (!profiles) return "Anonymous";
-    return profiles.display_name || profiles.email?.split("@")[0] || "Anonymous";
+    return profiles.display_name || "Anonymous";
   };
 
   const isRoomOwner = selectedRoom?.created_by === user?.id;

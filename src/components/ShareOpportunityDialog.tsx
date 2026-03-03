@@ -49,7 +49,7 @@ const ShareOpportunityDialog = ({ opportunityId, opportunityTitle, trigger }: Sh
       .order("name");
 
     if (roomsError) {
-      console.error("Error fetching rooms:", roomsError);
+      if (import.meta.env.DEV) console.error("Error fetching rooms:", roomsError);
       setLoading(false);
       return;
     }
@@ -87,7 +87,7 @@ const ShareOpportunityDialog = ({ opportunityId, opportunityTitle, trigger }: Sh
         toast.error("This opportunity has already been shared to this room");
       } else {
         toast.error("Failed to share opportunity");
-        console.error(error);
+        if (import.meta.env.DEV) console.error(error);
       }
     } else {
       const roomName = rooms.find(r => r.id === selectedRoomId)?.name || "the room";

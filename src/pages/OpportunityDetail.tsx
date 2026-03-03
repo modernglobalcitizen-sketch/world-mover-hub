@@ -62,7 +62,7 @@ const OpportunityDetail = () => {
         .single();
 
       if (error) {
-        console.error("Error fetching opportunity:", error);
+        if (import.meta.env.DEV) console.error("Error fetching opportunity:", error);
       } else {
         setOpportunity(data);
       }
@@ -119,7 +119,7 @@ const OpportunityDetail = () => {
 
       if (error) {
         toast.error("Failed to unsave opportunity");
-        console.error(error);
+        if (import.meta.env.DEV) console.error(error);
       } else {
         setIsSaved(false);
         toast.success("Opportunity removed from saved");
@@ -134,7 +134,7 @@ const OpportunityDetail = () => {
 
       if (error) {
         toast.error("Failed to save opportunity");
-        console.error(error);
+        if (import.meta.env.DEV) console.error(error);
       } else {
         setIsSaved(true);
         toast.success("Opportunity saved! View it on your dashboard.");

@@ -45,7 +45,7 @@ const NewsletterPopup = () => {
       });
       handleDismiss();
     } catch (err) {
-      console.error("Newsletter signup error:", err);
+      if (import.meta.env.DEV) console.error("Newsletter signup error:", err);
       toast({
         title: "Something went wrong",
         description: "Please try again later.",

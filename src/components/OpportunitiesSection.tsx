@@ -62,7 +62,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Error fetching opportunities:", error);
+        if (import.meta.env.DEV) console.error("Error fetching opportunities:", error);
       } else {
         setOpportunities(data || []);
       }
@@ -120,7 +120,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
       if (error) {
         toast.error("Failed to unsave opportunity");
-        console.error(error);
+        if (import.meta.env.DEV) console.error(error);
       } else {
         const newSaved = new Set(savedIds);
         newSaved.delete(opportunityId);
@@ -137,7 +137,7 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
       if (error) {
         toast.error("Failed to save opportunity");
-        console.error(error);
+        if (import.meta.env.DEV) console.error(error);
       } else {
         setSavedIds(new Set([...savedIds, opportunityId]));
         toast.success("Opportunity saved! View it on your dashboard.");

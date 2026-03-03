@@ -118,7 +118,7 @@ const CommunityFund = () => {
         .order("date", { ascending: false });
 
       if (error) {
-        console.error("Error fetching transactions:", error);
+        if (import.meta.env.DEV) console.error("Error fetching transactions:", error);
       } else {
         setTransactions(data || []);
       }
