@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.fetch-remote-jobs]
 verify_jwt = false
+
+[functions.lookup-user]
+verify_jwt = false

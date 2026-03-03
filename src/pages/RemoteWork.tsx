@@ -111,7 +111,7 @@ const RemoteWork = () => {
         if (error) throw error;
         setJobs(data?.jobs || []);
       } catch (err) {
-        console.error("Failed to fetch remote jobs:", err);
+        if (import.meta.env.DEV) console.error("Failed to fetch remote jobs:", err);
         setJobs([]);
       } finally {
         setLoading(false);

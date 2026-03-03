@@ -107,7 +107,7 @@ const Profile = () => {
         .maybeSingle();
 
       if (error) {
-        console.error("Error fetching profile:", error);
+        if (import.meta.env.DEV) console.error("Error fetching profile:", error);
         toast.error("Failed to load profile");
         return;
       }
@@ -172,7 +172,7 @@ const Profile = () => {
       .eq("id", session.user.id);
 
     if (error) {
-      console.error("Error saving profile:", error);
+      if (import.meta.env.DEV) console.error("Error saving profile:", error);
       toast.error("Failed to save profile");
     } else {
       toast.success("Profile updated successfully!");

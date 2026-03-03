@@ -76,7 +76,6 @@ interface RoomInvitation {
   };
   inviter?: {
     display_name: string | null;
-    email: string | null;
   };
 }
 
@@ -242,7 +241,7 @@ const Dashboard = () => {
         
         const [roomsResult, invitersResult] = await Promise.all([
           supabase.from("breakout_rooms").select("id, name, field, description").in("id", roomIds),
-          supabase.from("profiles").select("id, display_name, email").in("id", inviterIds),
+          supabase.from("profiles").select("id, display_name").in("id", inviterIds),
         ]);
 
         const roomsMap = new Map(roomsResult.data?.map(r => [r.id, r]) || []);
@@ -272,7 +271,7 @@ const Dashboard = () => {
 
     if (error) {
       toast.error("Failed to remove saved opportunity");
-      console.error(error);
+      if (import.meta.env.DEV) console.error(error);
     } else {
       setSavedOpportunities(savedOpportunities.filter(s => s.id !== savedId));
       toast.success("Opportunity removed from saved");
@@ -291,7 +290,7 @@ const Dashboard = () => {
 
     if (error) {
       toast.error("Failed to update display name");
-      console.error(error);
+      if (import.meta.env.DEV) console.error(error);
     } else {
       setFoundingMember({ ...foundingMember, displayName: newDisplayName.trim() || null });
       toast.success("Display name updated!");
@@ -327,7 +326,7 @@ const Dashboard = () => {
 
     if (error) {
       toast.error("Failed to submit application");
-      console.error(error);
+      if (import.meta.env.DEV) console.error(error);
     } else {
       toast.success("Funding application submitted successfully!");
       setFundApplications([data, ...fundApplications]);
@@ -365,7 +364,7 @@ const Dashboard = () => {
 
         if (!alreadyMember) {
           toast.error(memberError.message || "Failed to join room");
-          console.error(memberError);
+          if (import.meta.env.DEV) console.error(memberError);
           setRespondingToInvite(null);
           return;
         }
@@ -383,7 +382,7 @@ const Dashboard = () => {
 
     if (updateError) {
       toast.error("Failed to update invitation");
-      console.error(updateError);
+      if (import.meta.env.DEV) console.error(updateError);
     } else {
       toast.success(accept ? "You've joined the room!" : "Invitation declined");
       setRoomInvitations(roomInvitations.filter(i => i.id !== invitationId));
@@ -546,7 +545,7 @@ const Dashboard = () => {
                             {invitation.room?.name || "Unknown Room"}
                           </h4>
                           <p className="text-sm text-muted-foreground">
-                            {invitation.room?.field} • Invited by {invitation.inviter?.display_name || invitation.inviter?.email?.split("@")[0] || "Unknown"}
+                            {invitation.room?.field} • Invited by {invitation.inviter?.display_name || "Unknown"}
                           </p>
                           {invitation.room?.description && (
                             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">

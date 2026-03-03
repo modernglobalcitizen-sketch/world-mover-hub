@@ -42,7 +42,7 @@ const Webinar = () => {
       });
 
       if (error) {
-        console.error("MailerLite subscription error:", error);
+        if (import.meta.env.DEV) console.error("MailerLite subscription error:", error);
         // Don't block registration if newsletter fails
       }
 
@@ -52,7 +52,7 @@ const Webinar = () => {
       // Navigate to thank-you page
       navigate("/webinar/thank-you");
     } catch (err) {
-      console.error("Registration error:", err);
+      if (import.meta.env.DEV) console.error("Registration error:", err);
       // Still proceed even if MailerLite fails
       window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
       navigate("/webinar/thank-you");
