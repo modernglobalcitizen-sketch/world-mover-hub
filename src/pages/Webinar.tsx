@@ -75,9 +75,13 @@ const Webinar = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
               Your First $1,000 Online Plan
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-8">
+            <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
               A step-by-step blueprint for building your first online income stream — designed for the global diaspora.
             </p>
+            <div className="inline-flex items-center gap-3 rounded-xl bg-primary-foreground/15 backdrop-blur-sm px-6 py-3 text-primary-foreground font-medium text-lg mb-8">
+              <Clock className="h-5 w-5" />
+              <span>March 12, 2026 · 3:00 PM UTC</span>
+            </div>
           </div>
         </section>
 
