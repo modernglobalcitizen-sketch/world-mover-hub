@@ -49,13 +49,18 @@ const Webinar = () => {
       // Open PayPal in new tab
       window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
 
-      // Navigate to thank-you page
-      navigate("/webinar/thank-you");
+      toast({
+        title: "Complete your payment",
+        description: "A PayPal tab has opened. Once payment is complete, you'll receive a confirmation email.",
+      });
     } catch (err) {
       if (import.meta.env.DEV) console.error("Registration error:", err);
       // Still proceed even if MailerLite fails
       window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
-      navigate("/webinar/thank-you");
+      toast({
+        title: "Complete your payment",
+        description: "A PayPal tab has opened. Once payment is complete, you'll receive a confirmation email.",
+      });
     } finally {
       setIsSubmitting(false);
     }
