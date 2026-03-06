@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import WebinarBanner from "@/components/WebinarBanner";
 import Hero from "@/components/Hero";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
@@ -12,6 +13,7 @@ const Index = () => {
       <NewsletterPopup />
       <Header />
       <main className="flex-1">
+        <WebinarBanner />
         <Hero />
         <EbookSection />
         <div id="opportunities">
