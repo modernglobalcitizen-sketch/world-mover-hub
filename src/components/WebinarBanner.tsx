@@ -28,6 +28,10 @@ const WebinarBanner = () => {
           <span>March 12, 2026 · 3:00 PM UTC</span>
         </div>
 
+        <div className="mb-10">
+          <CountdownTimer />
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button variant="hero" size="lg" className="group text-lg py-6 h-auto" asChild>
             <Link to="/webinar">

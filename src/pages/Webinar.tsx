@@ -88,6 +88,9 @@ const Webinar = () => {
               <Clock className="h-5 w-5" />
               <span>March 12, 2026 · 3:00 PM UTC</span>
             </div>
+            <div className="mt-8">
+              <CountdownTimer />
+            </div>
           </div>
         </section>
 
