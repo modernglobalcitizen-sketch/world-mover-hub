@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WebinarBanner from "@/components/WebinarBanner";
 import Hero from "@/components/Hero";
+import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import EbookSection from "@/components/EbookSection";
@@ -14,6 +15,7 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <WebinarBanner />
+        <FounderSection />
         <Hero />
         <EbookSection />
         <div id="opportunities">
