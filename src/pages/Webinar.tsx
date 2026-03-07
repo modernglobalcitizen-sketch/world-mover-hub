@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CountdownTimer from "@/components/CountdownTimer";
 
 const highlights = [
   { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
@@ -86,6 +87,9 @@ const Webinar = () => {
             <div className="inline-flex items-center gap-3 rounded-xl bg-primary-foreground/15 backdrop-blur-sm px-6 py-3 text-primary-foreground font-medium text-lg mb-8">
               <Clock className="h-5 w-5" />
               <span>March 12, 2026 · 3:00 PM UTC</span>
+            </div>
+            <div className="mt-8">
+              <CountdownTimer />
             </div>
           </div>
         </section>

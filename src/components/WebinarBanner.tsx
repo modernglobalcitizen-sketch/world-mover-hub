@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import CountdownTimer from "@/components/CountdownTimer";
 import { Clock, Play, ArrowRight } from "lucide-react";
 
 const WebinarBanner = () => {
@@ -25,6 +26,10 @@ const WebinarBanner = () => {
         <div className="inline-flex items-center gap-3 rounded-xl bg-primary-foreground/15 backdrop-blur-sm px-6 py-3 text-primary-foreground font-medium text-lg mb-10">
           <Clock className="h-5 w-5" />
           <span>March 12, 2026 · 3:00 PM UTC</span>
+        </div>
+
+        <div className="mb-10">
+          <CountdownTimer />
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
