@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CountdownTimer from "@/components/CountdownTimer";
 
 const highlights = [
   { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
