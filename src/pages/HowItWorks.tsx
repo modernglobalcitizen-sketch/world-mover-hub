@@ -44,11 +44,6 @@ const faqs = [
       "In Breakout Rooms, you can chat with fellow members, share real opportunities you've discovered, get advice on applications and visas, celebrate wins together, and hold each other accountable to your goals. Private rooms let you create focused spaces for specific collaborations.",
   },
   {
-    question: "How much does membership cost?",
-    answer:
-      "Membership is $15/month. This gives you full access to all Breakout Rooms, the ability to create private rooms, real-time presence features, curated opportunities, and resources to help you navigate global work and travel.",
-  },
-  {
     question: "What types of opportunities are shared?",
     answer:
       "Members share a wide range of opportunities including remote job openings, scholarship programs, international conferences, fellowship opportunities, visa-friendly travel tips, and professional development resources. The focus is on practical, vetted opportunities that work for people with passport limitations.",
