@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import CountdownTimer from "@/components/CountdownTimer";
 import { Clock, Play, ArrowRight } from "lucide-react";
 
 const WebinarBanner = () => {
