@@ -677,16 +677,6 @@ const Admin = () => {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="opp-requirements">Requirements</Label>
-                          <Textarea
-                            id="opp-requirements"
-                            value={oppFormData.requirements}
-                            onChange={(e) => setOppFormData({ ...oppFormData, requirements: e.target.value })}
-                            placeholder="List the requirements"
-                            rows={2}
-                          />
-                        </div>
-                        <div className="space-y-2">
                           <Label htmlFor="opp-eligibility">Eligibility</Label>
                           <Textarea
                             id="opp-eligibility"
