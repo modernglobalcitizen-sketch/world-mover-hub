@@ -26,6 +26,9 @@ const Hero = () => {
           {/* Content */}
           <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
+              <p className="text-sm md:text-base font-semibold uppercase tracking-widest text-primary">
+                Your Passport Isn't the Problem. Your Strategy Is.
+              </p>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight text-headline leading-tight">
                 Unlock Global Opportunities{" "}
                 <span className="text-subtle font-normal">— Together</span>
