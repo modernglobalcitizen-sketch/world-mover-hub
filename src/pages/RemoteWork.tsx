@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  MapPin, ExternalLink, Search, Briefcase, Globe, Wifi,
-  BookOpen, Shield, DollarSign, Users, Clock
+  MapPin, ExternalLink, Briefcase, Wifi,
+  DollarSign, Clock
 } from "lucide-react";
 
 interface RemoteJob {
