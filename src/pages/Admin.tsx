@@ -71,7 +71,6 @@ const emptyOpportunity = {
   category: "",
   location: "",
   deadline: "",
-  requirements: "",
   eligibility: "",
   benefits: "",
   about: "",
