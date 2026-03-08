@@ -113,6 +113,19 @@ const RemoteWork = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Fetch admin-added jobs
+  useEffect(() => {
+    const fetchAdminJobs = async () => {
+      const { data } = await supabase
+        .from("remote_jobs")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+      if (data) setAdminJobs(data);
+    };
+    fetchAdminJobs();
+  }, []);
+
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
