@@ -182,7 +182,89 @@ const RemoteWork = () => {
           </div>
         </section>
 
-        {/* Job Listings */}
+        {/* Featured Jobs (Admin-added) */}
+        {adminJobs.length > 0 && (
+          <section className="py-16 md:py-24 bg-muted/30">
+            <div className="container space-y-8">
+              <div>
+                <h2 className="text-3xl font-display font-bold text-headline">
+                  <Briefcase className="inline h-7 w-7 mr-2 text-primary" />
+                  Featured Remote Jobs
+                </h2>
+                <p className="mt-2 text-muted-foreground">
+                  Hand-picked remote opportunities curated by our team.
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                {adminJobs.map((job) => (
+                  <a
+                    key={job.id}
+                    href={job.apply_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block group ${!job.apply_url ? "pointer-events-none" : ""}`}
+                  >
+                    <Card className="h-full shadow-soft hover:shadow-hover transition-all duration-300 group-hover:border-primary/30 border-primary/20">
+                      <CardHeader>
+                        <div className="flex items-start gap-3">
+                          <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+                            <Briefcase className="h-5 w-5 text-primary" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <CardTitle className="text-lg leading-snug group-hover:text-primary transition-colors">
+                              {job.title}
+                            </CardTitle>
+                            <CardDescription className="mt-1 font-medium">
+                              {job.company_name}
+                            </CardDescription>
+                          </div>
+                          <Badge className="bg-primary/10 text-primary border-primary/20 shrink-0">Featured</Badge>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {job.category && <Badge variant="secondary">{job.category}</Badge>}
+                          <Badge variant="outline" className="text-xs">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {job.job_type}
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        {job.description && (
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {job.description.slice(0, 150)}...
+                          </p>
+                        )}
+                        <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-3.5 w-3.5" />
+                            {job.location}
+                          </span>
+                          {job.salary && (
+                            <span className="flex items-center gap-1">
+                              <DollarSign className="h-3.5 w-3.5" />
+                              {job.salary}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center justify-between pt-2">
+                          <span className="text-xs text-muted-foreground">
+                            Posted {formatDate(job.created_at)}
+                          </span>
+                          {job.apply_url && (
+                            <span className="text-xs text-primary font-medium flex items-center gap-1 group-hover:underline">
+                              Apply <ExternalLink className="h-3 w-3" />
+                            </span>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="py-16 md:py-24">
           <div className="container space-y-8">
             <div>
