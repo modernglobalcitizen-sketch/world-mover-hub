@@ -71,7 +71,6 @@ const emptyOpportunity = {
   category: "",
   location: "",
   deadline: "",
-  requirements: "",
   eligibility: "",
   benefits: "",
   about: "",
@@ -277,7 +276,6 @@ const Admin = () => {
         category: opportunity.category,
         location: opportunity.location || "",
         deadline: opportunity.deadline || "",
-        requirements: opportunity.requirements || "",
         eligibility: opportunity.eligibility || "",
         benefits: opportunity.benefits || "",
         about: opportunity.about,
@@ -304,7 +302,6 @@ const Admin = () => {
       category: oppFormData.category,
       location: oppFormData.location || null,
       deadline: oppFormData.deadline || null,
-      requirements: oppFormData.requirements || null,
       eligibility: oppFormData.eligibility || null,
       benefits: oppFormData.benefits || null,
       about: oppFormData.about,
@@ -677,16 +674,6 @@ const Admin = () => {
                             type="date"
                             value={oppFormData.deadline}
                             onChange={(e) => setOppFormData({ ...oppFormData, deadline: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="opp-requirements">Requirements</Label>
-                          <Textarea
-                            id="opp-requirements"
-                            value={oppFormData.requirements}
-                            onChange={(e) => setOppFormData({ ...oppFormData, requirements: e.target.value })}
-                            placeholder="List the requirements"
-                            rows={2}
                           />
                         </div>
                         <div className="space-y-2">
