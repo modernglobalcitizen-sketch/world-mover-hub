@@ -27,6 +27,20 @@ interface RemoteJob {
   description: string;
 }
 
+interface AdminRemoteJob {
+  id: string;
+  title: string;
+  company_name: string;
+  category: string;
+  job_type: string;
+  location: string;
+  salary: string | null;
+  description: string;
+  apply_url: string | null;
+  is_active: boolean;
+  created_at: string;
+}
+
 const JOB_CATEGORIES = [
   { value: "software-dev", label: "Software Development" },
   { value: "customer-support", label: "Customer Support" },
