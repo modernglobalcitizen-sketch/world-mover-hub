@@ -101,6 +101,7 @@ const RESOURCES = [
 
 const RemoteWork = () => {
   const [jobs, setJobs] = useState<RemoteJob[]>([]);
+  const [adminJobs, setAdminJobs] = useState<AdminRemoteJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
