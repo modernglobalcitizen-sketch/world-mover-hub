@@ -302,7 +302,6 @@ const Admin = () => {
       category: oppFormData.category,
       location: oppFormData.location || null,
       deadline: oppFormData.deadline || null,
-      requirements: oppFormData.requirements || null,
       eligibility: oppFormData.eligibility || null,
       benefits: oppFormData.benefits || null,
       about: oppFormData.about,
