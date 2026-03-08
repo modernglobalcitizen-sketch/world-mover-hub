@@ -324,6 +324,51 @@ export type Database = {
         }
         Relationships: []
       }
+      remote_jobs: {
+        Row: {
+          apply_url: string | null
+          category: string
+          company_name: string
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean
+          job_type: string
+          location: string
+          salary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          apply_url?: string | null
+          category?: string
+          company_name: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          job_type?: string
+          location?: string
+          salary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          apply_url?: string | null
+          category?: string
+          company_name?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          job_type?: string
+          location?: string
+          salary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       room_invitations: {
         Row: {
           created_at: string

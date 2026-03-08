@@ -12,8 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
+import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -476,6 +477,10 @@ const Admin = () => {
                   <Users className="h-4 w-4" />
                   Affiliates
                 </TabsTrigger>
+                <TabsTrigger value="remote-jobs" className="flex items-center gap-2">
+                  <Laptop className="h-4 w-4" />
+                  Remote Jobs
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -925,6 +930,10 @@ const Admin = () => {
 
               <TabsContent value="affiliates">
                 <AffiliateAdmin />
+              </TabsContent>
+
+              <TabsContent value="remote-jobs">
+                <RemoteJobsAdmin />
               </TabsContent>
             </Tabs>
           </div>
