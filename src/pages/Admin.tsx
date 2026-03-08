@@ -477,6 +477,10 @@ const Admin = () => {
                   <Users className="h-4 w-4" />
                   Affiliates
                 </TabsTrigger>
+                <TabsTrigger value="remote-jobs" className="flex items-center gap-2">
+                  <Laptop className="h-4 w-4" />
+                  Remote Jobs
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
