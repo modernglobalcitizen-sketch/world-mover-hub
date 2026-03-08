@@ -276,7 +276,6 @@ const Admin = () => {
         category: opportunity.category,
         location: opportunity.location || "",
         deadline: opportunity.deadline || "",
-        requirements: opportunity.requirements || "",
         eligibility: opportunity.eligibility || "",
         benefits: opportunity.benefits || "",
         about: opportunity.about,
