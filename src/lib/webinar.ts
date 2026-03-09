@@ -8,6 +8,6 @@ export function getLocalWebinarTime(): string {
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-    timeZoneName: "short",
+    timeZoneName: "long",
   });
 }
