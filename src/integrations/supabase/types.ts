@@ -545,6 +545,35 @@ export type Database = {
           },
         ]
       }
+      saved_remote_jobs: {
+        Row: {
+          created_at: string
+          id: string
+          remote_job_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          remote_job_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          remote_job_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_remote_jobs_remote_job_id_fkey"
+            columns: ["remote_job_id"]
+            isOneToOne: false
+            referencedRelation: "remote_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           amount: number
