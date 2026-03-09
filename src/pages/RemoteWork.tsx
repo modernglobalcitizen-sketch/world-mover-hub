@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Session } from "@supabase/supabase-js";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
-  DollarSign, Clock
+  DollarSign, Clock, Bookmark, BookmarkCheck, Lock
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface AdminRemoteJob {
   id: string;
@@ -25,6 +28,17 @@ interface AdminRemoteJob {
 
 const RemoteWork = () => {
   const [adminJobs, setAdminJobs] = useState<AdminRemoteJob[]>([]);
+  const [session, setSession] = useState<Session | null>(null);
+  const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
+  const [savingId, setSavingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchAdminJobs = async () => {
@@ -37,6 +51,55 @@ const RemoteWork = () => {
     };
     fetchAdminJobs();
   }, []);
+
+  useEffect(() => {
+    if (!session) {
+      setSavedJobIds(new Set());
+      return;
+    }
+    const fetchSaved = async () => {
+      const { data } = await supabase
+        .from("saved_remote_jobs")
+        .select("remote_job_id")
+        .eq("user_id", session.user.id);
+      if (data) setSavedJobIds(new Set(data.map((r: any) => r.remote_job_id)));
+    };
+    fetchSaved();
+  }, [session]);
+
+  const handleToggleSave = async (jobId: string) => {
+    if (!session) {
+      toast.error("Please sign in to save remote jobs");
+      return;
+    }
+    setSavingId(jobId);
+    const isSaved = savedJobIds.has(jobId);
+
+    if (isSaved) {
+      const { error } = await supabase
+        .from("saved_remote_jobs")
+        .delete()
+        .eq("user_id", session.user.id)
+        .eq("remote_job_id", jobId);
+      if (error) {
+        toast.error("Failed to unsave job");
+      } else {
+        setSavedJobIds(prev => { const next = new Set(prev); next.delete(jobId); return next; });
+        toast.success("Job removed from saved");
+      }
+    } else {
+      const { error } = await supabase
+        .from("saved_remote_jobs")
+        .insert({ user_id: session.user.id, remote_job_id: jobId });
+      if (error) {
+        toast.error("Failed to save job");
+      } else {
+        setSavedJobIds(prev => new Set(prev).add(jobId));
+        toast.success("Job saved to your dashboard!");
+      }
+    }
+    setSavingId(null);
+  };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -62,6 +125,13 @@ const RemoteWork = () => {
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
               Discover remote job opportunities worldwide and access resources to thrive as a location-independent professional.
             </p>
+            {!session && (
+              <div className="mt-6">
+                <Button asChild className="bg-white text-primary hover:bg-white/90">
+                  <a href="/auth">Sign Up to Apply for Jobs</a>
+                </Button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -79,29 +149,39 @@ const RemoteWork = () => {
                 </p>
               </div>
               <div className="grid md:grid-cols-2 gap-6">
-                {adminJobs.map((job) => (
-                  <a
-                    key={job.id}
-                    href={job.apply_url || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`block group ${!job.apply_url ? "pointer-events-none" : ""}`}
-                  >
-                    <Card className="h-full shadow-soft hover:shadow-hover transition-all duration-300 group-hover:border-primary/30 border-primary/20">
+                {adminJobs.map((job) => {
+                  const isSaved = savedJobIds.has(job.id);
+                  return (
+                    <Card key={job.id} className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 border-primary/20 flex flex-col">
                       <CardHeader>
                         <div className="flex items-start gap-3">
                           <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
                             <Briefcase className="h-5 w-5 text-primary" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <CardTitle className="text-lg leading-snug group-hover:text-primary transition-colors">
+                            <CardTitle className="text-lg leading-snug">
                               {job.title}
                             </CardTitle>
                             <CardDescription className="mt-1 font-medium">
                               {job.company_name}
                             </CardDescription>
                           </div>
-                          <Badge className="bg-primary/10 text-primary border-primary/20 shrink-0">Featured</Badge>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <Badge className="bg-primary/10 text-primary border-primary/20">Featured</Badge>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                              onClick={() => handleToggleSave(job.id)}
+                              disabled={savingId === job.id}
+                              title={isSaved ? "Remove from saved" : "Save to dashboard"}
+                            >
+                              {isSaved
+                                ? <BookmarkCheck className="h-4 w-4 text-primary" />
+                                : <Bookmark className="h-4 w-4 text-muted-foreground" />
+                              }
+                            </Button>
+                          </div>
                         </div>
                         <div className="flex flex-wrap gap-2 mt-3">
                           {job.category && <Badge variant="secondary">{job.category}</Badge>}
@@ -111,7 +191,7 @@ const RemoteWork = () => {
                           </Badge>
                         </div>
                       </CardHeader>
-                      <CardContent className="space-y-3">
+                      <CardContent className="space-y-3 flex-1 flex flex-col">
                         {job.description && (
                           <p className="text-sm text-muted-foreground line-clamp-2">
                             {job.description.slice(0, 150)}...
@@ -129,20 +209,31 @@ const RemoteWork = () => {
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center justify-between pt-2 mt-auto">
                           <span className="text-xs text-muted-foreground">
                             Posted {formatDate(job.created_at)}
                           </span>
-                          {job.apply_url && (
-                            <span className="text-xs text-primary font-medium flex items-center gap-1 group-hover:underline">
-                              Apply <ExternalLink className="h-3 w-3" />
-                            </span>
-                          )}
+                          {job.apply_url ? (
+                            session ? (
+                              <Button size="sm" asChild>
+                                <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
+                                  Apply <ExternalLink className="h-3 w-3 ml-1" />
+                                </a>
+                              </Button>
+                            ) : (
+                              <Button size="sm" variant="outline" asChild>
+                                <a href="/auth">
+                                  <Lock className="h-3 w-3 mr-1" />
+                                  Sign up to Apply
+                                </a>
+                              </Button>
+                            )
+                          ) : null}
                         </div>
                       </CardContent>
                     </Card>
-                  </a>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </section>
