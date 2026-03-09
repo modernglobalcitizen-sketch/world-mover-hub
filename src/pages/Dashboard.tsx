@@ -900,6 +900,96 @@ const Dashboard = () => {
                 )}
               </CardContent>
             </Card>
+
+            {/* Saved Remote Jobs */}
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="h-5 w-5 text-primary" />
+                  Saved Remote Jobs
+                </CardTitle>
+                <CardDescription>
+                  Remote jobs you've bookmarked for later
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {savedRemoteJobs.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Briefcase className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>You haven't saved any remote jobs yet.</p>
+                    <Button variant="outline" className="mt-4" asChild>
+                      <a href="/remote-work">Browse Remote Jobs</a>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {savedRemoteJobs.map((saved) => (
+                      <div key={saved.id} className="flex items-start justify-between gap-4 p-4 rounded-lg border bg-card">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="font-medium">{saved.remote_job.title}</h4>
+                            <Badge variant="secondary" className="text-xs">
+                              {saved.remote_job.company_name}
+                            </Badge>
+                            {saved.remote_job.category && (
+                              <Badge variant="outline" className="text-xs">
+                                {saved.remote_job.category}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {saved.remote_job.description.slice(0, 150)}
+                            {saved.remote_job.description.length > 150 ? "..." : ""}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {saved.remote_job.location}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {saved.remote_job.job_type}
+                            </span>
+                            {saved.remote_job.salary && (
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-3 w-3" />
+                                {saved.remote_job.salary}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                            onClick={() => handleRemoveSavedJob(saved.id)}
+                            disabled={removingJobId === saved.id}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                          {saved.remote_job.apply_url ? (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href={saved.remote_job.apply_url} target="_blank" rel="noopener noreferrer">
+                                Apply
+                                <ExternalLink className="h-3 w-3 ml-1" />
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href="/remote-work">
+                                View
+                                <ArrowRight className="h-3 w-3 ml-1" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
             {/* Quick Actions */}
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="shadow-soft">
