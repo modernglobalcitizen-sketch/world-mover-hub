@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle, UserPlus, Check, X, Share2 } from "lucide-react";
+import { User, DollarSign, TrendingUp, FileText, Globe, Calendar, Briefcase, Clock, CheckCircle, XCircle, Crown, Bookmark, Trash2, MapPin, ArrowRight, HandCoins, Plus, Pencil, Settings, MessageCircle, UserPlus, Check, X, Share2, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
@@ -79,6 +79,24 @@ interface RoomInvitation {
   };
 }
 
+interface SavedRemoteJob {
+  id: string;
+  remote_job_id: string;
+  created_at: string;
+  remote_job: {
+    id: string;
+    title: string;
+    company_name: string;
+    category: string;
+    job_type: string;
+    location: string;
+    salary: string | null;
+    description: string;
+    apply_url: string | null;
+    is_active: boolean;
+  };
+}
+
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
   pending: { 
     label: "Pending", 
@@ -108,6 +126,7 @@ const Dashboard = () => {
   });
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
+  const [savedRemoteJobs, setSavedRemoteJobs] = useState<SavedRemoteJob[]>([]);
   const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
   const [roomInvitations, setRoomInvitations] = useState<RoomInvitation[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null; fieldOfWork: string | null }>({
@@ -122,6 +141,7 @@ const Dashboard = () => {
   
   // Fund application form
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [removingJobId, setRemovingJobId] = useState<string | null>(null);
   const [fundDialogOpen, setFundDialogOpen] = useState(false);
   const [fundFormData, setFundFormData] = useState({
     amount_requested: "",
@@ -156,7 +176,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult, savedResult, fundAppResult, invitationsResult] = await Promise.all([
+      const [fundResult, appResult, profileResult, savedResult, savedJobsResult, fundAppResult, invitationsResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
         supabase
           .from("applications")
@@ -181,6 +201,16 @@ const Dashboard = () => {
             opportunity_id,
             created_at,
             opportunity:opportunities(id, title, about, category, location, deadline, is_active)
+          `)
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("saved_remote_jobs")
+          .select(`
+            id,
+            remote_job_id,
+            created_at,
+            remote_job:remote_jobs(id, title, company_name, category, job_type, location, salary, description, apply_url, is_active)
           `)
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
@@ -230,6 +260,10 @@ const Dashboard = () => {
         setSavedOpportunities(savedResult.data as SavedOpportunity[]);
       }
 
+      if (savedJobsResult.data) {
+        setSavedRemoteJobs(savedJobsResult.data as SavedRemoteJob[]);
+      }
+
       if (fundAppResult.data) {
         setFundApplications(fundAppResult.data as FundApplication[]);
       }
@@ -277,6 +311,23 @@ const Dashboard = () => {
       toast.success("Opportunity removed from saved");
     }
     setRemovingId(null);
+  };
+
+  const handleRemoveSavedJob = async (savedId: string) => {
+    setRemovingJobId(savedId);
+    const { error } = await supabase
+      .from("saved_remote_jobs")
+      .delete()
+      .eq("id", savedId);
+
+    if (error) {
+      toast.error("Failed to remove saved job");
+      if (import.meta.env.DEV) console.error(error);
+    } else {
+      setSavedRemoteJobs(savedRemoteJobs.filter(s => s.id !== savedId));
+      toast.success("Job removed from saved");
+    }
+    setRemovingJobId(null);
   };
 
   const handleSaveDisplayName = async () => {
@@ -845,6 +896,96 @@ const Dashboard = () => {
                         </div>
                       );
                     })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Saved Remote Jobs */}
+            <Card className="shadow-soft">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="h-5 w-5 text-primary" />
+                  Saved Remote Jobs
+                </CardTitle>
+                <CardDescription>
+                  Remote jobs you've bookmarked for later
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {savedRemoteJobs.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Briefcase className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>You haven't saved any remote jobs yet.</p>
+                    <Button variant="outline" className="mt-4" asChild>
+                      <a href="/remote-work">Browse Remote Jobs</a>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {savedRemoteJobs.map((saved) => (
+                      <div key={saved.id} className="flex items-start justify-between gap-4 p-4 rounded-lg border bg-card">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="font-medium">{saved.remote_job.title}</h4>
+                            <Badge variant="secondary" className="text-xs">
+                              {saved.remote_job.company_name}
+                            </Badge>
+                            {saved.remote_job.category && (
+                              <Badge variant="outline" className="text-xs">
+                                {saved.remote_job.category}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {saved.remote_job.description.slice(0, 150)}
+                            {saved.remote_job.description.length > 150 ? "..." : ""}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              {saved.remote_job.location}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {saved.remote_job.job_type}
+                            </span>
+                            {saved.remote_job.salary && (
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-3 w-3" />
+                                {saved.remote_job.salary}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                            onClick={() => handleRemoveSavedJob(saved.id)}
+                            disabled={removingJobId === saved.id}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                          {saved.remote_job.apply_url ? (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href={saved.remote_job.apply_url} target="_blank" rel="noopener noreferrer">
+                                Apply
+                                <ExternalLink className="h-3 w-3 ml-1" />
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button variant="outline" size="sm" asChild>
+                              <a href="/remote-work">
+                                View
+                                <ArrowRight className="h-3 w-3 ml-1" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </CardContent>
