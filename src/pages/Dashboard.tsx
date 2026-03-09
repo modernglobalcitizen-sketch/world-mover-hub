@@ -313,6 +313,23 @@ const Dashboard = () => {
     setRemovingId(null);
   };
 
+  const handleRemoveSavedJob = async (savedId: string) => {
+    setRemovingJobId(savedId);
+    const { error } = await supabase
+      .from("saved_remote_jobs")
+      .delete()
+      .eq("id", savedId);
+
+    if (error) {
+      toast.error("Failed to remove saved job");
+      if (import.meta.env.DEV) console.error(error);
+    } else {
+      setSavedRemoteJobs(savedRemoteJobs.filter(s => s.id !== savedId));
+      toast.success("Job removed from saved");
+    }
+    setRemovingJobId(null);
+  };
+
   const handleSaveDisplayName = async () => {
     if (!session) return;
     
