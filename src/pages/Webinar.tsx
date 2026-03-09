@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getLocalWebinarTime } from "@/lib/webinar";
 import { useNavigate } from "react-router-dom";
 import { Play, CheckCircle, Clock, DollarSign, Users, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";

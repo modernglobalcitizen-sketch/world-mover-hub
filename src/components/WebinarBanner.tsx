@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { getLocalWebinarTime } from "@/lib/webinar";
 import { Button } from "@/components/ui/button";
 import CountdownTimer from "@/components/CountdownTimer";
 import { Clock, Play, ArrowRight } from "lucide-react";
