@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-const WEBINAR_DATE = new Date("2026-03-12T15:00:00Z");
+import { WEBINAR_DATE } from "@/lib/webinar";
 
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft());
