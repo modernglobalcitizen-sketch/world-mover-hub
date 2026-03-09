@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getLocalWebinarTime } from "@/lib/webinar";
 import { useNavigate } from "react-router-dom";
 import { Play, CheckCircle, Clock, DollarSign, Users, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -86,7 +87,7 @@ const Webinar = () => {
             </p>
             <div className="inline-flex items-center gap-3 rounded-xl bg-primary-foreground/15 backdrop-blur-sm px-6 py-3 text-primary-foreground font-medium text-lg mb-8">
               <Clock className="h-5 w-5" />
-              <span>March 12, 2026 · 3:00 PM UTC</span>
+              <span>{getLocalWebinarTime()}</span>
             </div>
             <div className="mt-8">
               <CountdownTimer />
