@@ -141,6 +141,7 @@ const Dashboard = () => {
   
   // Fund application form
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [removingJobId, setRemovingJobId] = useState<string | null>(null);
   const [fundDialogOpen, setFundDialogOpen] = useState(false);
   const [fundFormData, setFundFormData] = useState({
     amount_requested: "",
