@@ -79,6 +79,24 @@ interface RoomInvitation {
   };
 }
 
+interface SavedRemoteJob {
+  id: string;
+  remote_job_id: string;
+  created_at: string;
+  remote_job: {
+    id: string;
+    title: string;
+    company_name: string;
+    category: string;
+    job_type: string;
+    location: string;
+    salary: string | null;
+    description: string;
+    apply_url: string | null;
+    is_active: boolean;
+  };
+}
+
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
   pending: { 
     label: "Pending", 
