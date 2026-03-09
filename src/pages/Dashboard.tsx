@@ -205,6 +205,16 @@ const Dashboard = () => {
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
         supabase
+          .from("saved_remote_jobs")
+          .select(`
+            id,
+            remote_job_id,
+            created_at,
+            remote_job:remote_jobs(id, title, company_name, category, job_type, location, salary, description, apply_url, is_active)
+          `)
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
+        supabase
           .from("fund_applications_user")
           .select("*")
           .eq("user_id", session.user.id)
