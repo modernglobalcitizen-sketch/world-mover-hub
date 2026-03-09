@@ -8,7 +8,7 @@ const features = [
   {
     icon: Users,
     title: "Breakout Rooms by Goal",
-    description: "Join rooms organized around your aspirations — whether you're pursuing a scholarship, remote work visa, or international fellowship.",
+    description: "Join rooms organized around your aspirations — whether you're pursuing a scholarship, finding remote work, or international fellowship.",
   },
   {
     icon: MessageCircle,
@@ -130,7 +130,7 @@ const About = () => {
             
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
               <p>
-                Members join breakout rooms organized by goal — whether you're applying for scholarships, seeking remote work visas, or exploring international fellowships. Inside these rooms, you can see who's actively online, share real opportunities you've discovered, and hold each other accountable.
+                Members join breakout rooms organized by goal — whether you're applying for scholarships, finding remote work, or exploring international fellowships. Inside these rooms, you can see who's actively online, share real opportunities you've discovered, and hold each other accountable.
               </p>
               
               <p>
