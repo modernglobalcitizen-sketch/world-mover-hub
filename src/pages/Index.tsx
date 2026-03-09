@@ -7,15 +7,10 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import EbookSection from "@/components/EbookSection";
-
-
-const Index = () => {
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
+h-screen flex flex-col bg-background">
       <NewsletterPopup />
       <Header />
-      <main className="flex-1">
-        <WebinarBanner />
+      <main className=WebinarBanner />
         <FounderSection />
         <Hero />
         <EbookSection />
