@@ -8,7 +8,7 @@ const features = [
   {
     icon: Users,
     title: "Breakout Rooms by Goal",
-    description: "Join rooms organized around your aspirations — whether you're pursuing a scholarship, remote work visa, or international fellowship.",
+    description: "Join rooms organized around your aspirations — whether you're pursuing a scholarship, finding remote work, or international fellowship.",
   },
   {
     icon: MessageCircle,
