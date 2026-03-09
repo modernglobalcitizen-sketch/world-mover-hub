@@ -260,6 +260,10 @@ const Dashboard = () => {
         setSavedOpportunities(savedResult.data as SavedOpportunity[]);
       }
 
+      if (savedJobsResult.data) {
+        setSavedRemoteJobs(savedJobsResult.data as SavedRemoteJob[]);
+      }
+
       if (fundAppResult.data) {
         setFundApplications(fundAppResult.data as FundApplication[]);
       }
