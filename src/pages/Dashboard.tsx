@@ -176,7 +176,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult, savedResult, fundAppResult, invitationsResult] = await Promise.all([
+      const [fundResult, appResult, profileResult, savedResult, savedJobsResult, fundAppResult, invitationsResult] = await Promise.all([
         supabase.from("fund_transactions").select("amount, transaction_type"),
         supabase
           .from("applications")
