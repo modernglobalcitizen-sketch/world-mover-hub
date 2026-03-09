@@ -3,12 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CountdownTimer from "@/components/CountdownTimer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
-  DollarSign, Clock, Bookmark, BookmarkCheck, Lock
+  DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
+  Play, Globe, Users
 } from "lucide-react";
 import { toast } from "sonner";
 
