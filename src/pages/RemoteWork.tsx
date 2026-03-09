@@ -137,6 +137,49 @@ const RemoteWork = () => {
           </div>
         </section>
 
+        {/* Webinar Promo */}
+        <section className="py-12 md:py-16 bg-card border-b border-border">
+          <div className="container max-w-4xl">
+            <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-soft">
+              <div className="bg-gradient-to-r from-primary via-primary/90 to-accent p-8 md:p-10 text-center">
+                <Badge className="mb-4 bg-white/20 text-white border-white/30">
+                  <Play className="h-3 w-3 mr-1" />
+                  Live Webinar · March 12, 2026
+                </Badge>
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-3">
+                  Your First $1,000 Online Plan
+                </h2>
+                <p className="text-white/85 max-w-xl mx-auto mb-6">
+                  A step-by-step blueprint for building your first online income stream — designed for the global diaspora.
+                </p>
+                <div className="grid sm:grid-cols-3 gap-4 max-w-lg mx-auto mb-8 text-white/90 text-sm">
+                  <div className="flex items-center justify-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    <span>Work from anywhere</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <Users className="h-4 w-4" />
+                    <span>Live Q&A session</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    <span>Just $30</span>
+                  </div>
+                </div>
+                <CountdownTimer />
+                <div className="mt-6">
+                  <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold text-lg px-8">
+                    <a href="/webinar">
+                      <Play className="h-4 w-4 mr-2" />
+                      Register Now
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Jobs (Admin-added) */}
         {adminJobs.length > 0 ? (
           <section className="py-16 md:py-24 bg-muted/30">
