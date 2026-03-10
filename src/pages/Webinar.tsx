@@ -144,7 +144,16 @@ const Webinar = () => {
               Ready to Start Earning Online?
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              Secure your spot for just $30. Limited seats available.
+              Secure your spot for just{" "}
+              {activePromo ? (
+                <>
+                  <span className="line-through text-muted-foreground/60">${BASE_PRICE}</span>{" "}
+                  <span className="text-primary font-bold">${finalPrice}</span>
+                </>
+              ) : (
+                `$${BASE_PRICE}`
+              )}
+              . Limited seats available.
             </p>
 
             <form onSubmit={handleRegister} className="space-y-4 text-left">
@@ -168,6 +177,25 @@ const Webinar = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+              <div>
+                <Label htmlFor="promo">Promo Code</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="promo"
+                    placeholder="Enter code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                  />
+                  <Button type="button" variant="outline" onClick={handleApplyPromo}>
+                    Apply
+                  </Button>
+                </div>
+                {appliedPromo && (
+                  <p className="text-sm text-primary mt-1 font-medium">
+                    ✓ {activePromo?.label} applied
+                  </p>
+                )}
+              </div>
               <Button
                 type="submit"
                 size="lg"
@@ -175,7 +203,7 @@ const Webinar = () => {
                 className="w-full font-semibold text-lg py-6 h-auto"
               >
                 <Play className="mr-2 h-5 w-5" />
-                {isSubmitting ? "Processing..." : "Register & Pay $30"}
+                {isSubmitting ? "Processing..." : `Register & Pay $${finalPrice}`}
               </Button>
             </form>
 
