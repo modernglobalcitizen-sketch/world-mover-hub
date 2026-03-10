@@ -21,12 +21,34 @@ const highlights = [
   { icon: Users, text: "Transferrable skills and where to find work" },
 ];
 
+const PROMO_CODES: Record<string, { discount: number; label: string }> = {
+  remotework: { discount: 0.2, label: "20% off" },
+};
+
+const BASE_PRICE = 30;
+
 const Webinar = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const activePromo = appliedPromo ? PROMO_CODES[appliedPromo] : null;
+  const finalPrice = activePromo ? BASE_PRICE * (1 - activePromo.discount) : BASE_PRICE;
+
+  const handleApplyPromo = () => {
+    const code = promoCode.trim().toLowerCase();
+    if (PROMO_CODES[code]) {
+      setAppliedPromo(code);
+      toast({ title: `Promo applied — ${PROMO_CODES[code].label}!` });
+    } else {
+      setAppliedPromo(null);
+      toast({ title: "Invalid promo code", variant: "destructive" });
+    }
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,30 +60,26 @@ const Webinar = () => {
 
     setIsSubmitting(true);
     try {
-      // Subscribe to MailerLite
       const { error } = await supabase.functions.invoke("newsletter-subscribe", {
         body: { email: email.trim(), name: name.trim() },
       });
 
       if (error) {
         if (import.meta.env.DEV) console.error("MailerLite subscription error:", error);
-        // Don't block registration if newsletter fails
       }
 
-      // Open PayPal in new tab
       window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
 
       toast({
         title: "Complete your payment",
-        description: "A PayPal tab has opened. Once payment is complete, you'll receive a confirmation email.",
+        description: `A PayPal tab has opened. Pay $${finalPrice} to secure your spot.`,
       });
     } catch (err) {
       if (import.meta.env.DEV) console.error("Registration error:", err);
-      // Still proceed even if MailerLite fails
       window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank");
       toast({
         title: "Complete your payment",
-        description: "A PayPal tab has opened. Once payment is complete, you'll receive a confirmation email.",
+        description: `A PayPal tab has opened. Pay $${finalPrice} to secure your spot.`,
       });
     } finally {
       setIsSubmitting(false);
