@@ -22,7 +22,7 @@ const highlights = [
 ];
 
 const PROMO_CODES: Record<string, { discount: number; label: string }> = {
-  remotework: { discount: 0.2, label: "20% off" },
+  global50: { discount: 0.5, label: "50% off" },
 };
 
 const BASE_PRICE = 30;
