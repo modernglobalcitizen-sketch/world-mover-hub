@@ -369,6 +369,39 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          created_at: string
+          id: string
+          is_approved: boolean
+          rating: number
+          review_text: string
+          reviewer_email: string | null
+          reviewer_name: string
+          service: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          rating: number
+          review_text: string
+          reviewer_email?: string | null
+          reviewer_name: string
+          service: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_approved?: boolean
+          rating?: number
+          review_text?: string
+          reviewer_email?: string | null
+          reviewer_name?: string
+          service?: string
+        }
+        Relationships: []
+      }
       room_invitations: {
         Row: {
           created_at: string
