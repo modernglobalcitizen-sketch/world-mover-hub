@@ -7,6 +7,7 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import EbookSection from "@/components/EbookSection";
+import ReviewsSection from "@/components/ReviewsSection";
 
 const Index = () => {
   return (
