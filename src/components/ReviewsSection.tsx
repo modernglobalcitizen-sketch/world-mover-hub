@@ -28,7 +28,6 @@ const SERVICES = [
   "Breakout Rooms",
   "Ebook",
   "Remote Jobs",
-  "Community Fund",
   "Overall Experience",
 ];
 
