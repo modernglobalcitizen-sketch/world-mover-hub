@@ -34,6 +34,21 @@ const careerRoadmapLinks = [
     description: "AI-powered career path planning tool",
     url: "https://www.kickresume.com/en/ai-career-map/",
   },
+  {
+    title: "CareerRoadmap",
+    description: "Interactive career path templates",
+    url: "https://www.notion.so/templates/categories/career",
+  },
+  {
+    title: "Roadmap.sh",
+    description: "Step-by-step guides for tech careers",
+    url: "https://roadmap.sh/",
+  },
+  {
+    title: "MyNextMove",
+    description: "Career exploration and planning tool",
+    url: "https://www.mynextmove.org/",
+  },
 ];
 
 const certificationLinks = [
