@@ -135,21 +135,6 @@ const visaImmigrationLinks = [
   },
 ];
 
-const resources = [
-  {
-    title: "Getting Started Guide",
-    description: "Learn how to make the most of your membership and explore opportunities.",
-    icon: BookOpen,
-    type: "Guide",
-  },
-  {
-    title: "Member Success Stories",
-    description: "Watch videos from members who have successfully relocated through our network.",
-    icon: Video,
-    type: "Video",
-  },
-];
-
 const Resources = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
