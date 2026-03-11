@@ -23,6 +23,7 @@ const Index = () => {
           <OpportunitiesSection limit={6} />
         </div>
         <HomeBreakoutRooms />
+        <ReviewsSection />
       </main>
       <Footer />
     </div>
