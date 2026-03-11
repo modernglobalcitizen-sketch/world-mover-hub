@@ -30,29 +30,9 @@ const countryGuideLinks = [
 
 const careerRoadmapLinks = [
   {
-    title: "CareerRoadmap",
-    description: "Visual career path planning tool",
-    url: "https://careeroadmap.com/",
-  },
-  {
-    title: "Notion Career Templates",
-    description: "Free career roadmap templates",
-    url: "https://www.notion.com/templates/collections/top-10-free-career-roadmaps-templates-in-notion",
-  },
-  {
-    title: "roadmap.sh",
-    description: "Developer-focused learning paths",
-    url: "https://roadmap.sh/",
-  },
-  {
-    title: "B2B Marketing Career Guide",
-    description: "Marketing career progression",
-    url: "https://cxl.com/b2b-marketing-career-guide/",
-  },
-  {
-    title: "Data Analyst vs Business Analyst",
-    description: "Analytics career comparison",
-    url: "https://roadmap.sh/data-analyst/vs-business-analyst",
+    title: "Kickresume AI Career Map",
+    description: "AI-powered career path planning tool",
+    url: "https://www.kickresume.com/en/ai-career-map/",
   },
 ];
 
