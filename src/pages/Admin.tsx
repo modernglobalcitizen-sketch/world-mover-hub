@@ -15,6 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
 import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
+import ReviewsAdmin from "@/components/ReviewsAdmin";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
