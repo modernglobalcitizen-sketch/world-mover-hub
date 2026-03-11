@@ -927,6 +927,10 @@ const Admin = () => {
               <TabsContent value="remote-jobs">
                 <RemoteJobsAdmin />
               </TabsContent>
+
+              <TabsContent value="reviews">
+                <ReviewsAdmin />
+              </TabsContent>
             </Tabs>
           </div>
         </div>
