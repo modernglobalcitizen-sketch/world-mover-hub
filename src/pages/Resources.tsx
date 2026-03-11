@@ -158,30 +158,6 @@ const Resources = () => {
         {/* Resources Grid */}
         <section className="py-16">
           <div className="container">
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {resources.map((resource, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <resource.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                        {resource.type}
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl">{resource.title}</CardTitle>
-                    <CardDescription>{resource.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      Learn More
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
 
             {/* Country Guides Section */}
             <div className="max-w-4xl mx-auto mt-12">
