@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
-  Play, Globe, Users
+  Globe, Users
 } from "lucide-react";
 import { toast } from "sonner";
 
