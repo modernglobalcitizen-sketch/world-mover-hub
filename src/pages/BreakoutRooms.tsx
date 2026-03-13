@@ -479,10 +479,12 @@ const BreakoutRooms = () => {
   }, [messages]);
 
   const fetchOpportunities = async () => {
+    const today = new Date().toISOString().split("T")[0];
     const { data } = await supabase
       .from("opportunities")
       .select("id, title, category, deadline")
       .eq("is_active", true)
+      .or(`deadline.is.null,deadline.gte.${today}`)
       .order("title");
     setOpportunities(data || []);
   };

@@ -55,10 +55,12 @@ const OpportunitiesSection = ({ limit, showViewAll = true }: OpportunitiesSectio
 
   useEffect(() => {
     const fetchOpportunities = async () => {
+      const today = new Date().toISOString().split("T")[0];
       const { data, error } = await supabase
         .from("opportunities")
         .select("*")
         .eq("is_active", true)
+        .or(`deadline.is.null,deadline.gte.${today}`)
         .order("created_at", { ascending: false });
 
       if (error) {
