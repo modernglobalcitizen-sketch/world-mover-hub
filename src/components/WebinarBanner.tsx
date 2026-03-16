@@ -42,7 +42,7 @@ const WebinarBanner = () => {
         </span>
 
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-          Your First $1,000 Online Plan
+          Building a Global Remote Career
         </h1>
 
         <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-10">
