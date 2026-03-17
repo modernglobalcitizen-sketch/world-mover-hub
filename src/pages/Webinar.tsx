@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare } from "lucide-react";
+import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,13 @@ import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+import { getLocalWebinarTime } from "@/lib/webinar";
+
 const webinars = [
   {
     id: "call-center",
     title: "Call Center to Remote Career",
+    date: getLocalWebinarTime(),
     tagline: "Transform your call center experience into a thriving remote career",
     description:
       "Learn how to leverage your communication skills, customer service expertise, and problem-solving abilities to land high-paying remote roles — no degree required.",
@@ -27,6 +30,7 @@ const webinars = [
   {
     id: "global-remote",
     title: "Building a Global Remote Career",
+    date: null,
     tagline: "A step-by-step blueprint for building your first online income stream",
     description:
       "Designed for the global diaspora — learn how to earn online from anywhere, build invaluable skills, and create a career without borders.",
@@ -95,6 +99,14 @@ const Webinar = () => {
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
                   {webinar.title}
                 </h2>
+                {webinar.date ? (
+                  <p className="flex items-center justify-center gap-2 text-base font-semibold text-primary mb-3">
+                    <CalendarDays className="h-4 w-4" />
+                    {webinar.date}
+                  </p>
+                ) : (
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Date coming soon</p>
+                )}
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   {webinar.description}
                 </p>
