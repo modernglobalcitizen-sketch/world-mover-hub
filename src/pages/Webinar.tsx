@@ -30,6 +30,7 @@ const webinars = [
   {
     id: "global-remote",
     title: "Building a Global Remote Career",
+    date: null,
     tagline: "A step-by-step blueprint for building your first online income stream",
     description:
       "Designed for the global diaspora — learn how to earn online from anywhere, build invaluable skills, and create a career without borders.",
