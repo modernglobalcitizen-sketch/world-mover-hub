@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare } from "lucide-react";
+import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
