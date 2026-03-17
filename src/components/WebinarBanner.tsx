@@ -42,11 +42,11 @@ const WebinarBanner = () => {
         </span>
 
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-          Building a Global Remote Career
+          Call Center to Remote Career
         </h1>
 
         <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-10">
-          A step-by-step blueprint for building your first online income stream — designed for the global diaspora. Sign up to be notified when we announce the date.
+          Transform your call center experience into a thriving remote career — learn the skills, strategies, and steps to break free. Sign up to be notified when we announce the date.
         </p>
 
         <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-5">
