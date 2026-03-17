@@ -99,6 +99,14 @@ const Webinar = () => {
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
                   {webinar.title}
                 </h2>
+                {webinar.date ? (
+                  <p className="flex items-center justify-center gap-2 text-base font-semibold text-primary mb-3">
+                    <CalendarDays className="h-4 w-4" />
+                    {webinar.date}
+                  </p>
+                ) : (
+                  <p className="text-sm font-medium text-muted-foreground mb-3">Date coming soon</p>
+                )}
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   {webinar.description}
                 </p>

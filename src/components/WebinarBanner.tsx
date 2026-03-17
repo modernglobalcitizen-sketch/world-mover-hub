@@ -46,8 +46,13 @@ const WebinarBanner = () => {
           Call Center to Remote Career
         </h1>
 
+        <p className="flex items-center justify-center gap-2 text-lg font-semibold text-primary-foreground/90 mb-4">
+          <CalendarDays className="h-5 w-5" />
+          {getLocalWebinarTime()}
+        </p>
+
         <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-10">
-          Transform your call center experience into a thriving remote career — learn the skills, strategies, and steps to break free. Sign up to be notified when we announce the date.
+          Transform your call center experience into a thriving remote career — learn the skills, strategies, and steps to break free.
         </p>
 
         <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-5">
