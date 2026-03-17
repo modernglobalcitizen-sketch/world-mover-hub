@@ -11,3 +11,25 @@ export function getLocalWebinarTime(): string {
     timeZoneName: "long",
   });
 }
+
+const POPULAR_TIMEZONES = [
+  { zone: "America/New_York", label: "EST" },
+  { zone: "America/Chicago", label: "CST" },
+  { zone: "America/Los_Angeles", label: "PST" },
+  { zone: "Europe/London", label: "GMT" },
+  { zone: "Africa/Lagos", label: "WAT" },
+  { zone: "Africa/Nairobi", label: "EAT" },
+  { zone: "Asia/Kolkata", label: "IST" },
+  { zone: "Asia/Manila", label: "PHT" },
+];
+
+export function getWebinarTimeInZones(): { label: string; time: string }[] {
+  return POPULAR_TIMEZONES.map(({ zone, label }) => ({
+    label,
+    time: WEBINAR_DATE.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: zone,
+    }),
+  }));
+}
