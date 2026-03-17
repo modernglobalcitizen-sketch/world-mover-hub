@@ -100,10 +100,19 @@ const Webinar = () => {
                   {webinar.title}
                 </h2>
                 {webinar.date ? (
-                  <p className="flex items-center justify-center gap-2 text-base font-semibold text-primary mb-3">
-                    <CalendarDays className="h-4 w-4" />
-                    {webinar.date}
-                  </p>
+                  <>
+                    <p className="flex items-center justify-center gap-2 text-base font-semibold text-primary mb-2">
+                      <CalendarDays className="h-4 w-4" />
+                      {webinar.date}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mb-3">
+                      {getWebinarTimeInZones().map(({ label, time }) => (
+                        <span key={label} className="text-xs text-muted-foreground font-medium">
+                          {time} <span className="text-muted-foreground/70">{label}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </>
                 ) : (
                   <p className="text-sm font-medium text-muted-foreground mb-3">Date coming soon</p>
                 )}
