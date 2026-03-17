@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Bell, ArrowRight, Sparkles, CalendarDays } from "lucide-react";
-import { getLocalWebinarTime } from "@/lib/webinar";
+import { getLocalWebinarTime, getWebinarTimeInZones } from "@/lib/webinar";
 
 const WebinarBanner = () => {
   const [email, setEmail] = useState("");
