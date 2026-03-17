@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Bell, ArrowRight, Sparkles, CalendarDays } from "lucide-react";
-import { getLocalWebinarTime } from "@/lib/webinar";
+import { getLocalWebinarTime, getWebinarTimeInZones } from "@/lib/webinar";
 
 const WebinarBanner = () => {
   const [email, setEmail] = useState("");
@@ -46,10 +46,18 @@ const WebinarBanner = () => {
           Call Center to Remote Career
         </h1>
 
-        <p className="flex items-center justify-center gap-2 text-lg font-semibold text-primary-foreground/90 mb-4">
+        <p className="flex items-center justify-center gap-2 text-lg font-semibold text-primary-foreground/90 mb-2">
           <CalendarDays className="h-5 w-5" />
           {getLocalWebinarTime()}
         </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mb-4">
+          {getWebinarTimeInZones().map(({ label, time }) => (
+            <span key={label} className="text-sm text-primary-foreground/70 font-medium">
+              {time} <span className="text-primary-foreground/50">{label}</span>
+            </span>
+          ))}
+        </div>
 
         <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-10">
           Transform your call center experience into a thriving remote career — learn the skills, strategies, and steps to break free.
