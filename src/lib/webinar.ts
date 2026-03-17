@@ -20,6 +20,7 @@ const POPULAR_TIMEZONES = [
   { zone: "Africa/Lagos", label: "WAT" },
   { zone: "Africa/Nairobi", label: "EAT" },
   { zone: "Asia/Kolkata", label: "IST" },
+  { zone: "Asia/Bangkok", label: "ICT" },
   { zone: "Asia/Manila", label: "PHT" },
 ];
 
