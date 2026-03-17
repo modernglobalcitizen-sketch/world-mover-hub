@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles } from "lucide-react";
+import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,12 +9,35 @@ import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const highlights = [
-  { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
-  { icon: Users, text: "Learn the invaluable skills AND how to use them" },
-  { icon: DollarSign, text: "Step-by-step plan you can start implementing today" },
-  { icon: Globe, text: "Networking virtually and building an impressive online presence" },
-  { icon: Users, text: "Transferrable skills and where to find work" },
+const webinars = [
+  {
+    id: "call-center",
+    title: "Call Center to Remote Career",
+    tagline: "Transform your call center experience into a thriving remote career",
+    description:
+      "Learn how to leverage your communication skills, customer service expertise, and problem-solving abilities to land high-paying remote roles — no degree required.",
+    highlights: [
+      { icon: Headphones, text: "Turn your call center skills into remote-ready assets" },
+      { icon: Laptop, text: "Discover remote roles perfect for your experience" },
+      { icon: TrendingUp, text: "Step-by-step plan to transition from office to remote" },
+      { icon: MessageSquare, text: "Build an online presence that attracts recruiters" },
+      { icon: DollarSign, text: "Negotiate better pay in the remote job market" },
+    ],
+  },
+  {
+    id: "global-remote",
+    title: "Building a Global Remote Career",
+    tagline: "A step-by-step blueprint for building your first online income stream",
+    description:
+      "Designed for the global diaspora — learn how to earn online from anywhere, build invaluable skills, and create a career without borders.",
+    highlights: [
+      { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
+      { icon: Users, text: "Learn the invaluable skills AND how to use them" },
+      { icon: DollarSign, text: "Step-by-step plan you can start implementing today" },
+      { icon: Globe, text: "Networking virtually and building an impressive online presence" },
+      { icon: Users, text: "Transferrable skills and where to find work" },
+    ],
+  },
 ];
 
 const Webinar = () => {
@@ -34,7 +57,7 @@ const Webinar = () => {
       await supabase.functions.invoke("newsletter-subscribe", {
         body: { email: email.trim(), name: name.trim() },
       });
-      toast({ title: "You're on the list!", description: "We'll notify you when the webinar date is announced." });
+      toast({ title: "You're on the list!", description: "We'll notify you when the webinar dates are announced." });
       setName("");
       setEmail("");
     } catch {
@@ -53,37 +76,44 @@ const Webinar = () => {
           <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
             <span className="inline-block mb-4 rounded-full bg-primary-foreground/20 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur-sm">
               <Sparkles className="inline h-4 w-4 mr-1 -mt-0.5" />
-              Upcoming Webinar
+              Upcoming Webinars
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-              Building a Global Remote Career
+              Our Upcoming Webinars
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
-              A step-by-step blueprint for building your first online income stream — designed for the global diaspora. Date coming soon!
+              Practical, actionable sessions designed for the global diaspora. Dates coming soon!
             </p>
           </div>
         </section>
 
-        {/* What You'll Learn */}
-        <section className="py-16 md:py-20">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-3xl font-display font-bold text-foreground text-center mb-12">
-              What You'll Get
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {highlights.map((item, i) => (
-                <Card key={i} className="border-border/60">
-                  <CardContent className="flex items-start gap-4 p-6">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <item.icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <p className="text-foreground font-medium">{item.text}</p>
-                  </CardContent>
-                </Card>
-              ))}
+        {/* Webinar Cards */}
+        {webinars.map((webinar) => (
+          <section key={webinar.id} className="py-16 md:py-20 odd:bg-background even:bg-muted/30">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+                  {webinar.title}
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  {webinar.description}
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                {webinar.highlights.map((item, i) => (
+                  <Card key={i} className="border-border/60">
+                    <CardContent className="flex items-start gap-4 p-6">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                        <item.icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <p className="text-foreground font-medium">{item.text}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ))}
 
         {/* Interest Form */}
         <section className="py-16 md:py-20 bg-card">
@@ -95,7 +125,7 @@ const Webinar = () => {
               Interested? Get Notified
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              We'll let you know as soon as the webinar date and details are announced.
+              We'll let you know as soon as the webinar dates and details are announced.
             </p>
 
             <form onSubmit={handleSubscribe} className="space-y-4 text-left">
@@ -131,7 +161,7 @@ const Webinar = () => {
             </form>
 
             <p className="mt-4 text-sm text-muted-foreground">
-              No spam. We'll only email you about this webinar.
+              No spam. We'll only email you about these webinars.
             </p>
           </div>
         </section>
