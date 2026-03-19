@@ -6,7 +6,6 @@ import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
-import EbookSection from "@/components/EbookSection";
 import ReviewsSection from "@/components/ReviewsSection";
 
 const Index = () => {
@@ -17,7 +16,6 @@ const Index = () => {
         <WebinarBanner />
         <FounderSection />
         <Hero />
-        <EbookSection />
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
