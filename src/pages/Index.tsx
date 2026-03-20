@@ -16,12 +16,12 @@ const Index = () => {
         <WebinarBanner />
         <FounderSection />
         <Hero />
+        <ReviewsSection />
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
         </div>
         <HomeBreakoutRooms />
-        <ReviewsSection />
       </main>
       <Footer />
     </div>
