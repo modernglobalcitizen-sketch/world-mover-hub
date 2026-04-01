@@ -17,11 +17,6 @@ import { toast } from "sonner";
 import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
 import BreakoutRoomsSuggestion from "@/components/BreakoutRoomsSuggestion";
 
-interface FundSummary {
-  totalContributions: number;
-  totalDisbursed: number;
-  balance: number;
-}
 
 interface Application {
   id: string;
