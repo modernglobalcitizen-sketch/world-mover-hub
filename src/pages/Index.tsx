@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebinarBanner from "@/components/WebinarBanner";
 import Hero from "@/components/Hero";
 import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
@@ -13,7 +12,6 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       <main className="flex-1">
-        <WebinarBanner />
         <FounderSection />
         <Hero />
         <ReviewsSection />
