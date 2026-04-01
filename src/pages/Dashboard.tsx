@@ -105,11 +105,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [fundSummary, setFundSummary] = useState<FundSummary>({
-    totalContributions: 0,
-    totalDisbursed: 0,
-    balance: 0,
-  });
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [savedRemoteJobs, setSavedRemoteJobs] = useState<SavedRemoteJob[]>([]);
