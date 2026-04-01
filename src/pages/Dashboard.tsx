@@ -127,7 +127,7 @@ const Dashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [savedRemoteJobs, setSavedRemoteJobs] = useState<SavedRemoteJob[]>([]);
-  const [fundApplications, setFundApplications] = useState<FundApplication[]>([]);
+  
   const [roomInvitations, setRoomInvitations] = useState<RoomInvitation[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null; fieldOfWork: string | null }>({
     isFounder: false,
