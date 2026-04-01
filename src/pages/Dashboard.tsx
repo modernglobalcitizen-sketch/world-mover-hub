@@ -52,15 +52,6 @@ interface SavedOpportunity {
   };
 }
 
-interface FundApplication {
-  id: string;
-  amount_requested: number;
-  purpose: string;
-  description: string;
-  status: string;
-  admin_notes?: string | null; // Optional - only visible to admins via base table
-  created_at: string;
-}
 
 interface RoomInvitation {
   id: string;
