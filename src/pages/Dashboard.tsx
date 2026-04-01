@@ -342,43 +342,6 @@ const Dashboard = () => {
     setSavingDisplayName(false);
   };
 
-  const handleSubmitFundApplication = async () => {
-    if (!fundFormData.amount_requested || !fundFormData.purpose || !fundFormData.description) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    const amount = parseFloat(fundFormData.amount_requested);
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid amount");
-      return;
-    }
-
-    setSubmitting(true);
-
-    const { data, error } = await supabase
-      .from("fund_applications")
-      .insert({
-        user_id: session!.user.id,
-        amount_requested: amount,
-        purpose: fundFormData.purpose,
-        description: fundFormData.description,
-      })
-      .select()
-      .single();
-
-    if (error) {
-      toast.error("Failed to submit application");
-      if (import.meta.env.DEV) console.error(error);
-    } else {
-      toast.success("Funding application submitted successfully!");
-      setFundApplications([data, ...fundApplications]);
-      setFundFormData({ amount_requested: "", purpose: "", description: "" });
-      setFundDialogOpen(false);
-    }
-
-    setSubmitting(false);
-  };
 
   const handleRespondToInvitation = async (invitationId: string, accept: boolean) => {
     if (!session) return;
