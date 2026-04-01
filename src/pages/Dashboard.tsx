@@ -256,9 +256,6 @@ const Dashboard = () => {
         setSavedRemoteJobs(savedJobsResult.data as SavedRemoteJob[]);
       }
 
-      if (fundAppResult.data) {
-        setFundApplications(fundAppResult.data as FundApplication[]);
-      }
 
       // Fetch room and inviter details for invitations
       if (invitationsResult.data && invitationsResult.data.length > 0) {
