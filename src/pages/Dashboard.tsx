@@ -470,44 +470,6 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              <Card className="shadow-soft">
-                <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div>
-                    <CardDescription>Total Fund Contributions</CardDescription>
-                    <CardTitle className="text-2xl">${fundSummary.totalContributions.toLocaleString()}</CardTitle>
-                  </div>
-                </CardHeader>
-              </Card>
-
-              <Card className="shadow-soft">
-                <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500/10">
-                    <Globe className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div>
-                    <CardDescription>Members Supported</CardDescription>
-                    <CardTitle className="text-2xl">${fundSummary.totalDisbursed.toLocaleString()}</CardTitle>
-                  </div>
-                </CardHeader>
-              </Card>
-
-              <Card className="shadow-soft sm:col-span-2 lg:col-span-1">
-                <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <DollarSign className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <CardDescription>Current Fund Balance</CardDescription>
-                    <CardTitle className="text-2xl">${fundSummary.balance.toLocaleString()}</CardTitle>
-                  </div>
-                </CardHeader>
-              </Card>
-            </div>
 
             {/* Room Invitations */}
             {roomInvitations.length > 0 && (
