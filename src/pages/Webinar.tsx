@@ -15,7 +15,7 @@ const webinars = [
   {
     id: "call-center",
     title: "Call Center to Remote Career",
-    date: getLocalWebinarTime(),
+    date: null,
     tagline: "Transform your call center experience into a thriving remote career",
     description:
       "Learn how to leverage your communication skills, customer service expertise, and problem-solving abilities to land high-paying remote roles — no degree required.",
