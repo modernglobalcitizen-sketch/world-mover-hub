@@ -198,11 +198,6 @@ const Dashboard = () => {
           .eq("user_id", session.user.id)
           .order("created_at", { ascending: false }),
         supabase
-          .from("fund_applications_user")
-          .select("*")
-          .eq("user_id", session.user.id)
-          .order("created_at", { ascending: false }),
-        supabase
           .from("room_invitations")
           .select("*")
           .eq("invited_user_id", session.user.id)
