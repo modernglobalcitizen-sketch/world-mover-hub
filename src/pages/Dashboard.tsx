@@ -149,8 +149,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [fundResult, appResult, profileResult, savedResult, savedJobsResult, invitationsResult] = await Promise.all([
-        supabase.from("fund_transactions").select("amount, transaction_type"),
+      const [appResult, profileResult, savedResult, savedJobsResult, invitationsResult] = await Promise.all([
         supabase
           .from("applications")
           .select(`
@@ -195,20 +194,6 @@ const Dashboard = () => {
           .order("created_at", { ascending: false }),
       ]);
 
-      if (fundResult.data) {
-        const contributions = fundResult.data
-          .filter((t) => t.transaction_type === "income")
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-        const disbursed = fundResult.data
-          .filter((t) => t.transaction_type === "expense")
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-
-        setFundSummary({
-          totalContributions: contributions,
-          totalDisbursed: disbursed,
-          balance: contributions - disbursed,
-        });
-      }
 
       if (appResult.data) {
         setApplications(appResult.data as Application[]);
