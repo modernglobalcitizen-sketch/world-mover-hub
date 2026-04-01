@@ -139,16 +139,8 @@ const Dashboard = () => {
   const [newDisplayName, setNewDisplayName] = useState("");
   const [savingDisplayName, setSavingDisplayName] = useState(false);
   
-  // Fund application form
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [removingJobId, setRemovingJobId] = useState<string | null>(null);
-  const [fundDialogOpen, setFundDialogOpen] = useState(false);
-  const [fundFormData, setFundFormData] = useState({
-    amount_requested: "",
-    purpose: "",
-    description: "",
-  });
-  const [submitting, setSubmitting] = useState(false);
   const [respondingToInvite, setRespondingToInvite] = useState<string | null>(null);
 
   useEffect(() => {
