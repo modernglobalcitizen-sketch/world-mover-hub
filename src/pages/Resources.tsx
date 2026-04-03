@@ -30,6 +30,11 @@ const countryGuideLinks = [
 
 const careerRoadmapLinks = [
   {
+    title: "Coursera Career Quiz",
+    description: "Discover what career you should be in",
+    url: "https://www.coursera.org/resources/career-quiz",
+  },
+  {
     title: "Kickresume AI Career Map",
     description: "AI-powered career path planning tool",
     url: "https://www.kickresume.com/en/ai-career-map/",
