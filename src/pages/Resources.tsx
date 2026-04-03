@@ -426,6 +426,7 @@ const Resources = () => {
               </Card>
             </div>
 
+            <div className="mt-12 text-center">
               <p className="text-muted-foreground">
                 More resources coming soon. Check back regularly for updates!
               </p>
