@@ -162,27 +162,27 @@ const Resources = () => {
         <section className="py-16">
           <div className="container">
 
-            {/* Country Guides Section */}
+            {/* Career Roadmaps Section */}
             <div className="max-w-4xl mx-auto mt-12">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-primary/10">
-                      <Globe className="h-5 w-5 text-primary" />
+                      <Compass className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Guide
+                      Career
                     </span>
                   </div>
-                  <CardTitle className="text-xl">Country Guides</CardTitle>
+                  <CardTitle className="text-xl">Career Roadmaps</CardTitle>
                   <CardDescription>
-                    Detailed guides on living and working in different countries around the world.
+                    Plan your career path with curated guides and templates for various industries.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Separator className="mb-4" />
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {countryGuideLinks.map((link, index) => (
+                    {careerRoadmapLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link.url}
@@ -206,27 +206,27 @@ const Resources = () => {
               </Card>
             </div>
 
-            {/* Career Roadmaps Section */}
+            {/* Online Networking Section */}
             <div className="max-w-4xl mx-auto mt-6">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-primary/10">
-                      <Compass className="h-5 w-5 text-primary" />
+                      <Users className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Career
+                      Networking
                     </span>
                   </div>
-                  <CardTitle className="text-xl">Career Roadmaps</CardTitle>
+                  <CardTitle className="text-xl">Online Networking Opportunities</CardTitle>
                   <CardDescription>
-                    Plan your career path with curated guides and templates for various industries.
+                    Connect with professionals and attend virtual networking events around the globe.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Separator className="mb-4" />
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {careerRoadmapLinks.map((link, index) => (
+                    {networkingLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link.url}
@@ -338,27 +338,27 @@ const Resources = () => {
               </Card>
             </div>
 
-            {/* Visa & Immigration Section */}
+            {/* Country Guides Section */}
             <div className="max-w-4xl mx-auto mt-6">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-primary/10">
-                      <Plane className="h-5 w-5 text-primary" />
+                      <Globe className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Immigration
+                      Guide
                     </span>
                   </div>
-                  <CardTitle className="text-xl">Visa & Immigration Tips</CardTitle>
+                  <CardTitle className="text-xl">Country Guides</CardTitle>
                   <CardDescription>
-                    Essential resources for navigating international moves and visa applications.
+                    Detailed guides on living and working in different countries around the world.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Separator className="mb-4" />
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {visaImmigrationLinks.map((link, index) => (
+                    {countryGuideLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link.url}
@@ -382,27 +382,27 @@ const Resources = () => {
               </Card>
             </div>
 
-            {/* Online Networking Section */}
+            {/* Visa & Immigration Section */}
             <div className="max-w-4xl mx-auto mt-6">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="p-2 rounded-lg bg-primary/10">
-                      <Users className="h-5 w-5 text-primary" />
+                      <Plane className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      Networking
+                      Immigration
                     </span>
                   </div>
-                  <CardTitle className="text-xl">Online Networking Opportunities</CardTitle>
+                  <CardTitle className="text-xl">Visa & Immigration Tips</CardTitle>
                   <CardDescription>
-                    Connect with professionals and attend virtual networking events around the globe.
+                    Essential resources for navigating international moves and visa applications.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Separator className="mb-4" />
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {networkingLinks.map((link, index) => (
+                    {visaImmigrationLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link.url}
