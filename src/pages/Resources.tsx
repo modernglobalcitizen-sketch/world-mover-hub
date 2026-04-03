@@ -40,9 +40,9 @@ const careerRoadmapLinks = [
     url: "https://www.kickresume.com/en/ai-career-map/",
   },
   {
-    title: "CareerRoadmap",
-    description: "Interactive career path templates",
-    url: "https://www.notion.so/templates/categories/career",
+    title: "Coursera Career Quiz",
+    description: "Discover what career you should be in",
+    url: "https://www.coursera.org/resources/career-quiz",
   },
   {
     title: "Roadmap.sh",
