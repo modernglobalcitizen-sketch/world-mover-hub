@@ -130,6 +130,14 @@ const visaImmigrationLinks = [
   },
 ];
 
+const networkingLinks = [
+  {
+    title: "b2match",
+    description: "Discover and join online networking events worldwide",
+    url: "https://www.b2match.com/explore",
+  },
+];
+
 const Resources = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
