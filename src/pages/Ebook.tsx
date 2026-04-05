@@ -22,7 +22,7 @@ const ebooks: EbookItem[] = [
     title: "Your International Guide to Work, Volunteer, and Travel",
     cover: ebookCover,
     price: "$25",
-    description: "Everything you need to know about seasonal work, volunteering abroad, and building your travel history.",
+    description: "Real job opportunities for people from the global south — job boards, exchange programs, farmwork, and more. Everything you need to know about seasonal work, volunteering abroad, and building your travel history.",
     paypalLink: "https://www.paypal.com/ncp/payment/SRE6FSADGNJQQ",
   },
   {
