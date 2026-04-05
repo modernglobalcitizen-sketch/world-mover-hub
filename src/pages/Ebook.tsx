@@ -29,7 +29,7 @@ const ebooks: EbookItem[] = [
     title: "Top Countries for Work Visas",
     cover: workVisasCover,
     price: "$25",
-    description: "Discover the countries that actually want you — with the highest work visa approval rates and how to apply.",
+    description: "Countries with work visa approval rates over 80% — find out where to look for work, how to find housing, visa options and important documents, and more.",
     paypalLink: "https://www.paypal.com/ncp/payment/USBYCBHF2X25N",
   },
 ];
