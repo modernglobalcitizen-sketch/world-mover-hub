@@ -7,10 +7,12 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
-  Globe, Users
+  Globe, Users, Send, CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -33,6 +35,37 @@ const RemoteWork = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [applyName, setApplyName] = useState("");
+  const [applyEmail, setApplyEmail] = useState("");
+  const [applyDetails, setApplyDetails] = useState("");
+  const [applySubmitting, setApplySubmitting] = useState(false);
+  const [applySubmitted, setApplySubmitted] = useState(false);
+
+  const handleApplySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!applyName.trim() || !applyEmail.trim()) {
+      toast.error("Please fill in your name and email");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(applyEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    setApplySubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: { email: applyEmail.trim(), name: applyName.trim() },
+      });
+      if (error) throw error;
+      setApplySubmitted(true);
+      toast.success("Application submitted! We'll be in touch soon.");
+    } catch {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setApplySubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -133,6 +166,49 @@ const RemoteWork = () => {
                   <a href="/auth">Sign Up to Apply for Jobs</a>
                 </Button>
               </div>
+            )}
+          </div>
+        </section>
+
+        {/* Apply for Help */}
+        <section className="py-12 md:py-16 bg-card border-b border-border">
+          <div className="container max-w-2xl">
+            <div className="text-center mb-8">
+              <Send className="h-8 w-8 text-primary mx-auto mb-3" />
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-2">
+                Need Help Finding a Remote Job?
+              </h2>
+              <p className="text-muted-foreground">
+                Let us help you find the right remote opportunity. Submit your details and we'll personally assist you in your job search.
+              </p>
+            </div>
+
+            {applySubmitted ? (
+              <div className="text-center py-10 bg-accent/50 rounded-lg border border-border">
+                <CheckCircle className="h-14 w-14 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Application Received!</h3>
+                <p className="text-muted-foreground">We'll review your details and reach out to help you find a remote job.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleApplySubmit} className="space-y-4 bg-accent/30 p-6 rounded-lg border border-border">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="apply-name" className="block text-sm font-medium text-foreground mb-1">Full Name *</label>
+                    <Input id="apply-name" value={applyName} onChange={(e) => setApplyName(e.target.value)} placeholder="Your full name" maxLength={100} required />
+                  </div>
+                  <div>
+                    <label htmlFor="apply-email" className="block text-sm font-medium text-foreground mb-1">Email Address *</label>
+                    <Input id="apply-email" type="email" value={applyEmail} onChange={(e) => setApplyEmail(e.target.value)} placeholder="you@example.com" maxLength={255} required />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
+                  <Textarea id="apply-details" value={applyDetails} onChange={(e) => setApplyDetails(e.target.value)} placeholder="e.g. customer service, data entry, virtual assistant, tech..." maxLength={1000} rows={3} />
+                </div>
+                <Button type="submit" className="w-full" disabled={applySubmitting}>
+                  {applySubmitting ? "Submitting..." : "Help Me Find a Remote Job"}
+                </Button>
+              </form>
             )}
           </div>
         </section>
