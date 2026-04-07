@@ -54,9 +54,13 @@ const RemoteWork = () => {
     }
     setApplySubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
-        body: { email: applyEmail.trim(), name: applyName.trim() },
-      });
+      const { error } = await supabase
+        .from("remote_job_applications")
+        .insert({
+          name: applyName.trim(),
+          email: applyEmail.trim(),
+          details: applyDetails.trim() || null,
+        });
       if (error) throw error;
       setApplySubmitted(true);
       toast.success("Application submitted! We'll be in touch soon.");
