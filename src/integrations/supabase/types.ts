@@ -324,6 +324,33 @@ export type Database = {
         }
         Relationships: []
       }
+      remote_job_applications: {
+        Row: {
+          created_at: string
+          details: string | null
+          email: string
+          id: string
+          name: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          email: string
+          id?: string
+          name: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          email?: string
+          id?: string
+          name?: string
+          status?: string
+        }
+        Relationships: []
+      }
       remote_jobs: {
         Row: {
           apply_url: string | null

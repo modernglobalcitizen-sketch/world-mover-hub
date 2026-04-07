@@ -12,9 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
 import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
+import RemoteJobApplicationsAdmin from "@/components/RemoteJobApplicationsAdmin";
 import ReviewsAdmin from "@/components/ReviewsAdmin";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -483,6 +484,10 @@ const Admin = () => {
                   <Star className="h-4 w-4" />
                   Reviews
                 </TabsTrigger>
+                <TabsTrigger value="job-applications" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Job Help Requests
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -930,6 +935,10 @@ const Admin = () => {
 
               <TabsContent value="reviews">
                 <ReviewsAdmin />
+              </TabsContent>
+
+              <TabsContent value="job-applications">
+                <RemoteJobApplicationsAdmin />
               </TabsContent>
             </Tabs>
           </div>
