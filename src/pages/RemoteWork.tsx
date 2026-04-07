@@ -7,10 +7,12 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
-  Globe, Users
+  Globe, Users, Send, CheckCircle
 } from "lucide-react";
 import { toast } from "sonner";
 
