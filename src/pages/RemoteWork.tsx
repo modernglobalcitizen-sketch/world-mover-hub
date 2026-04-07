@@ -170,6 +170,49 @@ const RemoteWork = () => {
           </div>
         </section>
 
+        {/* Apply for Help */}
+        <section className="py-12 md:py-16 bg-card border-b border-border">
+          <div className="container max-w-2xl">
+            <div className="text-center mb-8">
+              <Send className="h-8 w-8 text-primary mx-auto mb-3" />
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-2">
+                Need Help Finding a Remote Job?
+              </h2>
+              <p className="text-muted-foreground">
+                Let us help you find the right remote opportunity. Submit your details and we'll personally assist you in your job search.
+              </p>
+            </div>
+
+            {applySubmitted ? (
+              <div className="text-center py-10 bg-accent/50 rounded-lg border border-border">
+                <CheckCircle className="h-14 w-14 text-primary mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Application Received!</h3>
+                <p className="text-muted-foreground">We'll review your details and reach out to help you find a remote job.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleApplySubmit} className="space-y-4 bg-accent/30 p-6 rounded-lg border border-border">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="apply-name" className="block text-sm font-medium text-foreground mb-1">Full Name *</label>
+                    <Input id="apply-name" value={applyName} onChange={(e) => setApplyName(e.target.value)} placeholder="Your full name" maxLength={100} required />
+                  </div>
+                  <div>
+                    <label htmlFor="apply-email" className="block text-sm font-medium text-foreground mb-1">Email Address *</label>
+                    <Input id="apply-email" type="email" value={applyEmail} onChange={(e) => setApplyEmail(e.target.value)} placeholder="you@example.com" maxLength={255} required />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
+                  <Textarea id="apply-details" value={applyDetails} onChange={(e) => setApplyDetails(e.target.value)} placeholder="e.g. customer service, data entry, virtual assistant, tech..." maxLength={1000} rows={3} />
+                </div>
+                <Button type="submit" className="w-full" disabled={applySubmitting}>
+                  {applySubmitting ? "Submitting..." : "Help Me Find a Remote Job"}
+                </Button>
+              </form>
+            )}
+          </div>
+        </section>
+
         {/* Webinar Promo */}
         <section className="py-12 md:py-16 bg-card border-b border-border">
           <div className="container max-w-4xl">
