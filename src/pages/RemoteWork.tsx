@@ -30,6 +30,12 @@ interface AdminRemoteJob {
   created_at: string;
 }
 
+  const [applyName, setApplyName] = useState("");
+  const [applyEmail, setApplyEmail] = useState("");
+  const [applyDetails, setApplyDetails] = useState("");
+  const [applySubmitting, setApplySubmitting] = useState(false);
+  const [applySubmitted, setApplySubmitted] = useState(false);
+
 const RemoteWork = () => {
   const [adminJobs, setAdminJobs] = useState<AdminRemoteJob[]>([]);
   const [session, setSession] = useState<Session | null>(null);
