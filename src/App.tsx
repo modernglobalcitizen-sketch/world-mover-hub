@@ -26,6 +26,7 @@ import RemoteWork from "./pages/RemoteWork";
 import Webinar from "./pages/Webinar";
 import WebinarThankYou from "./pages/WebinarThankYou";
 import Review from "./pages/Review";
+import RelocationServices from "./pages/RelocationServices";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
