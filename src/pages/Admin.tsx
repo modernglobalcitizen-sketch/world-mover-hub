@@ -484,6 +484,10 @@ const Admin = () => {
                   <Star className="h-4 w-4" />
                   Reviews
                 </TabsTrigger>
+                <TabsTrigger value="job-applications" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Job Help Requests
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -931,6 +935,10 @@ const Admin = () => {
 
               <TabsContent value="reviews">
                 <ReviewsAdmin />
+              </TabsContent>
+
+              <TabsContent value="job-applications">
+                <RemoteJobApplicationsAdmin />
               </TabsContent>
             </Tabs>
           </div>
