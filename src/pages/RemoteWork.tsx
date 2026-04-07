@@ -35,6 +35,37 @@ const RemoteWork = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [applyName, setApplyName] = useState("");
+  const [applyEmail, setApplyEmail] = useState("");
+  const [applyDetails, setApplyDetails] = useState("");
+  const [applySubmitting, setApplySubmitting] = useState(false);
+  const [applySubmitted, setApplySubmitted] = useState(false);
+
+  const handleApplySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!applyName.trim() || !applyEmail.trim()) {
+      toast.error("Please fill in your name and email");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(applyEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    setApplySubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: { email: applyEmail.trim(), name: applyName.trim() },
+      });
+      if (error) throw error;
+      setApplySubmitted(true);
+      toast.success("Application submitted! We'll be in touch soon.");
+    } catch {
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
+      setApplySubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
