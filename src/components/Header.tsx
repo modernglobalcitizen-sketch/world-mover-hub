@@ -14,7 +14,7 @@ const navLinks = [
   { name: "Ebooks", href: "/ebooks" },
   { name: "Remote Work", href: "/remote-work" },
   { name: "Resources", href: "/resources" },
-  
+  { name: "Relocation Services", href: "/relocation-services" },
   { name: "Webinar", href: "/webinar" },
 ];
 
