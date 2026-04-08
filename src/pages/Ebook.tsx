@@ -29,7 +29,7 @@ const ebooks: EbookItem[] = [
     title: "Top Countries for Work Visas",
     cover: workVisasCover,
     price: "$25",
-    description: "Countries with work visa approval rates over 80% — find out where to look for work, how to find housing, visa options and important documents, and more.",
+    description: "This isn't just a directory; it's a filtered search of the world's most accessible opportunities. A deep dive into the 10 most strategically valuable countries for 2026. Clear breakdowns of Skilled Worker Permits and other pathways including how long it takes to get a work visa and how long it is valid for. We tell you exactly which \"door\" is easiest to open.\n\nYou'll also find where to find work (the specific platforms local recruiters actually use) and which In-Demand Careers (Tech, Healthcare, Green Energy) are currently being fast-tracked for approval.\n\nFrom the cost of a quiet one-bedroom in the best neighborhoods, we cover housing and the secret CV structures that pass the local ATS (Applicant Tracking Systems).\n\nWhen you purchase this guide, you aren't buying pages; you're buying time and certainty. No more \"guessing\" if your documents are right. We focus on countries that value skills over birthright. Learn how to position your professional experience as your most powerful \"Travel Document.\"",
     paypalLink: "https://www.paypal.com/ncp/payment/USBYCBHF2X25N",
   },
 ];
