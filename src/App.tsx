@@ -27,6 +27,7 @@ import Webinar from "./pages/Webinar";
 import WebinarThankYou from "./pages/WebinarThankYou";
 import Review from "./pages/Review";
 import RelocationServices from "./pages/RelocationServices";
+import TalentPool from "./pages/TalentPool";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
           <Route path="/webinar/thank-you" element={<WebinarThankYou />} />
           <Route path="/review" element={<Review />} />
           <Route path="/relocation-services" element={<RelocationServices />} />
+          <Route path="/talent-pool" element={<TalentPool />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
