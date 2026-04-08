@@ -22,7 +22,7 @@ const ebooks: EbookItem[] = [
     title: "Your International Guide to Work, Volunteer, and Travel",
     cover: ebookCover,
     price: "$25",
-    description: "Real job opportunities for people from the global south — job boards, exchange programs, farmwork, and more. Everything you need to know about seasonal work, volunteering abroad, and building your travel history.",
+    description: "Build a \"Global Resume\". Transform a gap year or a career break into a competitive advantage. Discover how to live in some of the world's most beautiful locations for a fraction of your current expenses by leveraging work-exchange and skill-based volunteering that covers your housing. This guide teaches you how to stay longer and go deeper and build a global network of friends, mentors, and professional contacts.",
     paypalLink: "https://www.paypal.com/ncp/payment/SRE6FSADGNJQQ",
   },
   {
