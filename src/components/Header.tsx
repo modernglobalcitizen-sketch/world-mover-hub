@@ -15,6 +15,7 @@ const navLinks = [
   { name: "Remote Work", href: "/remote-work" },
   { name: "Resources", href: "/resources" },
   { name: "Relocation Services", href: "/relocation-services" },
+  { name: "Talent Pool", href: "/talent-pool" },
   { name: "Webinar", href: "/webinar" },
 ];
 
