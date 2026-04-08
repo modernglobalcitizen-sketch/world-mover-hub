@@ -489,6 +489,10 @@ const Admin = () => {
                   <Send className="h-4 w-4" />
                   Job Help Requests
                 </TabsTrigger>
+                <TabsTrigger value="talent-pool" className="flex items-center gap-2">
+                  <UserCheck className="h-4 w-4" />
+                  Talent Pool
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -940,6 +944,10 @@ const Admin = () => {
 
               <TabsContent value="job-applications">
                 <RemoteJobApplicationsAdmin />
+              </TabsContent>
+
+              <TabsContent value="talent-pool">
+                <TalentPoolAdmin />
               </TabsContent>
             </Tabs>
           </div>
