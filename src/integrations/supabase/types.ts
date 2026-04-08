@@ -685,6 +685,75 @@ export type Database = {
         }
         Relationships: []
       }
+      talent_pool: {
+        Row: {
+          additional_notes: string | null
+          availability: string
+          cover_letter_url: string | null
+          created_at: string
+          education_level: string
+          email: string
+          id: string
+          industry: string
+          linkedin_url: string | null
+          name: string
+          phone: string | null
+          portfolio_url: string | null
+          resume_url: string | null
+          role_current: string | null
+          role_desired: string | null
+          salary_expectation: string | null
+          skills: string | null
+          status: string
+          work_authorization: string
+          years_of_experience: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          availability: string
+          cover_letter_url?: string | null
+          created_at?: string
+          education_level: string
+          email: string
+          id?: string
+          industry: string
+          linkedin_url?: string | null
+          name: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          role_current?: string | null
+          role_desired?: string | null
+          salary_expectation?: string | null
+          skills?: string | null
+          status?: string
+          work_authorization: string
+          years_of_experience: string
+        }
+        Update: {
+          additional_notes?: string | null
+          availability?: string
+          cover_letter_url?: string | null
+          created_at?: string
+          education_level?: string
+          email?: string
+          id?: string
+          industry?: string
+          linkedin_url?: string | null
+          name?: string
+          phone?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          role_current?: string | null
+          role_desired?: string | null
+          salary_expectation?: string | null
+          skills?: string | null
+          status?: string
+          work_authorization?: string
+          years_of_experience?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
