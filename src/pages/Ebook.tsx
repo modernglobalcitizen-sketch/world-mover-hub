@@ -80,7 +80,7 @@ const Ebook = () => {
                   className="w-full rounded-lg shadow-md"
                 />
                 <h2 className="text-xl font-bold font-serif">{book.title}</h2>
-                <p className="text-muted-foreground text-sm">{book.description}</p>
+                <p className="text-muted-foreground text-sm whitespace-pre-line text-left">{book.description}</p>
                 <p className="text-2xl font-bold text-primary">{book.price}</p>
                 {book.comingSoon ? (
                   <Button size="lg" className="w-full text-lg" disabled>
