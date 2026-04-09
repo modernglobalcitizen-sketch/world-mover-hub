@@ -272,34 +272,52 @@ const TalentPool = () => {
                     <Label htmlFor="currentRole">Current / Most Recent Role</Label>
                     <Input id="currentRole" value={formData.role_current} onChange={e => setFormData({ ...formData, role_current: e.target.value })} placeholder="e.g. Marketing Manager" maxLength={100} />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="desiredRole">Desired Role</Label>
-                    <Input id="desiredRole" value={formData.role_desired} onChange={e => setFormData({ ...formData, role_desired: e.target.value })} placeholder="e.g. Remote Project Manager" maxLength={100} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Desired Role(s)</Label>
+                  {formData.role_desired.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {formData.role_desired.map(role => (
+                        <span key={role} className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          {role}
+                          <button type="button" onClick={() => setFormData({ ...formData, role_desired: formData.role_desired.filter(r => r !== role) })}>
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded-md p-3">
+                    {desiredRoleOptions.map(role => (
+                      <label key={role} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-accent rounded px-1 py-0.5">
+                        <Checkbox
+                          checked={formData.role_desired.includes(role)}
+                          onCheckedChange={(checked) => {
+                            setFormData({
+                              ...formData,
+                              role_desired: checked
+                                ? [...formData.role_desired, role]
+                                : formData.role_desired.filter(r => r !== role),
+                            });
+                          }}
+                        />
+                        {role}
+                      </label>
+                    ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="skills">Key Skills</Label>
                   <Textarea id="skills" value={formData.skills} onChange={e => setFormData({ ...formData, skills: e.target.value })} placeholder="List your top skills separated by commas (e.g. Project Management, Python, Digital Marketing)" maxLength={500} />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Education Level *</Label>
-                    <Select value={formData.education_level} onValueChange={v => setFormData({ ...formData, education_level: v })}>
-                      <SelectTrigger><SelectValue placeholder="Select education" /></SelectTrigger>
-                      <SelectContent>
-                        {educationLevels.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Work Authorization *</Label>
-                    <Select value={formData.work_authorization} onValueChange={v => setFormData({ ...formData, work_authorization: v })}>
-                      <SelectTrigger><SelectValue placeholder="Select authorization" /></SelectTrigger>
-                      <SelectContent>
-                        {workAuthOptions.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-2">
+                  <Label>Education Level *</Label>
+                  <Select value={formData.education_level} onValueChange={v => setFormData({ ...formData, education_level: v })}>
+                    <SelectTrigger><SelectValue placeholder="Select education" /></SelectTrigger>
+                    <SelectContent>
+                      {educationLevels.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
             </Card>
