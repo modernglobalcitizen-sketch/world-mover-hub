@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Upload, Users, CheckCircle } from "lucide-react";
+import { Upload, Users, CheckCircle, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const industries = [
   "Technology / IT",
@@ -53,11 +54,22 @@ const educationLevels = [
   "Trade / Vocational Training",
 ];
 
-const workAuthOptions = [
-  "Authorized to work in my country",
-  "Need work visa / sponsorship",
-  "Open to relocation with visa support",
-  "Have international work authorization",
+const desiredRoleOptions = [
+  "Remote Project Manager",
+  "Software Developer / Engineer",
+  "Data Analyst / Scientist",
+  "Digital Marketing Specialist",
+  "Customer Support / Success",
+  "UX / UI Designer",
+  "Content Writer / Copywriter",
+  "Virtual Assistant",
+  "Sales Representative",
+  "HR / Recruiter",
+  "Financial Analyst",
+  "Healthcare Professional",
+  "Teacher / Educator",
+  "Operations Manager",
+  "Other",
 ];
 
 const availabilityOptions = [
@@ -80,10 +92,9 @@ const TalentPool = () => {
     industry: "",
     years_of_experience: "",
     role_current: "",
-    role_desired: "",
+    role_desired: [] as string[],
     skills: "",
     education_level: "",
-    work_authorization: "",
     linkedin_url: "",
     portfolio_url: "",
     availability: "",
@@ -107,7 +118,7 @@ const TalentPool = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.industry || !formData.years_of_experience || !formData.education_level || !formData.work_authorization || !formData.availability) {
+    if (!formData.name || !formData.email || !formData.industry || !formData.years_of_experience || !formData.education_level || !formData.availability) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -132,10 +143,10 @@ const TalentPool = () => {
         industry: formData.industry,
         years_of_experience: formData.years_of_experience,
         role_current: formData.role_current.trim() || null,
-        role_desired: formData.role_desired.trim() || null,
+        role_desired: formData.role_desired.length > 0 ? formData.role_desired.join(", ") : null,
         skills: formData.skills.trim() || null,
         education_level: formData.education_level,
-        work_authorization: formData.work_authorization,
+        work_authorization: "N/A",
         linkedin_url: formData.linkedin_url.trim() || null,
         portfolio_url: formData.portfolio_url.trim() || null,
         availability: formData.availability,
@@ -261,34 +272,52 @@ const TalentPool = () => {
                     <Label htmlFor="currentRole">Current / Most Recent Role</Label>
                     <Input id="currentRole" value={formData.role_current} onChange={e => setFormData({ ...formData, role_current: e.target.value })} placeholder="e.g. Marketing Manager" maxLength={100} />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="desiredRole">Desired Role</Label>
-                    <Input id="desiredRole" value={formData.role_desired} onChange={e => setFormData({ ...formData, role_desired: e.target.value })} placeholder="e.g. Remote Project Manager" maxLength={100} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Desired Role(s)</Label>
+                  {formData.role_desired.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {formData.role_desired.map(role => (
+                        <span key={role} className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          {role}
+                          <button type="button" onClick={() => setFormData({ ...formData, role_desired: formData.role_desired.filter(r => r !== role) })}>
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto border rounded-md p-3">
+                    {desiredRoleOptions.map(role => (
+                      <label key={role} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-accent rounded px-1 py-0.5">
+                        <Checkbox
+                          checked={formData.role_desired.includes(role)}
+                          onCheckedChange={(checked) => {
+                            setFormData({
+                              ...formData,
+                              role_desired: checked
+                                ? [...formData.role_desired, role]
+                                : formData.role_desired.filter(r => r !== role),
+                            });
+                          }}
+                        />
+                        {role}
+                      </label>
+                    ))}
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="skills">Key Skills</Label>
                   <Textarea id="skills" value={formData.skills} onChange={e => setFormData({ ...formData, skills: e.target.value })} placeholder="List your top skills separated by commas (e.g. Project Management, Python, Digital Marketing)" maxLength={500} />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Education Level *</Label>
-                    <Select value={formData.education_level} onValueChange={v => setFormData({ ...formData, education_level: v })}>
-                      <SelectTrigger><SelectValue placeholder="Select education" /></SelectTrigger>
-                      <SelectContent>
-                        {educationLevels.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Work Authorization *</Label>
-                    <Select value={formData.work_authorization} onValueChange={v => setFormData({ ...formData, work_authorization: v })}>
-                      <SelectTrigger><SelectValue placeholder="Select authorization" /></SelectTrigger>
-                      <SelectContent>
-                        {workAuthOptions.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div className="space-y-2">
+                  <Label>Education Level *</Label>
+                  <Select value={formData.education_level} onValueChange={v => setFormData({ ...formData, education_level: v })}>
+                    <SelectTrigger><SelectValue placeholder="Select education" /></SelectTrigger>
+                    <SelectContent>
+                      {educationLevels.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
             </Card>
