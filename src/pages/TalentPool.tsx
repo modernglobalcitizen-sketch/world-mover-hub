@@ -72,19 +72,13 @@ const desiredRoleOptions = [
   "Other",
 ];
 
-const availabilityOptions = [
-  "Immediately",
-  "Within 2 weeks",
-  "Within 1 month",
-  "Within 3 months",
-  "Not currently available - exploring options",
-];
 
 const TalentPool = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
+  const [roleDesiredOther, setRoleDesiredOther] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -97,7 +91,6 @@ const TalentPool = () => {
     education_level: "",
     linkedin_url: "",
     portfolio_url: "",
-    availability: "",
     salary_expectation: "",
     additional_notes: "",
   });
@@ -118,8 +111,18 @@ const TalentPool = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.industry || !formData.years_of_experience || !formData.education_level || !formData.availability) {
+    if (!formData.name || !formData.email || !formData.industry || !formData.years_of_experience || !formData.education_level) {
       toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (formData.role_desired.length === 0) {
+      toast.error("Please select at least one desired role");
+      return;
+    }
+
+    if (formData.role_desired.includes("Other") && !roleDesiredOther.trim()) {
+      toast.error("Please specify your desired role for 'Other'");
       return;
     }
 
@@ -143,13 +146,15 @@ const TalentPool = () => {
         industry: formData.industry,
         years_of_experience: formData.years_of_experience,
         role_current: formData.role_current.trim() || null,
-        role_desired: formData.role_desired.length > 0 ? formData.role_desired.join(", ") : null,
+        role_desired: formData.role_desired.length > 0
+          ? formData.role_desired.map(r => r === "Other" ? `Other: ${roleDesiredOther.trim()}` : r).join(", ")
+          : null,
         skills: formData.skills.trim() || null,
         education_level: formData.education_level,
         work_authorization: "N/A",
         linkedin_url: formData.linkedin_url.trim() || null,
         portfolio_url: formData.portfolio_url.trim() || null,
-        availability: formData.availability,
+        availability: "N/A",
         salary_expectation: formData.salary_expectation.trim() || null,
         resume_url,
         cover_letter_url,
@@ -274,7 +279,7 @@ const TalentPool = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Desired Role(s)</Label>
+                  <Label>Desired Role(s) *</Label>
                   {formData.role_desired.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
                       {formData.role_desired.map(role => (
@@ -299,12 +304,22 @@ const TalentPool = () => {
                                 ? [...formData.role_desired, role]
                                 : formData.role_desired.filter(r => r !== role),
                             });
+                            if (role === "Other" && !checked) setRoleDesiredOther("");
                           }}
                         />
                         {role}
                       </label>
                     ))}
                   </div>
+                  {formData.role_desired.includes("Other") && (
+                    <Input
+                      value={roleDesiredOther}
+                      onChange={e => setRoleDesiredOther(e.target.value)}
+                      placeholder="Please specify your desired role"
+                      maxLength={100}
+                      className="mt-2"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="skills">Key Skills</Label>
@@ -322,29 +337,6 @@ const TalentPool = () => {
               </CardContent>
             </Card>
 
-            {/* Availability & Preferences */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Availability & Preferences</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Availability *</Label>
-                    <Select value={formData.availability} onValueChange={v => setFormData({ ...formData, availability: v })}>
-                      <SelectTrigger><SelectValue placeholder="When can you start?" /></SelectTrigger>
-                      <SelectContent>
-                        {availabilityOptions.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="salary">Salary Expectation</Label>
-                    <Input id="salary" value={formData.salary_expectation} onChange={e => setFormData({ ...formData, salary_expectation: e.target.value })} placeholder="e.g. $40,000 - $60,000 USD" maxLength={100} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* File Uploads */}
             <Card>
