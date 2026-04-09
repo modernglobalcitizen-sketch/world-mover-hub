@@ -126,6 +126,16 @@ const TalentPool = () => {
       return;
     }
 
+    if (!resumeFile) {
+      toast.error("Please upload your resume");
+      return;
+    }
+
+    if (!coverLetterFile) {
+      toast.error("Please upload your cover letter");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -346,7 +356,7 @@ const TalentPool = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="resume">Resume / CV</Label>
+                  <Label htmlFor="resume">Resume / CV *</Label>
                   <div className="flex items-center gap-3">
                     <label className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer hover:bg-accent transition-colors text-sm">
                       <Upload className="h-4 w-4" />
@@ -365,7 +375,7 @@ const TalentPool = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="coverLetter">Cover Letter</Label>
+                  <Label htmlFor="coverLetter">Cover Letter *</Label>
                   <div className="flex items-center gap-3">
                     <label className="flex items-center gap-2 px-4 py-2 border rounded-md cursor-pointer hover:bg-accent transition-colors text-sm">
                       <Upload className="h-4 w-4" />
