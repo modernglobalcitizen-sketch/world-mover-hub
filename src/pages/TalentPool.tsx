@@ -126,6 +126,16 @@ const TalentPool = () => {
       return;
     }
 
+    if (!resumeFile) {
+      toast.error("Please upload your resume");
+      return;
+    }
+
+    if (!coverLetterFile) {
+      toast.error("Please upload your cover letter");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
