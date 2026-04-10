@@ -30,7 +30,7 @@ const Hero = () => {
                 Your Passport Isn't the Problem. Your Strategy Is.
               </p>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight text-headline leading-tight">
-                Unlock Global Opportunities{" "}
+                Unlock Your Move Abroad{" "}
                 <span className="text-subtle font-normal">— Together</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
