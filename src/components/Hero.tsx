@@ -10,7 +10,7 @@ const features = [
   },
   {
     icon: Wallet,
-    text: "Free travel opportunities, fully-funded programs, scholarships, and visa-friendly pathways",
+    text: "Free travel opportunities, fully-funded programs, internships, and visa-friendly pathways",
   },
   {
     icon: Users,
@@ -34,7 +34,7 @@ const Hero = () => {
                 <span className="text-subtle font-normal">— Together</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-                A platform for young professionals from the Global South — connecting you to remote jobs, free travel opportunities, scholarships, and career resources to build a global life on your own terms.
+                A platform for young professionals from the Global South — connecting you to remote jobs, free travel opportunities, internships, and career resources to build a global life on your own terms.
               </p>
             </div>
 
