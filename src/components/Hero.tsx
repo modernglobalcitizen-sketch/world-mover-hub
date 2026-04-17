@@ -5,16 +5,16 @@ import heroImage from "@/assets/hero-network.jpg";
 
 const features = [
   {
-    icon: Users,
-    text: "Join breakout rooms by goal — see who's online, share opportunities, stay accountable",
-  },
-  {
     icon: Globe,
-    text: "Connect with others navigating global work, study, and travel with limited passport access",
+    text: "Curated remote jobs that hire young professionals from the Global South — no gatekeeping",
   },
   {
     icon: Wallet,
-    text: "Access curated opportunities, visa guides, free certifications, and career resources worldwide",
+    text: "Free travel opportunities, fully-funded programs, scholarships, and visa-friendly pathways",
+  },
+  {
+    icon: Users,
+    text: "Career resources, free certifications, and a community of peers building global careers",
   },
 ];
 
