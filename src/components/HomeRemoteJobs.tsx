@@ -186,22 +186,26 @@ const HomeRemoteJobs = () => {
                     <span className="text-xs text-muted-foreground">
                       Posted {formatDate(job.created_at)}
                     </span>
-                    {job.apply_url ? (
-                      session ? (
+                    {session ? (
+                      job.apply_url ? (
                         <Button size="sm" asChild>
                           <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
                             Apply <ExternalLink className="h-3 w-3 ml-1" />
                           </a>
                         </Button>
                       ) : (
-                        <Button size="sm" variant="outline" asChild>
-                          <a href="/auth">
-                            <Lock className="h-3 w-3 mr-1" />
-                            Sign up to Apply
-                          </a>
+                        <Button size="sm" variant="outline" disabled title="No application link provided">
+                          Apply via Contact
                         </Button>
                       )
-                    ) : null}
+                    ) : (
+                      <Button size="sm" variant="outline" asChild>
+                        <a href="/auth">
+                          <Lock className="h-3 w-3 mr-1" />
+                          Sign up to Apply
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
