@@ -57,6 +57,7 @@ const RemoteWork = () => {
       const { error } = await supabase
         .from("remote_job_applications")
         .insert({
+          user_id: session?.user?.id ?? null,
           name: applyName.trim(),
           email: applyEmail.trim(),
           details: applyDetails.trim() || null,
