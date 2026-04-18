@@ -4,7 +4,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Mail, Eye, FileText, ExternalLink } from "lucide-react";
+
+const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
 
