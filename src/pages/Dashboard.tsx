@@ -630,7 +630,108 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Saved Opportunities */}
+            {/* My Talent Pool Submissions */}
+            {myTalentPool.length > 0 && (
+              <Card className="shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    My Talent Pool Submissions
+                  </CardTitle>
+                  <CardDescription>
+                    Track the status of your talent pool profile submissions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Industry</TableHead>
+                          <TableHead>Desired Role</TableHead>
+                          <TableHead>Submitted</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Update</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {myTalentPool.map((entry) => (
+                          <TableRow key={entry.id}>
+                            <TableCell className="font-medium">{entry.industry}</TableCell>
+                            <TableCell className="text-muted-foreground">{entry.role_desired || "—"}</TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {format(new Date(entry.created_at), "MMM d, yyyy")}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={`capitalize ${submissionStatusColor(entry.status)}`}>
+                                {entry.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground text-sm">
+                              {entry.status_updated_at
+                                ? format(new Date(entry.status_updated_at), "MMM d, yyyy")
+                                : "—"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* My Job Help Requests */}
+            {myJobHelp.length > 0 && (
+              <Card className="shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <HandCoins className="h-5 w-5 text-primary" />
+                    My Job Help Requests
+                  </CardTitle>
+                  <CardDescription>
+                    Track the status of your remote job assistance requests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Details</TableHead>
+                          <TableHead>Submitted</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Update</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {myJobHelp.map((req) => (
+                          <TableRow key={req.id}>
+                            <TableCell className="max-w-[300px] truncate text-muted-foreground">
+                              {req.details || "—"}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {format(new Date(req.created_at), "MMM d, yyyy")}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={`capitalize ${submissionStatusColor(req.status)}`}>
+                                {req.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground text-sm">
+                              {req.status_updated_at
+                                ? format(new Date(req.status_updated_at), "MMM d, yyyy")
+                                : "—"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="shadow-soft">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
