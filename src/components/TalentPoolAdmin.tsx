@@ -132,7 +132,18 @@ const TalentPoolAdmin = () => {
                 <TableCell className="text-sm">{entry.industry}</TableCell>
                 <TableCell className="text-sm">{entry.years_of_experience}</TableCell>
                 <TableCell>
-                  <Badge className={statusColor(entry.status)}>{entry.status}</Badge>
+                  <Select value={entry.status} onValueChange={(v) => handleUpdateStatus(entry.id, v)}>
+                    <SelectTrigger className="h-8 w-[130px]">
+                      <SelectValue>
+                        <Badge className={statusColor(entry.status)}>{entry.status}</Badge>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUS_OPTIONS.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell className="text-sm">{format(new Date(entry.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell>
@@ -154,21 +165,6 @@ const TalentPoolAdmin = () => {
                     <Button size="sm" variant="outline" onClick={() => setSelectedEntry(entry)}>
                       <Eye className="h-4 w-4" />
                     </Button>
-                    {entry.status === "new" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "reviewed")}>
-                        Reviewed
-                      </Button>
-                    )}
-                    {entry.status === "reviewed" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "contacted")}>
-                        Contacted
-                      </Button>
-                    )}
-                    {entry.status === "contacted" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "placed")}>
-                        Placed
-                      </Button>
-                    )}
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(entry.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
