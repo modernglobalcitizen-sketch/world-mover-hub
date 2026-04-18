@@ -332,6 +332,8 @@ export type Database = {
           id: string
           name: string
           status: string
+          status_updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -340,6 +342,8 @@ export type Database = {
           id?: string
           name: string
           status?: string
+          status_updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -348,6 +352,8 @@ export type Database = {
           id?: string
           name?: string
           status?: string
+          status_updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -705,6 +711,8 @@ export type Database = {
           salary_expectation: string | null
           skills: string | null
           status: string
+          status_updated_at: string | null
+          user_id: string | null
           work_authorization: string
           years_of_experience: string
         }
@@ -727,6 +735,8 @@ export type Database = {
           salary_expectation?: string | null
           skills?: string | null
           status?: string
+          status_updated_at?: string | null
+          user_id?: string | null
           work_authorization: string
           years_of_experience: string
         }
@@ -749,6 +759,8 @@ export type Database = {
           salary_expectation?: string | null
           skills?: string | null
           status?: string
+          status_updated_at?: string | null
+          user_id?: string | null
           work_authorization?: string
           years_of_experience?: string
         }
