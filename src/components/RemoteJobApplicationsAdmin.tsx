@@ -118,21 +118,22 @@ const RemoteJobApplicationsAdmin = () => {
                 </TableCell>
                 <TableCell className="max-w-[200px] truncate">{app.details || "—"}</TableCell>
                 <TableCell>
-                  <Badge className={statusColor(app.status)}>{app.status}</Badge>
+                  <Select value={app.status} onValueChange={(v) => handleUpdateStatus(app.id, v)}>
+                    <SelectTrigger className="h-8 w-[130px]">
+                      <SelectValue>
+                        <Badge className={statusColor(app.status)}>{app.status}</Badge>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUS_OPTIONS.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell className="text-sm">{format(new Date(app.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    {app.status === "new" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(app.id, "contacted")}>
-                        Mark Contacted
-                      </Button>
-                    )}
-                    {app.status === "contacted" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(app.id, "resolved")}>
-                        Mark Resolved
-                      </Button>
-                    )}
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(app.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
