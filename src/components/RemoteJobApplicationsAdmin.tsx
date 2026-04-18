@@ -3,7 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Mail } from "lucide-react";
+
+const STATUS_OPTIONS = ["new", "viewed", "contacted", "on hold", "resolved"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -70,7 +73,9 @@ const RemoteJobApplicationsAdmin = () => {
   const statusColor = (status: string) => {
     switch (status) {
       case "new": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "viewed": return "bg-slate-100 text-slate-800 border-slate-200";
       case "contacted": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "on hold": return "bg-orange-100 text-orange-800 border-orange-200";
       case "resolved": return "bg-green-100 text-green-800 border-green-200";
       default: return "";
     }
@@ -113,21 +118,22 @@ const RemoteJobApplicationsAdmin = () => {
                 </TableCell>
                 <TableCell className="max-w-[200px] truncate">{app.details || "—"}</TableCell>
                 <TableCell>
-                  <Badge className={statusColor(app.status)}>{app.status}</Badge>
+                  <Select value={app.status} onValueChange={(v) => handleUpdateStatus(app.id, v)}>
+                    <SelectTrigger className="h-8 w-[130px]">
+                      <SelectValue>
+                        <Badge className={statusColor(app.status)}>{app.status}</Badge>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUS_OPTIONS.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell className="text-sm">{format(new Date(app.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    {app.status === "new" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(app.id, "contacted")}>
-                        Mark Contacted
-                      </Button>
-                    )}
-                    {app.status === "contacted" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(app.id, "resolved")}>
-                        Mark Resolved
-                      </Button>
-                    )}
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(app.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
