@@ -4,7 +4,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Mail, Eye, FileText, ExternalLink } from "lucide-react";
+
+const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -87,8 +90,10 @@ const TalentPoolAdmin = () => {
   const statusColor = (status: string) => {
     switch (status) {
       case "new": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "viewed": return "bg-slate-100 text-slate-800 border-slate-200";
       case "reviewed": return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "contacted": return "bg-purple-100 text-purple-800 border-purple-200";
+      case "on hold": return "bg-orange-100 text-orange-800 border-orange-200";
       case "placed": return "bg-green-100 text-green-800 border-green-200";
       default: return "";
     }
@@ -127,7 +132,18 @@ const TalentPoolAdmin = () => {
                 <TableCell className="text-sm">{entry.industry}</TableCell>
                 <TableCell className="text-sm">{entry.years_of_experience}</TableCell>
                 <TableCell>
-                  <Badge className={statusColor(entry.status)}>{entry.status}</Badge>
+                  <Select value={entry.status} onValueChange={(v) => handleUpdateStatus(entry.id, v)}>
+                    <SelectTrigger className="h-8 w-[130px]">
+                      <SelectValue>
+                        <Badge className={statusColor(entry.status)}>{entry.status}</Badge>
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {STATUS_OPTIONS.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </TableCell>
                 <TableCell className="text-sm">{format(new Date(entry.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell>
@@ -149,21 +165,6 @@ const TalentPoolAdmin = () => {
                     <Button size="sm" variant="outline" onClick={() => setSelectedEntry(entry)}>
                       <Eye className="h-4 w-4" />
                     </Button>
-                    {entry.status === "new" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "reviewed")}>
-                        Reviewed
-                      </Button>
-                    )}
-                    {entry.status === "reviewed" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "contacted")}>
-                        Contacted
-                      </Button>
-                    )}
-                    {entry.status === "contacted" && (
-                      <Button size="sm" variant="outline" onClick={() => handleUpdateStatus(entry.id, "placed")}>
-                        Placed
-                      </Button>
-                    )}
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(entry.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
