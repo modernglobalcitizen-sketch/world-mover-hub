@@ -3,7 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Mail } from "lucide-react";
+
+const STATUS_OPTIONS = ["new", "viewed", "contacted", "on hold", "resolved"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
 
