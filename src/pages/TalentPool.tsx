@@ -149,7 +149,10 @@ const TalentPool = () => {
         cover_letter_url = await uploadFile(coverLetterFile, "cover-letters");
       }
 
+      const { data: { session } } = await supabase.auth.getSession();
+
       const { error } = await supabase.from("talent_pool").insert({
+        user_id: session?.user?.id ?? null,
         name: formData.name.trim(),
         email: formData.email.trim().toLowerCase(),
         phone: formData.phone.trim() || null,

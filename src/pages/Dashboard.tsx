@@ -83,6 +83,36 @@ interface SavedRemoteJob {
   };
 }
 
+interface MyTalentPoolEntry {
+  id: string;
+  industry: string;
+  role_desired: string | null;
+  status: string;
+  created_at: string;
+  status_updated_at: string | null;
+}
+
+interface MyJobHelpRequest {
+  id: string;
+  details: string | null;
+  status: string;
+  created_at: string;
+  status_updated_at: string | null;
+}
+
+const submissionStatusColor = (status: string) => {
+  switch (status) {
+    case "new": return "bg-blue-500/10 text-blue-600 hover:bg-blue-500/20";
+    case "viewed": return "bg-slate-500/10 text-slate-600 hover:bg-slate-500/20";
+    case "reviewed": return "bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20";
+    case "contacted": return "bg-purple-500/10 text-purple-600 hover:bg-purple-500/20";
+    case "on hold": return "bg-orange-500/10 text-orange-600 hover:bg-orange-500/20";
+    case "placed":
+    case "resolved": return "bg-green-500/10 text-green-600 hover:bg-green-500/20";
+    default: return "bg-muted text-muted-foreground";
+  }
+};
+
 const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
   pending: { 
     label: "Pending", 
@@ -108,6 +138,8 @@ const Dashboard = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [savedOpportunities, setSavedOpportunities] = useState<SavedOpportunity[]>([]);
   const [savedRemoteJobs, setSavedRemoteJobs] = useState<SavedRemoteJob[]>([]);
+  const [myTalentPool, setMyTalentPool] = useState<MyTalentPoolEntry[]>([]);
+  const [myJobHelp, setMyJobHelp] = useState<MyJobHelpRequest[]>([]);
   
   const [roomInvitations, setRoomInvitations] = useState<RoomInvitation[]>([]);
   const [foundingMember, setFoundingMember] = useState<{ isFounder: boolean; number: number | null; displayName: string | null; fieldOfWork: string | null }>({
@@ -149,7 +181,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       if (!session) return;
       
-      const [appResult, profileResult, savedResult, savedJobsResult, invitationsResult] = await Promise.all([
+      const [appResult, profileResult, savedResult, savedJobsResult, invitationsResult, talentPoolResult, jobHelpResult] = await Promise.all([
         supabase
           .from("applications")
           .select(`
@@ -192,6 +224,16 @@ const Dashboard = () => {
           .eq("invited_user_id", session.user.id)
           .eq("status", "pending")
           .order("created_at", { ascending: false }),
+        supabase
+          .from("talent_pool")
+          .select("id, industry, role_desired, status, created_at, status_updated_at")
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("remote_job_applications")
+          .select("id, details, status, created_at, status_updated_at")
+          .eq("user_id", session.user.id)
+          .order("created_at", { ascending: false }),
       ]);
 
 
@@ -217,6 +259,13 @@ const Dashboard = () => {
         setSavedRemoteJobs(savedJobsResult.data as SavedRemoteJob[]);
       }
 
+      if (talentPoolResult.data) {
+        setMyTalentPool(talentPoolResult.data as MyTalentPoolEntry[]);
+      }
+
+      if (jobHelpResult.data) {
+        setMyJobHelp(jobHelpResult.data as MyJobHelpRequest[]);
+      }
 
       // Fetch room and inviter details for invitations
       if (invitationsResult.data && invitationsResult.data.length > 0) {
@@ -581,7 +630,108 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Saved Opportunities */}
+            {/* My Talent Pool Submissions */}
+            {myTalentPool.length > 0 && (
+              <Card className="shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    My Talent Pool Submissions
+                  </CardTitle>
+                  <CardDescription>
+                    Track the status of your talent pool profile submissions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Industry</TableHead>
+                          <TableHead>Desired Role</TableHead>
+                          <TableHead>Submitted</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Update</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {myTalentPool.map((entry) => (
+                          <TableRow key={entry.id}>
+                            <TableCell className="font-medium">{entry.industry}</TableCell>
+                            <TableCell className="text-muted-foreground">{entry.role_desired || "—"}</TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {format(new Date(entry.created_at), "MMM d, yyyy")}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={`capitalize ${submissionStatusColor(entry.status)}`}>
+                                {entry.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground text-sm">
+                              {entry.status_updated_at
+                                ? format(new Date(entry.status_updated_at), "MMM d, yyyy")
+                                : "—"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* My Job Help Requests */}
+            {myJobHelp.length > 0 && (
+              <Card className="shadow-soft">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <HandCoins className="h-5 w-5 text-primary" />
+                    My Job Help Requests
+                  </CardTitle>
+                  <CardDescription>
+                    Track the status of your remote job assistance requests
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Details</TableHead>
+                          <TableHead>Submitted</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Update</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {myJobHelp.map((req) => (
+                          <TableRow key={req.id}>
+                            <TableCell className="max-w-[300px] truncate text-muted-foreground">
+                              {req.details || "—"}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {format(new Date(req.created_at), "MMM d, yyyy")}
+                            </TableCell>
+                            <TableCell>
+                              <Badge className={`capitalize ${submissionStatusColor(req.status)}`}>
+                                {req.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground text-sm">
+                              {req.status_updated_at
+                                ? format(new Date(req.status_updated_at), "MMM d, yyyy")
+                                : "—"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Card className="shadow-soft">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
