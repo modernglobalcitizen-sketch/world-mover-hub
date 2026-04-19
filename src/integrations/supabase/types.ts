@@ -326,6 +326,7 @@ export type Database = {
       }
       remote_job_applications: {
         Row: {
+          country: string | null
           created_at: string
           details: string | null
           email: string
@@ -337,6 +338,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          country?: string | null
           created_at?: string
           details?: string | null
           email: string
@@ -348,6 +350,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          country?: string | null
           created_at?: string
           details?: string | null
           email?: string

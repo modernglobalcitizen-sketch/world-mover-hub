@@ -1,0 +1,1 @@
+ALTER TABLE public.remote_job_applications ADD COLUMN IF NOT EXISTS country text;
