@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  MapPin, ExternalLink, Briefcase, Wifi,
+  MapPin, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
   Globe, Users, Send, CheckCircle, Eye
 } from "lucide-react";
