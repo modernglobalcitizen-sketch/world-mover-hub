@@ -280,7 +280,13 @@ const RemoteWork = () => {
                           </div>
                           <div className="min-w-0 flex-1">
                             <CardTitle className="text-lg leading-snug">
-                              {job.title}
+                              {session ? (
+                                <Link to={`/remote-jobs/${job.id}`} className="hover:text-primary transition-colors">
+                                  {job.title}
+                                </Link>
+                              ) : (
+                                job.title
+                              )}
                             </CardTitle>
                             <CardDescription className="mt-1 font-medium">
                               {job.company_name}
@@ -329,27 +335,22 @@ const RemoteWork = () => {
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center justify-between pt-2 mt-auto">
+                        <div className="flex items-center justify-between pt-2 mt-auto gap-2">
                           <span className="text-xs text-muted-foreground">
                             Posted {formatDate(job.created_at)}
                           </span>
                           {session ? (
-                            job.apply_url ? (
-                              <Button size="sm" asChild>
-                                <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
-                                  Apply <ExternalLink className="h-3 w-3 ml-1" />
-                                </a>
-                              </Button>
-                            ) : (
-                              <Button size="sm" variant="outline" disabled title="No application link provided">
-                                Apply via Contact
-                              </Button>
-                            )
+                            <Button size="sm" variant="outline" asChild>
+                              <Link to={`/remote-jobs/${job.id}`}>
+                                <Eye className="h-3 w-3 mr-1" />
+                                View Details
+                              </Link>
+                            </Button>
                           ) : (
                             <Button size="sm" variant="outline" asChild>
                               <a href="/auth">
                                 <Lock className="h-3 w-3 mr-1" />
-                                Sign up to Apply
+                                Sign up to View
                               </a>
                             </Button>
                           )}
