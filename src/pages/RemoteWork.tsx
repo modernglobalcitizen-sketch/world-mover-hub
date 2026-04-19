@@ -59,6 +59,7 @@ const RemoteWork = () => {
   const [applyName, setApplyName] = useState("");
   const [applyEmail, setApplyEmail] = useState("");
   const [applyDetails, setApplyDetails] = useState("");
+  const [applyCountry, setApplyCountry] = useState("");
   const [applyResume, setApplyResume] = useState<File | null>(null);
   const [applySubmitting, setApplySubmitting] = useState(false);
   const [applySubmitted, setApplySubmitted] = useState(false);
@@ -67,6 +68,10 @@ const RemoteWork = () => {
     e.preventDefault();
     if (!applyName.trim() || !applyEmail.trim()) {
       toast.error("Please fill in your name and email");
+      return;
+    }
+    if (!applyCountry) {
+      toast.error("Please select your country");
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -108,6 +113,7 @@ const RemoteWork = () => {
           user_id: session?.user?.id ?? null,
           name: applyName.trim(),
           email: applyEmail.trim(),
+          country: applyCountry,
           details: applyDetails.trim() || null,
           resume_url: pub.publicUrl,
         });
