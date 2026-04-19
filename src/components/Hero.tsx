@@ -53,9 +53,9 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button variant="hero" size="lg" className="group" asChild>
-                <Link to="/founding-members">
+                <Link to="/auth">
                   <Rocket className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" />
-                  Become a Member
+                  Join Free
                 </Link>
               </Button>
               <Button variant="heroOutline" size="lg" asChild>
