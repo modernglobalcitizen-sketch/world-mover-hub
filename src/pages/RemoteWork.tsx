@@ -263,6 +263,19 @@ const RemoteWork = () => {
                   </div>
                 </div>
                 <div>
+                  <label htmlFor="apply-country" className="block text-sm font-medium text-foreground mb-1">Country *</label>
+                  <Select value={applyCountry} onValueChange={setApplyCountry}>
+                    <SelectTrigger id="apply-country">
+                      <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      {COUNTRIES.map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
                   <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
                   <Textarea id="apply-details" value={applyDetails} onChange={(e) => setApplyDetails(e.target.value)} placeholder="e.g. customer service, data entry, virtual assistant, tech..." maxLength={1000} rows={3} />
                 </div>
