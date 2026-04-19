@@ -186,11 +186,9 @@ const RemoteJobDetail = () => {
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-display font-semibold text-headline mb-3">Job Description</h2>
+                  <h2 className="text-xl font-display font-semibold text-headline mb-4">Job Description</h2>
                   {job.description ? (
-                    <p className="text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                      {job.description}
-                    </p>
+                    <FormattedDescription text={job.description} />
                   ) : (
                     <p className="text-muted-foreground italic">No description provided.</p>
                   )}
