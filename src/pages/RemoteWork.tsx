@@ -240,6 +240,24 @@ const RemoteWork = () => {
                   <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
                   <Textarea id="apply-details" value={applyDetails} onChange={(e) => setApplyDetails(e.target.value)} placeholder="e.g. customer service, data entry, virtual assistant, tech..." maxLength={1000} rows={3} />
                 </div>
+                <div>
+                  <label htmlFor="apply-resume" className="block text-sm font-medium text-foreground mb-1">
+                    Resume / CV * <span className="text-muted-foreground font-normal">(PDF or Word, max 5MB)</span>
+                  </label>
+                  <Input
+                    id="apply-resume"
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={(e) => setApplyResume(e.target.files?.[0] ?? null)}
+                    required
+                    className="cursor-pointer file:cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary file:px-3 file:py-1 file:text-sm file:font-medium"
+                  />
+                  {applyResume && (
+                    <p className="text-xs text-muted-foreground mt-1 truncate">
+                      Selected: {applyResume.name}
+                    </p>
+                  )}
+                </div>
                 <Button type="submit" className="w-full" disabled={applySubmitting}>
                   {applySubmitting ? "Submitting..." : "Help Me Find a Remote Job"}
                 </Button>
