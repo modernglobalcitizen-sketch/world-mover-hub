@@ -6,7 +6,7 @@ import heroImage from "@/assets/hero-network.jpg";
 const features = [
   {
     icon: Globe,
-    text: "Curated remote jobs that hire young professionals from the Global South — no gatekeeping",
+    text: "Curated remote jobs hiring globally — open to young professionals from the Global South",
   },
   {
     icon: Wallet,
