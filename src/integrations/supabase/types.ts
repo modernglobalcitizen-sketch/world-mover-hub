@@ -331,6 +331,7 @@ export type Database = {
           email: string
           id: string
           name: string
+          resume_url: string | null
           status: string
           status_updated_at: string | null
           user_id: string | null
@@ -341,6 +342,7 @@ export type Database = {
           email: string
           id?: string
           name: string
+          resume_url?: string | null
           status?: string
           status_updated_at?: string | null
           user_id?: string | null
@@ -351,6 +353,7 @@ export type Database = {
           email?: string
           id?: string
           name?: string
+          resume_url?: string | null
           status?: string
           status_updated_at?: string | null
           user_id?: string | null

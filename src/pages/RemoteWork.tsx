@@ -39,6 +39,7 @@ const RemoteWork = () => {
   const [applyName, setApplyName] = useState("");
   const [applyEmail, setApplyEmail] = useState("");
   const [applyDetails, setApplyDetails] = useState("");
+  const [applyResume, setApplyResume] = useState<File | null>(null);
   const [applySubmitting, setApplySubmitting] = useState(false);
   const [applySubmitted, setApplySubmitted] = useState(false);
 
@@ -53,8 +54,34 @@ const RemoteWork = () => {
       toast.error("Please enter a valid email address");
       return;
     }
+    if (!applyResume) {
+      toast.error("Please upload your resume");
+      return;
+    }
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+    if (!allowedTypes.includes(applyResume.type)) {
+      toast.error("Resume must be a PDF or Word document");
+      return;
+    }
+    if (applyResume.size > 5 * 1024 * 1024) {
+      toast.error("Resume must be smaller than 5MB");
+      return;
+    }
     setApplySubmitting(true);
     try {
+      const ext = applyResume.name.split(".").pop() || "pdf";
+      const safeName = applyName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
+      const path = `job-help-requests/${Date.now()}-${safeName}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("talent-pool")
+        .upload(path, applyResume, { contentType: applyResume.type, upsert: false });
+      if (uploadError) throw uploadError;
+      const { data: pub } = supabase.storage.from("talent-pool").getPublicUrl(path);
+
       const { error } = await supabase
         .from("remote_job_applications")
         .insert({
@@ -62,6 +89,7 @@ const RemoteWork = () => {
           name: applyName.trim(),
           email: applyEmail.trim(),
           details: applyDetails.trim() || null,
+          resume_url: pub.publicUrl,
         });
       if (error) throw error;
       setApplySubmitted(true);
@@ -72,6 +100,7 @@ const RemoteWork = () => {
       setApplySubmitting(false);
     }
   };
+
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -210,6 +239,24 @@ const RemoteWork = () => {
                 <div>
                   <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
                   <Textarea id="apply-details" value={applyDetails} onChange={(e) => setApplyDetails(e.target.value)} placeholder="e.g. customer service, data entry, virtual assistant, tech..." maxLength={1000} rows={3} />
+                </div>
+                <div>
+                  <label htmlFor="apply-resume" className="block text-sm font-medium text-foreground mb-1">
+                    Resume / CV * <span className="text-muted-foreground font-normal">(PDF or Word, max 5MB)</span>
+                  </label>
+                  <Input
+                    id="apply-resume"
+                    type="file"
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    onChange={(e) => setApplyResume(e.target.files?.[0] ?? null)}
+                    required
+                    className="cursor-pointer file:cursor-pointer file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary file:px-3 file:py-1 file:text-sm file:font-medium"
+                  />
+                  {applyResume && (
+                    <p className="text-xs text-muted-foreground mt-1 truncate">
+                      Selected: {applyResume.name}
+                    </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full" disabled={applySubmitting}>
                   {applySubmitting ? "Submitting..." : "Help Me Find a Remote Job"}
