@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import Header from "@/components/Header";
@@ -12,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   MapPin, ExternalLink, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
-  Globe, Users, Send, CheckCircle
+  Globe, Users, Send, CheckCircle, Eye
 } from "lucide-react";
 import { toast } from "sonner";
 
