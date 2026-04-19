@@ -336,3 +336,5 @@ const FormattedDescription = ({ text }: { text: string }) => {
   );
 };
 
+
+export default RemoteJobDetail;
