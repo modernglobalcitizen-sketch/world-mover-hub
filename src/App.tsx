@@ -12,7 +12,7 @@ import Auth from "./pages/Auth";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
-import FoundingMembers from "./pages/FoundingMembers";
+// import FoundingMembers from "./pages/FoundingMembers";
 import HowItWorks from "./pages/HowItWorks";
 import Opportunities from "./pages/Opportunities";
 import OpportunityDetail from "./pages/OpportunityDetail";
@@ -49,7 +49,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/founding-members" element={<FoundingMembers />} />
+          {/* <Route path="/founding-members" element={<FoundingMembers />} /> */}
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/opportunities/:id" element={<OpportunityDetail />} />
