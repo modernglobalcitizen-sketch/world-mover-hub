@@ -186,11 +186,9 @@ const RemoteJobDetail = () => {
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-display font-semibold text-headline mb-3">Job Description</h2>
+                  <h2 className="text-xl font-display font-semibold text-headline mb-4">Job Description</h2>
                   {job.description ? (
-                    <p className="text-foreground/90 whitespace-pre-wrap leading-relaxed">
-                      {job.description}
-                    </p>
+                    <FormattedDescription text={job.description} />
                   ) : (
                     <p className="text-muted-foreground italic">No description provided.</p>
                   )}
@@ -231,5 +229,112 @@ const RemoteJobDetail = () => {
     </div>
   );
 };
+
+// Auto-formats plain-text job descriptions into readable paragraphs,
+// bullet lists, and section headings.
+const FormattedDescription = ({ text }: { text: string }) => {
+  const normalized = text.replace(/\r\n/g, "\n").trim();
+  // Split into blocks separated by blank lines
+  const blocks = normalized.split(/\n\s*\n/);
+
+  const isBulletLine = (line: string) => /^\s*([-*•·▪►●]|\d+[.)])\s+/.test(line);
+  const stripBullet = (line: string) => line.replace(/^\s*([-*•·▪►●]|\d+[.)])\s+/, "");
+
+  const isHeadingLine = (line: string) => {
+    const t = line.trim();
+    if (t.length === 0 || t.length > 80) return false;
+    // Ends with colon, e.g. "Responsibilities:"
+    if (/^[A-Z][\w &/'-]{1,60}:$/.test(t)) return true;
+    // Short ALL CAPS line, e.g. "ABOUT THE ROLE"
+    if (/^[A-Z][A-Z0-9 &/'-]{2,40}$/.test(t) && t.split(" ").length <= 6) return true;
+    return false;
+  };
+
+  const renderInline = (line: string, key: number) => {
+    // Auto-link plain URLs
+    const parts = line.split(/(https?:\/\/[^\s)]+)/g);
+    return (
+      <span key={key}>
+        {parts.map((part, i) =>
+          /^https?:\/\//.test(part) ? (
+            <a
+              key={i}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-2 break-words"
+            >
+              {part}
+            </a>
+          ) : (
+            part
+          ),
+        )}
+      </span>
+    );
+  };
+
+  return (
+    <div className="space-y-5 text-foreground/90 leading-relaxed text-[15px] md:text-base max-w-prose">
+      {blocks.map((block, bIdx) => {
+        const lines = block.split("\n").filter((l) => l.trim().length > 0);
+        if (lines.length === 0) return null;
+
+        // Single heading line
+        if (lines.length === 1 && isHeadingLine(lines[0])) {
+          return (
+            <h3
+              key={bIdx}
+              className="text-base md:text-lg font-display font-semibold text-headline pt-2"
+            >
+              {lines[0].replace(/:$/, "")}
+            </h3>
+          );
+        }
+
+        // Heading followed by content (heading + bullets/paragraph)
+        if (isHeadingLine(lines[0]) && lines.length > 1) {
+          const rest = lines.slice(1);
+          const allBullets = rest.every(isBulletLine);
+          return (
+            <div key={bIdx} className="space-y-2">
+              <h3 className="text-base md:text-lg font-display font-semibold text-headline pt-2">
+                {lines[0].replace(/:$/, "")}
+              </h3>
+              {allBullets ? (
+                <ul className="list-disc pl-5 space-y-1.5 marker:text-primary">
+                  {rest.map((l, i) => (
+                    <li key={i}>{renderInline(stripBullet(l), i)}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{rest.map((l, i) => renderInline(l + (i < rest.length - 1 ? " " : ""), i))}</p>
+              )}
+            </div>
+          );
+        }
+
+        // Bullet list block
+        if (lines.every(isBulletLine)) {
+          return (
+            <ul key={bIdx} className="list-disc pl-5 space-y-1.5 marker:text-primary">
+              {lines.map((l, i) => (
+                <li key={i}>{renderInline(stripBullet(l), i)}</li>
+              ))}
+            </ul>
+          );
+        }
+
+        // Default paragraph (join wrapped lines with a space)
+        return (
+          <p key={bIdx}>
+            {lines.map((l, i) => renderInline(l + (i < lines.length - 1 ? " " : ""), i))}
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
 
 export default RemoteJobDetail;
