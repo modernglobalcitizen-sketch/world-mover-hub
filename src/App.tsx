@@ -23,6 +23,7 @@ import Ebook from "./pages/Ebook";
 import EbookDownload from "./pages/EbookDownload";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import RemoteWork from "./pages/RemoteWork";
+import RemoteJobDetail from "./pages/RemoteJobDetail";
 import Webinar from "./pages/Webinar";
 import WebinarThankYou from "./pages/WebinarThankYou";
 import Review from "./pages/Review";
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/ebooks/download" element={<EbookDownload />} />
           <Route path="/affiliate" element={<AffiliateDashboard />} />
           <Route path="/remote-work" element={<RemoteWork />} />
+          <Route path="/remote-jobs/:id" element={<RemoteJobDetail />} />
           <Route path="/webinar" element={<Webinar />} />
           <Route path="/webinar/thank-you" element={<WebinarThankYou />} />
           <Route path="/review" element={<Review />} />
