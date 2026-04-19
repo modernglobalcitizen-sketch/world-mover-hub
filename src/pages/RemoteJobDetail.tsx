@@ -206,8 +206,7 @@ const RemoteJobDetail = () => {
                       </Button>
                     ) : (
                       <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
-                        No application link provided. Please reach out via our{" "}
-                        <Link to="/contact" className="text-primary underline">contact page</Link> for more info.
+                        See the job description above for application instructions.
                       </div>
                     )
                   ) : (
