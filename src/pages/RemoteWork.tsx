@@ -10,6 +10,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
+  "Bangladesh", "Belarus", "Belgium", "Bolivia", "Brazil", "Bulgaria", "Cambodia",
+  "Cameroon", "Canada", "Chile", "China", "Colombia", "Costa Rica", "Croatia",
+  "Cuba", "Czech Republic", "Denmark", "Dominican Republic", "Ecuador", "Egypt",
+  "El Salvador", "Estonia", "Ethiopia", "Finland", "France", "Germany", "Ghana",
+  "Greece", "Guatemala", "Haiti", "Honduras", "Hungary", "India", "Indonesia",
+  "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan",
+  "Kazakhstan", "Kenya", "Kuwait", "Latvia", "Lebanon", "Libya", "Lithuania",
+  "Malaysia", "Mexico", "Morocco", "Myanmar", "Nepal", "Netherlands", "New Zealand",
+  "Nicaragua", "Nigeria", "North Korea", "Norway", "Pakistan", "Panama", "Paraguay",
+  "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia",
+  "Saudi Arabia", "Senegal", "Serbia", "Singapore", "Slovakia", "Slovenia",
+  "South Africa", "South Korea", "Spain", "Sri Lanka", "Sudan", "Sweden",
+  "Switzerland", "Syria", "Taiwan", "Tanzania", "Thailand", "Tunisia", "Turkey",
+  "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States",
+  "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
 import {
   MapPin, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
@@ -39,6 +59,7 @@ const RemoteWork = () => {
   const [applyName, setApplyName] = useState("");
   const [applyEmail, setApplyEmail] = useState("");
   const [applyDetails, setApplyDetails] = useState("");
+  const [applyCountry, setApplyCountry] = useState("");
   const [applyResume, setApplyResume] = useState<File | null>(null);
   const [applySubmitting, setApplySubmitting] = useState(false);
   const [applySubmitted, setApplySubmitted] = useState(false);
@@ -47,6 +68,10 @@ const RemoteWork = () => {
     e.preventDefault();
     if (!applyName.trim() || !applyEmail.trim()) {
       toast.error("Please fill in your name and email");
+      return;
+    }
+    if (!applyCountry) {
+      toast.error("Please select your country");
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -88,6 +113,7 @@ const RemoteWork = () => {
           user_id: session?.user?.id ?? null,
           name: applyName.trim(),
           email: applyEmail.trim(),
+          country: applyCountry,
           details: applyDetails.trim() || null,
           resume_url: pub.publicUrl,
         });
@@ -235,6 +261,19 @@ const RemoteWork = () => {
                     <label htmlFor="apply-email" className="block text-sm font-medium text-foreground mb-1">Email Address *</label>
                     <Input id="apply-email" type="email" value={applyEmail} onChange={(e) => setApplyEmail(e.target.value)} placeholder="you@example.com" maxLength={255} required />
                   </div>
+                </div>
+                <div>
+                  <label htmlFor="apply-country" className="block text-sm font-medium text-foreground mb-1">Country *</label>
+                  <Select value={applyCountry} onValueChange={setApplyCountry}>
+                    <SelectTrigger id="apply-country">
+                      <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      {COUNTRIES.map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
                   <label htmlFor="apply-details" className="block text-sm font-medium text-foreground mb-1">What kind of remote work are you looking for? (optional)</label>
