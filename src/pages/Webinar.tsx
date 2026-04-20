@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Headphones, Laptop, TrendingUp, MessageSquare, CalendarDays } from "lucide-react";
+import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,33 +13,19 @@ import { getLocalWebinarTime, getWebinarTimeInZones } from "@/lib/webinar";
 
 const webinars = [
   {
-    id: "call-center",
-    title: "Call Center to Remote Career",
+    id: "remote-bootcamp",
+    title: "Remote Work 4-Week Bootcamp",
     date: null,
-    tagline: "Transform your call center experience into a thriving remote career",
+    tagline: "Land your first remote job in 4 weeks",
     description:
-      "Learn how to leverage your communication skills, customer service expertise, and problem-solving abilities to land high-paying remote roles — no degree required.",
+      "A hands-on, 4-week intensive designed for the global diaspora. Master the skills, tools, and strategies to land remote roles and build a career without borders.",
     highlights: [
-      { icon: Headphones, text: "Turn your call center skills into remote-ready assets" },
-      { icon: Laptop, text: "Discover remote roles perfect for your experience" },
-      { icon: TrendingUp, text: "Step-by-step plan to transition from office to remote" },
+      { icon: Rocket, text: "4 weeks of live, structured training" },
+      { icon: Laptop, text: "Hands-on practice with real remote work tools" },
+      { icon: TrendingUp, text: "Step-by-step plan to land your first remote role" },
       { icon: MessageSquare, text: "Build an online presence that attracts recruiters" },
-      { icon: DollarSign, text: "Negotiate better pay in the remote job market" },
-    ],
-  },
-  {
-    id: "global-remote",
-    title: "Building a Global Remote Career",
-    date: null,
-    tagline: "A step-by-step blueprint for building your first online income stream",
-    description:
-      "Designed for the global diaspora — learn how to earn online from anywhere, build invaluable skills, and create a career without borders.",
-    highlights: [
-      { icon: Globe, text: "Learn how to earn your first $1,000 online from anywhere" },
-      { icon: Users, text: "Learn the invaluable skills AND how to use them" },
-      { icon: DollarSign, text: "Step-by-step plan you can start implementing today" },
-      { icon: Globe, text: "Networking virtually and building an impressive online presence" },
-      { icon: Users, text: "Transferrable skills and where to find work" },
+      { icon: DollarSign, text: "Negotiate pay and price your skills globally" },
+      { icon: Globe, text: "Join a community of peers building global careers" },
     ],
   },
 ];
@@ -80,13 +66,13 @@ const Webinar = () => {
           <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
             <span className="inline-block mb-4 rounded-full bg-primary-foreground/20 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur-sm">
               <Sparkles className="inline h-4 w-4 mr-1 -mt-0.5" />
-              Upcoming Webinars
+              New Cohort
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-              Our Upcoming Webinars
+              Remote Work 4-Week Bootcamp
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
-              Practical, actionable sessions designed for the global diaspora. Dates coming soon!
+              A hands-on bootcamp to help you land your first remote job. Dates coming soon — get on the list.
             </p>
           </div>
         </section>
@@ -146,7 +132,7 @@ const Webinar = () => {
               Interested? Get Notified
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              We'll let you know as soon as the webinar dates and details are announced.
+              We'll let you know as soon as the bootcamp dates and details are announced.
             </p>
 
             <form onSubmit={handleSubscribe} className="space-y-4 text-left">
@@ -182,7 +168,7 @@ const Webinar = () => {
             </form>
 
             <p className="mt-4 text-sm text-muted-foreground">
-              No spam. We'll only email you about these webinars.
+              No spam. We'll only email you about the bootcamp.
             </p>
           </div>
         </section>
