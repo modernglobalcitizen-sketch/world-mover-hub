@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Globe, Users, DollarSign, Bell, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket } from "lucide-react";
+import { CheckCircle, Globe, DollarSign, Bell, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket, FileText, Briefcase, Search, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,10 @@ const webinars = [
       { icon: MessageSquare, text: "Build an online presence that attracts recruiters" },
       { icon: DollarSign, text: "Negotiate pay and price your skills globally" },
       { icon: Globe, text: "Join a community of peers building global careers" },
+      { icon: Briefcase, text: "Create a free portfolio that showcases your work" },
+      { icon: FileText, text: "Optimize your resume for global remote roles" },
+      { icon: Search, text: "Learn exactly where to find legit remote work" },
+      { icon: LifeBuoy, text: "Personalized support throughout the bootcamp" },
     ],
   },
 ];
