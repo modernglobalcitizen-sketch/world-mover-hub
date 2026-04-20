@@ -28,7 +28,7 @@ const webinars = [
       { icon: Globe, text: "Join a community of peers building global careers" },
       { icon: Briefcase, text: "Create a free portfolio that showcases your work" },
       { icon: FileText, text: "Optimize your resume for global remote roles" },
-      { icon: Search, text: "Learn exactly where to find legit remote work" },
+      { icon: Search, text: "Learn exactly where to find LEGIT remote work" },
       { icon: LifeBuoy, text: "Personalized support throughout the bootcamp" },
     ],
   },
