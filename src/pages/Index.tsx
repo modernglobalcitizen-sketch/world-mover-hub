@@ -6,6 +6,7 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import ReviewsSection from "@/components/ReviewsSection";
+import BootcampBanner from "@/components/BootcampBanner";
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
         <Hero />
         <FounderSection />
         <ReviewsSection />
+        <BootcampBanner />
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />

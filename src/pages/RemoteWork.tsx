@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import BootcampBanner from "@/components/BootcampBanner";
 
 const COUNTRIES = [
   "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
@@ -305,41 +306,7 @@ const RemoteWork = () => {
           </div>
         </section>
 
-        {/* Webinar Promo */}
-        <section className="py-12 md:py-16 bg-card border-b border-border">
-          <div className="container max-w-4xl">
-            <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-soft">
-              <div className="bg-gradient-to-r from-primary via-primary/90 to-accent p-8 md:p-10 text-center">
-                <Badge className="mb-4 bg-white/20 text-white border-white/30">
-                  Upcoming Webinar
-                </Badge>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-3">
-                  Your First $1,000 Online Plan
-                </h2>
-                <p className="text-white/85 max-w-xl mx-auto mb-6">
-                  A step-by-step blueprint for building your first online income stream — designed for the global diaspora. Date coming soon!
-                </p>
-                <div className="grid sm:grid-cols-2 gap-4 max-w-md mx-auto mb-8 text-white/90 text-sm">
-                  <div className="flex items-center justify-center gap-2">
-                    <Globe className="h-4 w-4" />
-                    <span>Work from anywhere</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <span>Live Q&A session</span>
-                  </div>
-                </div>
-                <div className="mt-2">
-                  <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold text-lg px-8">
-                    <a href="/webinar">
-                      Get Notified
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <BootcampBanner />
 
         {/* Featured Jobs (Admin-added) */}
         {adminJobs.length > 0 ? (
