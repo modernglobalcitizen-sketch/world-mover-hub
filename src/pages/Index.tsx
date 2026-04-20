@@ -14,9 +14,9 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <Hero />
+        <BootcampBanner />
         <FounderSection />
         <ReviewsSection />
-        <BootcampBanner />
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
