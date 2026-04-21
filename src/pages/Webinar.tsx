@@ -13,14 +13,14 @@ import { getLocalWebinarTime, getWebinarTimeInZones } from "@/lib/webinar";
 
 const webinars = [
   {
-    id: "remote-bootcamp",
-    title: "Remote Work 4-Week Bootcamp",
+    id: "remote-webinar",
+    title: "Remote Work Webinar",
     date: null,
-    tagline: "Land your first remote job in 4 weeks",
+    tagline: "Land your first remote job",
     description:
-      "A hands-on, 4-week intensive designed for the global diaspora. Master the skills, tools, and strategies to land remote roles and build a career without borders.",
+      "A hands-on webinar designed for the global diaspora. Master the skills, tools, and strategies to land remote roles and build a career without borders.",
     highlights: [
-      { icon: Rocket, text: "4 weeks of live, structured training" },
+      { icon: Rocket, text: "Live, structured training" },
       { icon: Laptop, text: "Hands-on practice with real remote work tools" },
       { icon: TrendingUp, text: "Step-by-step plan to land your first remote role" },
       { icon: MessageSquare, text: "Build an online presence that attracts recruiters" },
@@ -29,7 +29,7 @@ const webinars = [
       { icon: Briefcase, text: "Create a free portfolio that showcases your work" },
       { icon: FileText, text: "Optimize your resume for global remote roles" },
       { icon: Search, text: "Learn exactly where to find LEGIT remote work" },
-      { icon: LifeBuoy, text: "Personalized support throughout the bootcamp" },
+      { icon: LifeBuoy, text: "Personalized support throughout the webinar" },
     ],
   },
 ];
@@ -70,13 +70,13 @@ const Webinar = () => {
           <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
             <span className="inline-block mb-4 rounded-full bg-primary-foreground/20 px-4 py-1.5 text-sm font-medium text-primary-foreground backdrop-blur-sm">
               <Sparkles className="inline h-4 w-4 mr-1 -mt-0.5" />
-              New Cohort
+              New Webinar
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-              Remote Work 4-Week Bootcamp
+              Remote Work Webinar
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
-              A hands-on bootcamp to help you land your first remote job. Dates coming soon — get on the list.
+              A hands-on webinar to help you land your first remote job. Dates coming soon — get on the list.
             </p>
           </div>
         </section>
@@ -136,7 +136,7 @@ const Webinar = () => {
               Interested? Get Notified
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              We'll let you know as soon as the bootcamp dates and details are announced.
+              We'll let you know as soon as the webinar dates and details are announced.
             </p>
 
             <form onSubmit={handleSubscribe} className="space-y-4 text-left">
@@ -172,7 +172,7 @@ const Webinar = () => {
             </form>
 
             <p className="mt-4 text-sm text-muted-foreground">
-              No spam. We'll only email you about the bootcamp.
+              No spam. We'll only email you about the webinar.
             </p>
           </div>
         </section>

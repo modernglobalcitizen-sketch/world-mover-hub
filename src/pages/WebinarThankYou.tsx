@@ -43,7 +43,7 @@ const WebinarThankYou = () => {
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
                 <Button
                   variant="outline"
-                  onClick={() => window.open("https://www.paypal.com/ncp/payment/H5SX9T4TZ4AKE", "_blank")}
+                  onClick={() => window.open("https://www.paypal.com/ncp/payment/WWH3PYEPG55R2", "_blank")}
                 >
                   Complete Payment
                 </Button>
