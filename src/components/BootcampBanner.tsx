@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, Rocket, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const BootcampBanner = () => {
   return (
@@ -30,10 +29,10 @@ const BootcampBanner = () => {
               </div>
             </div>
             <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 font-semibold text-lg px-8 group">
-              <Link to="/webinar">
-                Join the Webinar
+              <a href="https://www.paypal.com/ncp/payment/WWH3PYEPG55R2" target="_blank" rel="noopener noreferrer">
+                Reserve Your Spot
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </a>
             </Button>
           </div>
         </div>

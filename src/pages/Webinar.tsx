@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { CheckCircle, Globe, DollarSign, Bell, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket, FileText, Briefcase, Search, LifeBuoy } from "lucide-react";
+import { CheckCircle, Globe, DollarSign, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket, FileText, Briefcase, Search, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import webinarFlyer from "@/assets/webinar-flyer.png";
@@ -36,32 +31,6 @@ const webinars = [
 ];
 
 const Webinar = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) {
-      toast({ title: "Please enter a valid email address", variant: "destructive" });
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      await supabase.functions.invoke("newsletter-subscribe", {
-        body: { email: email.trim(), name: name.trim() },
-      });
-      toast({ title: "You're on the list!", description: "We'll notify you when the webinar dates are announced." });
-      setName("");
-      setEmail("");
-    } catch {
-      toast({ title: "Something went wrong. Please try again.", variant: "destructive" });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
@@ -138,53 +107,35 @@ const Webinar = () => {
           </section>
         ))}
 
-        {/* Interest Form */}
+        {/* Reserve Spot CTA */}
         <section className="py-16 md:py-20 bg-card">
           <div className="container mx-auto px-4 max-w-md text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
               <CheckCircle className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-3xl font-display font-bold text-foreground mb-4">
-              Interested? Get Notified
+              Reserve Your Spot
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              We'll let you know as soon as the webinar dates and details are announced.
+              Secure your seat for the May 2, 2026 webinar. Complete your payment to confirm registration.
             </p>
 
-            <form onSubmit={handleSubscribe} className="space-y-4 text-left">
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSubmitting}
-                className="w-full font-semibold text-lg py-6 h-auto"
+            <Button
+              asChild
+              size="lg"
+              className="w-full font-semibold text-lg py-6 h-auto"
+            >
+              <a
+                href="https://www.paypal.com/ncp/payment/WWH3PYEPG55R2"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Bell className="mr-2 h-5 w-5" />
-                {isSubmitting ? "Subscribing..." : "Notify Me"}
-              </Button>
-            </form>
+                Pay & Reserve Your Spot
+              </a>
+            </Button>
 
             <p className="mt-4 text-sm text-muted-foreground">
-              No spam. We'll only email you about the webinar.
+              You'll receive your access details by email after payment.
             </p>
           </div>
         </section>
