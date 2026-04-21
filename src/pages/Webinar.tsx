@@ -138,53 +138,35 @@ const Webinar = () => {
           </section>
         ))}
 
-        {/* Interest Form */}
+        {/* Reserve Spot CTA */}
         <section className="py-16 md:py-20 bg-card">
           <div className="container mx-auto px-4 max-w-md text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
               <CheckCircle className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-3xl font-display font-bold text-foreground mb-4">
-              Interested? Get Notified
+              Reserve Your Spot
             </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              We'll let you know as soon as the webinar dates and details are announced.
+              Secure your seat for the May 2, 2026 webinar. Complete your payment to confirm registration.
             </p>
 
-            <form onSubmit={handleSubscribe} className="space-y-4 text-left">
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                disabled={isSubmitting}
-                className="w-full font-semibold text-lg py-6 h-auto"
+            <Button
+              asChild
+              size="lg"
+              className="w-full font-semibold text-lg py-6 h-auto"
+            >
+              <a
+                href="https://www.paypal.com/ncp/payment/WWH3PYEPG55R2"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Bell className="mr-2 h-5 w-5" />
-                {isSubmitting ? "Subscribing..." : "Notify Me"}
-              </Button>
-            </form>
+                Pay & Reserve Your Spot
+              </a>
+            </Button>
 
             <p className="mt-4 text-sm text-muted-foreground">
-              No spam. We'll only email you about the webinar.
+              You'll receive your access details by email after payment.
             </p>
           </div>
         </section>
