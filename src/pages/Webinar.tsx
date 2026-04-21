@@ -76,7 +76,7 @@ const Webinar = () => {
               Remote Work Webinar
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
-              A hands-on webinar to help you land your first remote job. Dates coming soon — get on the list.
+              A hands-on webinar to help you land your first remote job. Save your spot below.
             </p>
           </div>
         </section>
