@@ -82,7 +82,18 @@ const Webinar = () => {
           </div>
         </section>
 
-        {/* Webinar Cards */}
+        {/* Flyer */}
+        <section className="py-12 md:py-16 bg-background">
+          <div className="container mx-auto px-4 max-w-2xl">
+            <img
+              src={webinarFlyer}
+              alt="Finally Land Remote Work webinar with host Kenisha Archer — May 2, 2026 at 3PM EAT"
+              className="w-full h-auto rounded-2xl shadow-soft border border-border"
+              loading="lazy"
+            />
+          </div>
+        </section>
+
         {webinars.map((webinar) => (
           <section key={webinar.id} className="py-16 md:py-20 odd:bg-background even:bg-muted/30">
             <div className="container mx-auto px-4 max-w-4xl">
