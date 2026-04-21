@@ -1,4 +1,4 @@
-export const WEBINAR_DATE = new Date("2026-05-02T15:00:00Z");
+export const WEBINAR_DATE = new Date("2026-05-02T12:00:00Z");
 
 export function getLocalWebinarTime(): string {
   return WEBINAR_DATE.toLocaleString(undefined, {
