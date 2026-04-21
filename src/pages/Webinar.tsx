@@ -110,6 +110,72 @@ const Webinar = () => {
           </section>
         ))}
 
+        {/* Before / After */}
+        <section className="py-16 md:py-24 bg-muted/30">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+                From Stuck to Sovereign
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                What changes when you stop trading time for a weak local paycheck — and start earning in a stronger global currency.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Before */}
+              <div className="space-y-4">
+                <div className="relative overflow-hidden rounded-2xl border border-border shadow-soft">
+                  <img
+                    src={beforeLocalEconomy}
+                    alt="Stressed worker stuck in a low-paying local job, surrounded by paperwork and weak local currency"
+                    className="w-full h-72 md:h-80 object-cover grayscale-[20%]"
+                    loading="lazy"
+                    width={1280}
+                    height={832}
+                  />
+                  <span className="absolute top-4 left-4 rounded-full bg-background/90 backdrop-blur-sm px-3 py-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                    Before
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-bold text-foreground mb-2">
+                    Stuck in the local economy
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Long hours, capped pay, currency that loses value, and a ceiling you didn't choose. Your skills are global — but your paycheck isn't.
+                  </p>
+                </div>
+              </div>
+
+              {/* After */}
+              <div className="space-y-4">
+                <div className="relative overflow-hidden rounded-2xl border-2 border-primary/40 shadow-soft">
+                  <img
+                    src={afterGlobalCareer}
+                    alt="Confident remote worker on a video call from a sunlit workspace, earning in a stronger global currency"
+                    className="w-full h-72 md:h-80 object-cover"
+                    loading="lazy"
+                    width={1280}
+                    height={832}
+                  />
+                  <span className="absolute top-4 left-4 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+                    After
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-bold text-foreground mb-2">
+                    Earning in a stronger currency
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Remote clients, global rates, and the freedom to work from anywhere. The same skills — paid in a currency that stretches further at home.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Reserve Spot CTA */}
         <section className="py-16 md:py-20 bg-card">
           <div className="container mx-auto px-4 max-w-md text-center">
