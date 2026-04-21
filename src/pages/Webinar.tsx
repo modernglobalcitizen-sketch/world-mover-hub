@@ -46,7 +46,7 @@ const Webinar = () => {
               Remote Work Webinar
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
-              A hands-on webinar to help you land your first remote job. Save your spot below.
+              A hands-on webinar to help you land your first remote job. Just <strong className="text-primary-foreground">$15 USD</strong> — save your spot below.
             </p>
           </div>
         </section>
@@ -116,8 +116,11 @@ const Webinar = () => {
             <h2 className="text-3xl font-display font-bold text-foreground mb-4">
               Reserve Your Spot
             </h2>
-            <p className="text-muted-foreground mb-8 text-lg">
-              Secure your seat for the May 2, 2026 webinar. Complete your payment to confirm registration.
+            <p className="text-muted-foreground mb-2 text-lg">
+              Secure your seat for the May 2, 2026 webinar.
+            </p>
+            <p className="text-3xl font-display font-bold text-primary mb-8">
+              $15 USD
             </p>
 
             <Button
@@ -130,7 +133,7 @@ const Webinar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Pay & Reserve Your Spot
+                Pay $15 & Reserve Your Spot
               </a>
             </Button>
 
