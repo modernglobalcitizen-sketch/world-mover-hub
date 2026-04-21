@@ -140,10 +140,10 @@ const Webinar = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-bold text-foreground mb-2">
-                    Stuck in the local economy
+                    Working hard, paid too little
                   </h3>
                   <p className="text-muted-foreground">
-                    Long hours, capped pay, currency that loses value, and a ceiling you didn't choose. Your skills are global — but your paycheck isn't.
+                    Long hours. A small paycheck. Money that doesn't go far. Your skills are worth more than your local job will ever pay.
                   </p>
                 </div>
               </div>
