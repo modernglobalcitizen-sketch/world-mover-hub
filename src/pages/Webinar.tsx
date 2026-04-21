@@ -21,6 +21,7 @@ const webinars = [
       { icon: TrendingUp, text: "Step-by-step plan to land your first remote role" },
       { icon: MessageSquare, text: "Build an online presence that attracts recruiters" },
       { icon: DollarSign, text: "Negotiate pay and price your skills globally" },
+      { icon: DollarSign, text: "How to accept payment from international clients" },
       { icon: Globe, text: "Join a community of peers building global careers" },
       { icon: Briefcase, text: "Create a free portfolio that showcases your work" },
       { icon: FileText, text: "Optimize your resume for global remote roles" },
