@@ -130,6 +130,14 @@ const visaImmigrationLinks = [
   },
 ];
 
+const interviewLinks = [
+  {
+    title: "University of Michigan Interviewing Resources",
+    description: "Comprehensive interview prep guides from the U-M Career Center",
+    url: "https://careercenter.umich.edu/content/interviewing-resources",
+  },
+];
+
 const networkingLinks = [
   {
     title: "b2match",
