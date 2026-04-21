@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { BookOpen, Video, ExternalLink, Globe, Compass, Award, Languages, Plane, Users } from "lucide-react";
+import { BookOpen, Video, ExternalLink, Globe, Compass, Award, Languages, Plane, Users, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -130,6 +130,14 @@ const visaImmigrationLinks = [
   },
 ];
 
+const interviewLinks = [
+  {
+    title: "University of Michigan Interviewing Resources",
+    description: "Comprehensive interview prep guides from the U-M Career Center",
+    url: "https://careercenter.umich.edu/content/interviewing-resources",
+  },
+];
+
 const networkingLinks = [
   {
     title: "b2match",
@@ -183,6 +191,50 @@ const Resources = () => {
                   <Separator className="mb-4" />
                   <div className="grid sm:grid-cols-2 gap-4">
                     {careerRoadmapLinks.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all"
+                      >
+                        <ExternalLink className="h-4 w-4 mt-0.5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                        <div>
+                          <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                            {link.title}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {link.description}
+                          </p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Interview Section */}
+            <div className="max-w-4xl mx-auto mt-6">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <MessageSquare className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                      Interview
+                    </span>
+                  </div>
+                  <CardTitle className="text-xl">Interview Preparation</CardTitle>
+                  <CardDescription>
+                    Get ready for your next job interview with proven prep guides and tips.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Separator className="mb-4" />
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {interviewLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link.url}
