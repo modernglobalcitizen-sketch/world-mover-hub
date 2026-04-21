@@ -16,7 +16,7 @@ const BootcampBanner = () => {
               Remote Work Webinar
             </h2>
             <p className="text-primary-foreground/90 max-w-xl mx-auto mb-6 text-base md:text-lg">
-              Land your first remote job. Master the skills, tools, and strategies to build a global career — from anywhere.
+              Land your first remote job. Master the skills, tools, and strategies to build a global career — from anywhere. Just <strong className="text-primary-foreground">$15 USD</strong>.
             </p>
             <div className="grid sm:grid-cols-2 gap-4 max-w-md mx-auto mb-8 text-primary-foreground/90 text-sm">
               <div className="flex items-center justify-center gap-2">
@@ -30,7 +30,7 @@ const BootcampBanner = () => {
             </div>
             <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 font-semibold text-lg px-8 group">
               <a href="https://www.paypal.com/ncp/payment/WWH3PYEPG55R2" target="_blank" rel="noopener noreferrer">
-                Reserve Your Spot
+                Reserve Your Spot — $15
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
