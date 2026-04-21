@@ -136,6 +136,11 @@ const interviewLinks = [
     description: "Comprehensive interview prep guides from the U-M Career Center",
     url: "https://careercenter.umich.edu/content/interviewing-resources",
   },
+  {
+    title: "Texas State Job Interview Guide",
+    description: "Step-by-step interview prep guide from TXST Career Services",
+    url: "https://www.careerservices.txst.edu/students-alumni/resources-services/career-guides/job-interview-guide.html",
+  },
 ];
 
 const networkingLinks = [
