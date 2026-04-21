@@ -15,7 +15,7 @@ const webinars = [
   {
     id: "remote-webinar",
     title: "Remote Work Webinar",
-    date: null,
+    date: getLocalWebinarTime(),
     tagline: "Land your first remote job",
     description:
       "A hands-on webinar designed for the global diaspora. Master the skills, tools, and strategies to land remote roles and build a career without borders.",
