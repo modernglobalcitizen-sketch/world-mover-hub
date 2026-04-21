@@ -128,7 +128,7 @@ const Webinar = () => {
                 <div className="relative overflow-hidden rounded-2xl border border-border shadow-soft">
                   <img
                     src={beforeLocalEconomy}
-                    alt="Stressed worker stuck in a low-paying local job, surrounded by paperwork and weak local currency"
+                    alt="Stressed Black woman stuck in a low-paying local job, holding a small paycheck surrounded by weak local currency"
                     className="w-full h-72 md:h-80 object-cover grayscale-[20%]"
                     loading="lazy"
                     width={1280}
