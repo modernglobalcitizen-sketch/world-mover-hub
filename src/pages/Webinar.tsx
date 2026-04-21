@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { CheckCircle, Globe, DollarSign, Bell, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket, FileText, Briefcase, Search, LifeBuoy } from "lucide-react";
+import { CheckCircle, Globe, DollarSign, Sparkles, Laptop, TrendingUp, MessageSquare, CalendarDays, Rocket, FileText, Briefcase, Search, LifeBuoy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import webinarFlyer from "@/assets/webinar-flyer.png";
@@ -36,32 +31,6 @@ const webinars = [
 ];
 
 const Webinar = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) {
-      toast({ title: "Please enter a valid email address", variant: "destructive" });
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      await supabase.functions.invoke("newsletter-subscribe", {
-        body: { email: email.trim(), name: name.trim() },
-      });
-      toast({ title: "You're on the list!", description: "We'll notify you when the webinar dates are announced." });
-      setName("");
-      setEmail("");
-    } catch {
-      toast({ title: "Something went wrong. Please try again.", variant: "destructive" });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
