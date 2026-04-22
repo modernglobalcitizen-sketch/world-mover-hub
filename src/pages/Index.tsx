@@ -7,6 +7,7 @@ import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import ReviewsSection from "@/components/ReviewsSection";
 import BootcampBanner from "@/components/BootcampBanner";
+import AdSense from "@/components/AdSense";
 
 const Index = () => {
   return (
@@ -17,6 +18,9 @@ const Index = () => {
         <BootcampBanner />
         <FounderSection />
         <ReviewsSection />
+        <div className="container mx-auto px-4">
+          <AdSense slot="1226790098" />
+        </div>
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
