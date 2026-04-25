@@ -29,6 +29,7 @@ const Index = () => {
         <HomeBreakoutRooms />
       </main>
       <Footer />
+      <JobAlertsExitPopup />
     </div>
   );
 };
