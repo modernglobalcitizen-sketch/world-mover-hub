@@ -427,6 +427,7 @@ const RemoteWork = () => {
         </section>
       </main>
       <Footer />
+      <JobAlertsExitPopup />
     </div>
   );
 };
