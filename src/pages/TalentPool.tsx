@@ -195,7 +195,7 @@ const TalentPool = () => {
             <CheckCircle className="h-16 w-16 mx-auto text-green-500" />
             <h1 className="text-3xl font-display font-bold text-headline">Thank You!</h1>
             <p className="text-lg text-muted-foreground">
-              Your profile has been submitted to our talent pool. We'll review your information and reach out if there's a match for opportunities that fit your background.
+              Your profile has been submitted to our talent pool. We'll review your information and get back to you within 48 business hours if there's a match for opportunities that fit your background.
             </p>
             <Button onClick={() => window.location.href = "/"}>Back to Home</Button>
           </div>
