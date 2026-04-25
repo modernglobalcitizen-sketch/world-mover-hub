@@ -116,7 +116,7 @@ const RemoteJobApplicationsAdmin = () => {
                     {app.email}
                   </a>
                 </TableCell>
-                <TableCell className="max-w-[200px] truncate">{app.details || "—"}</TableCell>
+                <TableCell className="max-w-[400px] whitespace-pre-wrap break-words text-sm">{app.details || "—"}</TableCell>
                 <TableCell>
                   <Select value={app.status} onValueChange={(v) => handleUpdateStatus(app.id, v)}>
                     <SelectTrigger className="h-8 w-[130px]">
