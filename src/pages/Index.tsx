@@ -8,6 +8,7 @@ import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import ReviewsSection from "@/components/ReviewsSection";
 import BootcampBanner from "@/components/BootcampBanner";
 import AdSense from "@/components/AdSense";
+import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 
 const Index = () => {
   return (
