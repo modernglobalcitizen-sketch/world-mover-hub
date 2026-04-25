@@ -120,7 +120,7 @@ const RemoteWork = () => {
         });
       if (error) throw error;
       setApplySubmitted(true);
-      toast.success("Application submitted! We'll be in touch soon.");
+      toast.success("Application submitted! We'll get back to you within 48 business hours.");
     } catch {
       toast.error("Something went wrong. Please try again later.");
     } finally {
@@ -368,7 +368,7 @@ const RemoteWork = () => {
               <div className="text-center py-10 bg-accent/50 rounded-lg border border-border">
                 <CheckCircle className="h-14 w-14 text-primary mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-foreground mb-2">Application Received!</h3>
-                <p className="text-muted-foreground">We'll review your details and reach out to help you find a remote job.</p>
+                <p className="text-muted-foreground">We'll review your details and get back to you within 48 business hours to help you find a remote job.</p>
               </div>
             ) : (
               <form onSubmit={handleApplySubmit} className="space-y-4 bg-accent/30 p-6 rounded-lg border border-border">
