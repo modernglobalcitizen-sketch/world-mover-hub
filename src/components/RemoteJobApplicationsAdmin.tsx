@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Mail } from "lucide-react";
+import { Trash2, Mail, FileText } from "lucide-react";
 
 const STATUS_OPTIONS = ["new", "viewed", "contacted", "on hold", "resolved"] as const;
 import { toast } from "sonner";
@@ -17,6 +17,8 @@ interface JobApplication {
   details: string | null;
   status: string;
   created_at: string;
+  resume_url: string | null;
+  country: string | null;
 }
 
 const RemoteJobApplicationsAdmin = () => {
@@ -100,6 +102,8 @@ const RemoteJobApplicationsAdmin = () => {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>Country</TableHead>
+              <TableHead>Resume</TableHead>
               <TableHead>Details</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
@@ -115,6 +119,17 @@ const RemoteJobApplicationsAdmin = () => {
                     <Mail className="h-3 w-3" />
                     {app.email}
                   </a>
+                </TableCell>
+                <TableCell className="text-sm">{app.country || "—"}</TableCell>
+                <TableCell>
+                  {app.resume_url ? (
+                    <a href={app.resume_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1 text-sm">
+                      <FileText className="h-3 w-3" />
+                      View
+                    </a>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">—</span>
+                  )}
                 </TableCell>
                 <TableCell className="max-w-[400px] whitespace-pre-wrap break-words text-sm">{app.details || "—"}</TableCell>
                 <TableCell>
