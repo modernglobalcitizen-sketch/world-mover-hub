@@ -423,6 +423,41 @@ const TalentPool = () => {
         </div>
       </main>
       <Footer />
+
+      <Dialog
+        open={showConfirmDialog}
+        onOpenChange={(open) => {
+          setShowConfirmDialog(open);
+          if (!open) setSubmitted(true);
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+              <Clock className="h-7 w-7 text-primary" />
+            </div>
+            <DialogTitle className="text-center text-2xl font-display">
+              Application Received!
+            </DialogTitle>
+            <DialogDescription className="text-center text-base pt-2">
+              Thank you for submitting your profile to our talent pool. Our team will review your information and{" "}
+              <span className="font-semibold text-foreground">get back to you within 48 business hours</span>{" "}
+              if there's a match for opportunities that fit your background.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              onClick={() => {
+                setShowConfirmDialog(false);
+                setSubmitted(true);
+              }}
+              className="w-full sm:w-auto"
+            >
+              Got it
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
