@@ -178,7 +178,7 @@ const TalentPool = () => {
 
       if (error) throw error;
 
-      setSubmitted(true);
+      setShowConfirmDialog(true);
       toast.success("Your profile has been submitted to our talent pool!");
     } catch (err) {
       if (import.meta.env.DEV) console.error(err);
