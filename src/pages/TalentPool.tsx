@@ -7,9 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Upload, Users, CheckCircle, X } from "lucide-react";
+import { Upload, Users, CheckCircle, X, Clock } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const industries = [
@@ -75,6 +76,7 @@ const desiredRoleOptions = [
 
 const TalentPool = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [coverLetterFile, setCoverLetterFile] = useState<File | null>(null);
@@ -176,7 +178,7 @@ const TalentPool = () => {
 
       if (error) throw error;
 
-      setSubmitted(true);
+      setShowConfirmDialog(true);
       toast.success("Your profile has been submitted to our talent pool!");
     } catch (err) {
       if (import.meta.env.DEV) console.error(err);
@@ -421,6 +423,41 @@ const TalentPool = () => {
         </div>
       </main>
       <Footer />
+
+      <Dialog
+        open={showConfirmDialog}
+        onOpenChange={(open) => {
+          setShowConfirmDialog(open);
+          if (!open) setSubmitted(true);
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+              <Clock className="h-7 w-7 text-primary" />
+            </div>
+            <DialogTitle className="text-center text-2xl font-display">
+              Application Received!
+            </DialogTitle>
+            <DialogDescription className="text-center text-base pt-2">
+              Thank you for submitting your profile to our talent pool. Our team will review your information and{" "}
+              <span className="font-semibold text-foreground">get back to you within 48 business hours</span>{" "}
+              if there's a match for opportunities that fit your background.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              onClick={() => {
+                setShowConfirmDialog(false);
+                setSubmitted(true);
+              }}
+              className="w-full sm:w-auto"
+            >
+              Got it
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
