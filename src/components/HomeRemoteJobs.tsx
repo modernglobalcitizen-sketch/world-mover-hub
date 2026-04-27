@@ -99,6 +99,18 @@ const HomeRemoteJobs = () => {
     setSavingId(null);
   };
 
+  const categories = useMemo(() => {
+    const set = new Set(jobs.map(j => j.category).filter(Boolean));
+    return Array.from(set).sort();
+  }, [jobs]);
+
+  const filteredJobs = useMemo(() => {
+    const list = selectedCategory === "all"
+      ? jobs
+      : jobs.filter(j => j.category === selectedCategory);
+    return list.slice(0, 4);
+  }, [jobs, selectedCategory]);
+
   if (jobs.length === 0) return null;
 
   const formatDate = (dateStr: string) => {
