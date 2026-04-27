@@ -160,16 +160,24 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-border bg-background">
           <nav className="container py-4 flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-base font-medium text-muted-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isWebinar = link.name === "Webinar";
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={
+                    isWebinar
+                      ? "inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-600 px-3 py-1.5 text-base font-semibold text-white shadow-md w-fit"
+                      : "text-base font-medium text-muted-foreground hover:text-primary transition-colors"
+                  }
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {isWebinar && <span className="h-2 w-2 rounded-full bg-white animate-pulse" />}
+                  {link.name}
+                </a>
+              );
+            })}
             {isAdmin && adminOnlyLinks.map((link) => (
               <a
                 key={link.name}
