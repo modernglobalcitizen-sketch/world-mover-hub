@@ -87,15 +87,23 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-            >
-              {link.name}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isWebinar = link.name === "Webinar";
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                className={
+                  isWebinar
+                    ? "relative inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-pink-600 px-3 py-1.5 text-sm font-semibold text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+                    : "text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                }
+              >
+                {isWebinar && <span className="h-2 w-2 rounded-full bg-white animate-pulse" />}
+                {link.name}
+              </a>
+            );
+          })}
           {isAdmin && adminOnlyLinks.map((link) => (
             <a
               key={link.name}
