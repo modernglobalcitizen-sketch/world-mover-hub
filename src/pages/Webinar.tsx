@@ -12,7 +12,7 @@ import { getLocalWebinarTime, getWebinarTimeInZones } from "@/lib/webinar";
 const webinars = [
   {
     id: "remote-webinar",
-    title: "Remote Work Webinar",
+    title: "Secure Your First Remote Role",
     date: getLocalWebinarTime(),
     tagline: "Land your first remote job",
     description:
@@ -46,7 +46,7 @@ const Webinar = () => {
               New Webinar
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6 leading-tight">
-              Remote Work Webinar
+              Secure Your First Remote Role
             </h1>
             <p className="text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-6">
               A hands-on webinar to help you land your first remote job. Just <strong className="text-primary-foreground">$15 USD</strong> — save your spot below.
