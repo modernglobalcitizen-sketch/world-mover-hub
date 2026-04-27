@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
@@ -55,6 +55,7 @@ interface AdminRemoteJob {
 
 const RemoteWork = () => {
   const [adminJobs, setAdminJobs] = useState<AdminRemoteJob[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [session, setSession] = useState<Session | null>(null);
   const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
   const [savingId, setSavingId] = useState<string | null>(null);
@@ -199,6 +200,16 @@ const RemoteWork = () => {
     setSavingId(null);
   };
 
+  const categories = useMemo(() => {
+    const set = new Set(adminJobs.map((j) => j.category).filter(Boolean));
+    return Array.from(set).sort();
+  }, [adminJobs]);
+
+  const filteredJobs = useMemo(() => {
+    if (selectedCategory === "all") return adminJobs;
+    return adminJobs.filter((j) => j.category === selectedCategory);
+  }, [adminJobs, selectedCategory]);
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -239,17 +250,37 @@ const RemoteWork = () => {
         {adminJobs.length > 0 ? (
           <section className="py-16 md:py-24 bg-muted/30">
             <div className="container space-y-8">
-              <div>
-                <h2 className="text-3xl font-display font-bold text-headline">
-                  <Briefcase className="inline h-7 w-7 mr-2 text-primary" />
-                  Featured Remote Jobs
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  Hand-picked remote opportunities curated by our team.
-                </p>
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl font-display font-bold text-headline">
+                    <Briefcase className="inline h-7 w-7 mr-2 text-primary" />
+                    Featured Remote Jobs
+                  </h2>
+                  <p className="mt-2 text-muted-foreground">
+                    Hand-picked remote opportunities curated by our team.
+                  </p>
+                </div>
+                {categories.length > 0 && (
+                  <div className="w-full sm:w-64">
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Filter by category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        {categories.map((c) => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
               </div>
+              {filteredJobs.length === 0 ? (
+                <p className="text-center text-muted-foreground py-8">No jobs match this category.</p>
+              ) : (
               <div className="grid md:grid-cols-2 gap-6">
-                {adminJobs.map((job) => {
+                {filteredJobs.map((job) => {
                   const isSaved = savedJobIds.has(job.id);
                   return (
                     <Card key={job.id} className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 border-primary/20 flex flex-col">
@@ -340,6 +371,7 @@ const RemoteWork = () => {
                   );
                 })}
               </div>
+              )}
             </div>
           </section>
         ) : (
