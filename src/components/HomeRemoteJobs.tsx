@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Briefcase, MapPin, DollarSign, Clock, ArrowRight, Bookmark, BookmarkCheck, Lock, Eye } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,6 +27,7 @@ const HomeRemoteJobs = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -42,7 +44,7 @@ const HomeRemoteJobs = () => {
         .select("*")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
-        .limit(4);
+        .limit(50);
       if (data) setJobs(data);
     };
     fetchJobs();
@@ -97,6 +99,18 @@ const HomeRemoteJobs = () => {
     setSavingId(null);
   };
 
+  const categories = useMemo(() => {
+    const set = new Set(jobs.map(j => j.category).filter(Boolean));
+    return Array.from(set).sort();
+  }, [jobs]);
+
+  const filteredJobs = useMemo(() => {
+    const list = selectedCategory === "all"
+      ? jobs
+      : jobs.filter(j => j.category === selectedCategory);
+    return list.slice(0, 4);
+  }, [jobs, selectedCategory]);
+
   if (jobs.length === 0) return null;
 
   const formatDate = (dateStr: string) => {
@@ -107,7 +121,7 @@ const HomeRemoteJobs = () => {
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="container space-y-8">
-        <div className="flex items-end justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h2 className="text-3xl font-display font-bold text-headline">
               <Briefcase className="inline h-7 w-7 mr-2 text-primary" />
@@ -117,16 +131,29 @@ const HomeRemoteJobs = () => {
               Curated remote opportunities from around the world.
             </p>
           </div>
-          <Button variant="outline" asChild className="hidden sm:flex">
-            <a href="/remote-work">
-              View All
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </a>
-          </Button>
+          <div className="flex items-center gap-3">
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" asChild className="hidden sm:flex">
+              <a href="/remote-work">
+                View All
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </a>
+            </Button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {jobs.map((job) => {
+          {filteredJobs.map((job) => {
             const isSaved = savedJobIds.has(job.id);
             return (
               <Card key={job.id} className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 flex flex-col">
