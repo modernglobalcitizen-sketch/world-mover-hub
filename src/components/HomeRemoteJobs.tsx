@@ -27,6 +27,7 @@ const HomeRemoteJobs = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [savedJobIds, setSavedJobIds] = useState<Set<string>>(new Set());
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -43,7 +44,7 @@ const HomeRemoteJobs = () => {
         .select("*")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
-        .limit(4);
+        .limit(50);
       if (data) setJobs(data);
     };
     fetchJobs();
