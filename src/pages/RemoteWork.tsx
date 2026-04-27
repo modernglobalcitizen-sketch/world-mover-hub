@@ -371,6 +371,7 @@ const RemoteWork = () => {
                   );
                 })}
               </div>
+              )}
             </div>
           </section>
         ) : (
