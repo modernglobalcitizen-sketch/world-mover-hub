@@ -399,6 +399,10 @@ const RemoteWork = () => {
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 From a polished resume to interview prep and direct introductions to hiring agencies — we support you at every step of your remote job search.
               </p>
+              <div className="mt-6 inline-flex items-baseline gap-2 px-5 py-2 rounded-full bg-primary text-primary-foreground shadow-soft">
+                <span className="text-3xl font-display font-bold">$30</span>
+                <span className="text-sm opacity-90">/ all three services</span>
+              </div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-10">
