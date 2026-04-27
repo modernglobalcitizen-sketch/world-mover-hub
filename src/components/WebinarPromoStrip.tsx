@@ -21,7 +21,7 @@ const WebinarPromoStrip = () => {
                 Live Webinar
               </span>
               <h3 className="mt-2 text-xl md:text-2xl font-display font-bold leading-tight">
-                Call Center to Remote Career
+                Secure Your First Remote Role
               </h3>
               <p className="mt-1 flex items-center justify-center md:justify-start gap-1.5 text-sm md:text-base text-white/90">
                 <CalendarDays className="h-4 w-4" />
