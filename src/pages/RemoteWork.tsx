@@ -35,7 +35,8 @@ const COUNTRIES = [
 import {
   MapPin, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
-  Globe, Users, Send, CheckCircle, Eye
+  Globe, Users, Send, CheckCircle, Eye,
+  FileText, MessageSquare, Building2, Sparkles
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -384,8 +385,73 @@ const RemoteWork = () => {
           </section>
         )}
 
+        {/* Career Services */}
+        <section className="py-16 md:py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10 border-t border-border">
+          <div className="container max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <Sparkles className="h-3 w-3 mr-1" />
+                Career Services
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-headline mb-3">
+                Land Your Next Remote Role Faster
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                From a polished resume to interview prep and direct introductions to hiring agencies — we support you at every step of your remote job search.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-10">
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <FileText className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Resume Review & Rewrite</CardTitle>
+                  <CardDescription>
+                    Get a recruiter-ready resume tailored for remote roles. We highlight your transferable skills and optimize for ATS systems.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <MessageSquare className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Interview Assistance</CardTitle>
+                  <CardDescription>
+                    Practice with mock interviews, get feedback on your answers, and learn how to confidently navigate remote hiring panels.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <Building2 className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Agency Introductions</CardTitle>
+                  <CardDescription>
+                    We put your profile in front of vetted staffing agencies and remote-first employers actively hiring across our network.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+
+            <div className="text-center">
+              <Button asChild size="lg" className="shadow-soft">
+                <a href="#apply-help">
+                  <Send className="h-4 w-4 mr-2" />
+                  Get Career Support
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* Apply for Help */}
-        <section className="py-12 md:py-16 bg-card border-t border-border">
+        <section id="apply-help" className="py-12 md:py-16 bg-card border-t border-border">
           <div className="container max-w-2xl">
             <div className="text-center mb-8">
               <Send className="h-8 w-8 text-primary mx-auto mb-3" />
