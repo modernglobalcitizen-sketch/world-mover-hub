@@ -121,7 +121,7 @@ const HomeRemoteJobs = () => {
   return (
     <section className="py-16 md:py-24 bg-muted/30">
       <div className="container space-y-8">
-        <div className="flex items-end justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h2 className="text-3xl font-display font-bold text-headline">
               <Briefcase className="inline h-7 w-7 mr-2 text-primary" />
@@ -131,16 +131,29 @@ const HomeRemoteJobs = () => {
               Curated remote opportunities from around the world.
             </p>
           </div>
-          <Button variant="outline" asChild className="hidden sm:flex">
-            <a href="/remote-work">
-              View All
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </a>
-          </Button>
+          <div className="flex items-center gap-3">
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" asChild className="hidden sm:flex">
+              <a href="/remote-work">
+                View All
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </a>
+            </Button>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {jobs.map((job) => {
+          {filteredJobs.map((job) => {
             const isSaved = savedJobIds.has(job.id);
             return (
               <Card key={job.id} className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 flex flex-col">
