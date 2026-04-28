@@ -177,6 +177,75 @@ const Webinar = () => {
           </div>
         </section>
 
+        {/* Career Services */}
+        <section className="py-16 md:py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10 border-t border-border">
+          <div className="container mx-auto px-4 max-w-6xl">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">
+                <Sparkles className="h-3 w-3 mr-1" />
+                Career Services
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-3">
+                Go Beyond the Webinar — Land Your Remote Role Faster
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Want hands-on help after the webinar? Get a polished resume, interview prep, and direct introductions to hiring agencies.
+              </p>
+              <div className="mt-6 inline-flex items-baseline gap-2 px-5 py-2 rounded-full bg-primary text-primary-foreground shadow-soft">
+                <span className="text-3xl font-display font-bold">$30</span>
+                <span className="text-sm opacity-90">/ all three services</span>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-10">
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <FileText className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Resume Review & Rewrite</CardTitle>
+                  <CardDescription>
+                    Get a recruiter-ready resume tailored for remote roles. We highlight your transferable skills and optimize for ATS systems.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <MessageSquare className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Interview Assistance</CardTitle>
+                  <CardDescription>
+                    Practice with mock interviews, get feedback on your answers, and learn how to confidently navigate remote hiring panels.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+
+              <Card className="border-primary/20 hover:border-primary/40 hover:shadow-hover transition-all">
+                <CardHeader>
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <Building2 className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">Agency Introductions</CardTitle>
+                  <CardDescription>
+                    We put your profile in front of vetted staffing agencies and remote-first employers actively hiring across our network.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+
+            <div className="text-center">
+              <Button asChild size="lg" className="shadow-soft">
+                <a href="/remote-work#apply-help">
+                  <Send className="h-4 w-4 mr-2" />
+                  Get Career Support
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* Reserve Spot CTA */}
         <section className="py-16 md:py-20 bg-card">
           <div className="container mx-auto px-4 max-w-md text-center">
