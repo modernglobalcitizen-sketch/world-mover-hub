@@ -371,6 +371,76 @@ const TalentPoolAdmin = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Add Portfolio Dialog */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add Portfolio Manually</DialogTitle>
+            <DialogDescription>
+              Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
+            <div className="space-y-1.5">
+              <Label>Name *</Label>
+              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Email *</Label>
+              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Industry *</Label>
+              <Input value={form.industry} onChange={(e) => setForm({ ...form, industry: e.target.value })} placeholder="e.g. Technology / IT" maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Years of Experience *</Label>
+              <Input value={form.years_of_experience} onChange={(e) => setForm({ ...form, years_of_experience: e.target.value })} placeholder="e.g. 3-5 years" maxLength={50} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Current Role</Label>
+              <Input value={form.role_current} onChange={(e) => setForm({ ...form, role_current: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Desired Role</Label>
+              <Input value={form.role_desired} onChange={(e) => setForm({ ...form, role_desired: e.target.value })} maxLength={200} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>Skills</Label>
+              <Textarea value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} placeholder="Comma-separated" maxLength={500} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Education Level</Label>
+              <Input value={form.education_level} onChange={(e) => setForm({ ...form, education_level: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Portfolio URL</Label>
+              <Input value={form.portfolio_url} onChange={(e) => setForm({ ...form, portfolio_url: e.target.value })} placeholder="https://" maxLength={255} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>LinkedIn URL</Label>
+              <Input value={form.linkedin_url} onChange={(e) => setForm({ ...form, linkedin_url: e.target.value })} placeholder="https://linkedin.com/in/..." maxLength={255} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>Internal Notes</Label>
+              <Textarea value={form.additional_notes} onChange={(e) => setForm({ ...form, additional_notes: e.target.value })} maxLength={1000} />
+            </div>
+            <div className="md:col-span-2 flex items-center gap-3 pt-2">
+              <Switch checked={addFeatured} onCheckedChange={setAddFeatured} />
+              <Label className="cursor-pointer" onClick={() => setAddFeatured(!addFeatured)}>
+                Feature publicly on Talent Pool page
+              </Label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddOpen(false)} disabled={saving}>Cancel</Button>
+            <Button onClick={handleAddPortfolio} disabled={saving}>
+              {saving ? "Saving..." : "Add Portfolio"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
