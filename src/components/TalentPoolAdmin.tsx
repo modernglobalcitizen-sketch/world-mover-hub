@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Mail, Eye, FileText, ExternalLink } from "lucide-react";
+import { Trash2, Mail, Eye, FileText, ExternalLink, Star } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ interface TalentPoolEntry {
   cover_letter_url: string | null;
   additional_notes: string | null;
   status: string;
+  is_featured: boolean;
   created_at: string;
 }
 
@@ -68,6 +70,19 @@ const TalentPoolAdmin = () => {
     } else {
       setEntries(entries.map(e => e.id === id ? { ...e, status } : e));
       toast.success("Status updated");
+    }
+  };
+
+  const handleToggleFeatured = async (id: string, is_featured: boolean) => {
+    const { error } = await supabase
+      .from("talent_pool")
+      .update({ is_featured })
+      .eq("id", id);
+    if (error) {
+      toast.error("Failed to update featured status");
+    } else {
+      setEntries(entries.map(e => e.id === id ? { ...e, is_featured } : e));
+      toast.success(is_featured ? "Profile featured publicly" : "Profile removed from showcase");
     }
   };
 
@@ -120,6 +135,9 @@ const TalentPoolAdmin = () => {
               <TableHead>Industry</TableHead>
               <TableHead>Experience</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>
+                <span className="inline-flex items-center gap-1"><Star className="h-3.5 w-3.5" /> Featured</span>
+              </TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Docs</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -144,6 +162,12 @@ const TalentPoolAdmin = () => {
                       ))}
                     </SelectContent>
                   </Select>
+                </TableCell>
+                <TableCell>
+                  <Switch
+                    checked={!!entry.is_featured}
+                    onCheckedChange={(checked) => handleToggleFeatured(entry.id, checked)}
+                  />
                 </TableCell>
                 <TableCell className="text-sm">{format(new Date(entry.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell>
