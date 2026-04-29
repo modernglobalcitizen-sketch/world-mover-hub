@@ -3,14 +3,31 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Mail, Eye, FileText, ExternalLink, Star } from "lucide-react";
+import { Trash2, Mail, Eye, FileText, ExternalLink, Star, Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+
+const emptyForm = {
+  name: "",
+  email: "",
+  industry: "",
+  years_of_experience: "",
+  role_current: "",
+  role_desired: "",
+  skills: "",
+  education_level: "Not specified",
+  portfolio_url: "",
+  linkedin_url: "",
+  additional_notes: "",
+};
 
 interface TalentPoolEntry {
   id: string;
@@ -40,6 +57,49 @@ const TalentPoolAdmin = () => {
   const [entries, setEntries] = useState<TalentPoolEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<TalentPoolEntry | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [addFeatured, setAddFeatured] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState(emptyForm);
+
+  const handleAddPortfolio = async () => {
+    if (!form.name || !form.email || !form.industry || !form.years_of_experience) {
+      toast.error("Name, email, industry, and experience are required");
+      return;
+    }
+    setSaving(true);
+    const { data, error } = await supabase
+      .from("talent_pool")
+      .insert({
+        name: form.name.trim(),
+        email: form.email.trim().toLowerCase(),
+        industry: form.industry,
+        years_of_experience: form.years_of_experience,
+        role_current: form.role_current.trim() || null,
+        role_desired: form.role_desired.trim() || null,
+        skills: form.skills.trim() || null,
+        education_level: form.education_level || "Not specified",
+        work_authorization: "N/A",
+        availability: "N/A",
+        portfolio_url: form.portfolio_url.trim() || null,
+        linkedin_url: form.linkedin_url.trim() || null,
+        additional_notes: form.additional_notes.trim() || null,
+        is_featured: addFeatured,
+        status: "reviewed",
+      })
+      .select()
+      .single();
+    setSaving(false);
+    if (error) {
+      toast.error("Failed to add portfolio");
+      return;
+    }
+    setEntries([data as TalentPoolEntry, ...entries]);
+    setForm(emptyForm);
+    setAddFeatured(true);
+    setAddOpen(false);
+    toast.success("Portfolio added");
+  };
 
   const fetchEntries = async () => {
     const { data, error } = await supabase
@@ -116,17 +176,19 @@ const TalentPoolAdmin = () => {
 
   if (loading) return <div className="text-center py-8 text-muted-foreground">Loading...</div>;
 
-  if (entries.length === 0) {
-    return <div className="text-center py-8 text-muted-foreground">No talent pool submissions yet.</div>;
-  }
-
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <p className="text-sm text-muted-foreground">
-          {entries.filter(e => e.status === "new").length} new submission(s)
+          {entries.length === 0
+            ? "No talent pool submissions yet."
+            : `${entries.filter(e => e.status === "new").length} new submission(s)`}
         </p>
+        <Button size="sm" onClick={() => setAddOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Add Portfolio
+        </Button>
       </div>
+      {entries.length > 0 && (
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
@@ -199,6 +261,7 @@ const TalentPoolAdmin = () => {
           </TableBody>
         </Table>
       </div>
+      )}
 
       {/* Detail Dialog */}
       <Dialog open={!!selectedEntry} onOpenChange={(open) => { if (!open) setSelectedEntry(null); }}>
@@ -306,6 +369,76 @@ const TalentPoolAdmin = () => {
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Portfolio Dialog */}
+      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add Portfolio Manually</DialogTitle>
+            <DialogDescription>
+              Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
+            <div className="space-y-1.5">
+              <Label>Name *</Label>
+              <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Email *</Label>
+              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Industry *</Label>
+              <Input value={form.industry} onChange={(e) => setForm({ ...form, industry: e.target.value })} placeholder="e.g. Technology / IT" maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Years of Experience *</Label>
+              <Input value={form.years_of_experience} onChange={(e) => setForm({ ...form, years_of_experience: e.target.value })} placeholder="e.g. 3-5 years" maxLength={50} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Current Role</Label>
+              <Input value={form.role_current} onChange={(e) => setForm({ ...form, role_current: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Desired Role</Label>
+              <Input value={form.role_desired} onChange={(e) => setForm({ ...form, role_desired: e.target.value })} maxLength={200} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>Skills</Label>
+              <Textarea value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} placeholder="Comma-separated" maxLength={500} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Education Level</Label>
+              <Input value={form.education_level} onChange={(e) => setForm({ ...form, education_level: e.target.value })} maxLength={100} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Portfolio URL</Label>
+              <Input value={form.portfolio_url} onChange={(e) => setForm({ ...form, portfolio_url: e.target.value })} placeholder="https://" maxLength={255} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>LinkedIn URL</Label>
+              <Input value={form.linkedin_url} onChange={(e) => setForm({ ...form, linkedin_url: e.target.value })} placeholder="https://linkedin.com/in/..." maxLength={255} />
+            </div>
+            <div className="space-y-1.5 md:col-span-2">
+              <Label>Internal Notes</Label>
+              <Textarea value={form.additional_notes} onChange={(e) => setForm({ ...form, additional_notes: e.target.value })} maxLength={1000} />
+            </div>
+            <div className="md:col-span-2 flex items-center gap-3 pt-2">
+              <Switch checked={addFeatured} onCheckedChange={setAddFeatured} />
+              <Label className="cursor-pointer" onClick={() => setAddFeatured(!addFeatured)}>
+                Feature publicly on Talent Pool page
+              </Label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddOpen(false)} disabled={saving}>Cancel</Button>
+            <Button onClick={handleAddPortfolio} disabled={saving}>
+              {saving ? "Saving..." : "Add Portfolio"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
