@@ -163,6 +163,12 @@ const TalentPoolAdmin = () => {
                     </SelectContent>
                   </Select>
                 </TableCell>
+                <TableCell>
+                  <Switch
+                    checked={!!entry.is_featured}
+                    onCheckedChange={(checked) => handleToggleFeatured(entry.id, checked)}
+                  />
+                </TableCell>
                 <TableCell className="text-sm">{format(new Date(entry.created_at), "MMM d, yyyy")}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
