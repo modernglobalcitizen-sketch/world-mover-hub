@@ -176,17 +176,19 @@ const TalentPoolAdmin = () => {
 
   if (loading) return <div className="text-center py-8 text-muted-foreground">Loading...</div>;
 
-  if (entries.length === 0) {
-    return <div className="text-center py-8 text-muted-foreground">No talent pool submissions yet.</div>;
-  }
-
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <p className="text-sm text-muted-foreground">
-          {entries.filter(e => e.status === "new").length} new submission(s)
+          {entries.length === 0
+            ? "No talent pool submissions yet."
+            : `${entries.filter(e => e.status === "new").length} new submission(s)`}
         </p>
+        <Button size="sm" onClick={() => setAddOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" /> Add Portfolio
+        </Button>
       </div>
+      {entries.length > 0 && (
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
