@@ -212,19 +212,39 @@ const TalentPool = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="py-12 md:py-16">
-        <div className="container max-w-3xl mx-auto">
-          <div className="text-center mb-10 space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-              <Users className="h-4 w-4" />
-              Join Our Talent Pool
+        <div className="container max-w-6xl mx-auto space-y-16">
+          {/* Showcase section */}
+          <section>
+            <div className="text-center mb-8 space-y-3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                <Users className="h-4 w-4" />
+                Featured Talent
+              </div>
+              <h1 className="text-3xl md:text-4xl font-display font-bold text-headline">
+                Browse our Talent Pool
+              </h1>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Anonymous, vetted profiles from our global talent network. See a fit?
+                Request an introduction and we'll connect you directly.
+              </p>
             </div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-headline">
-              Submit Your Profile
-            </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Join our talent pool and get matched with international career opportunities. Upload your resume, tell us about your experience, and let us connect you with the right roles.
-            </p>
-          </div>
+            <TalentPoolShowcase />
+          </section>
+
+          {/* Submission section */}
+          <section id="join" className="max-w-3xl mx-auto">
+            <div className="text-center mb-10 space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                <Users className="h-4 w-4" />
+                Join Our Talent Pool
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-headline">
+                Submit Your Profile
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Join our talent pool and get matched with international career opportunities. Upload your resume, tell us about your experience, and let us connect you with the right roles.
+              </p>
+            </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Personal Information */}
