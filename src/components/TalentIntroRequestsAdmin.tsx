@@ -94,7 +94,7 @@ const TalentIntroRequestsAdmin = () => {
                 </a>
               </TableCell>
               <TableCell className="text-sm">{r.requester_company || "—"}</TableCell>
-              <TableCell className="text-sm max-w-md whitespace-pre-wrap">{r.message}</TableCell>
+              <TableCell className="text-sm max-w-md whitespace-pre-wrap break-words">{r.message}</TableCell>
               <TableCell>
                 <Link
                   to={`/admin?tab=talent-pool&highlight=${r.talent_id}`}
