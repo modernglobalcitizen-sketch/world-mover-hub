@@ -135,6 +135,9 @@ const TalentPoolAdmin = () => {
               <TableHead>Industry</TableHead>
               <TableHead>Experience</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>
+                <span className="inline-flex items-center gap-1"><Star className="h-3.5 w-3.5" /> Featured</span>
+              </TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Docs</TableHead>
               <TableHead className="text-right">Actions</TableHead>
