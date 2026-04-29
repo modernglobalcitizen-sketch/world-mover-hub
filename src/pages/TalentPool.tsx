@@ -441,6 +441,7 @@ const TalentPool = () => {
               </Button>
             </div>
           </form>
+          </section>
         </div>
       </main>
       <Footer />
