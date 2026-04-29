@@ -906,23 +906,7 @@ const Dashboard = () => {
               </CardContent>
             </Card>
             {/* Quick Actions */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="shadow-soft">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
-                    Transparency Ledger
-                  </CardTitle>
-                  <CardDescription>
-                    View the complete record of all fund transactions and how contributions are being used.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline" asChild>
-                    <a href="/transparency">View All Transactions</a>
-                  </Button>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-1 gap-6">
 
               <Card className="shadow-soft">
                 <CardHeader>
