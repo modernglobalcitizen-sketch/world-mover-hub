@@ -53,7 +53,7 @@ interface TalentPoolEntry {
   created_at: string;
 }
 
-const TalentPoolAdmin = () => {
+const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
   const [entries, setEntries] = useState<TalentPoolEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEntry, setSelectedEntry] = useState<TalentPoolEntry | null>(null);
@@ -61,6 +61,13 @@ const TalentPoolAdmin = () => {
   const [addFeatured, setAddFeatured] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState(emptyForm);
+
+  useEffect(() => {
+    if (highlightId && entries.length > 0) {
+      const match = entries.find((e) => e.id === highlightId);
+      if (match) setSelectedEntry(match);
+    }
+  }, [highlightId, entries]);
 
   const handleAddPortfolio = async () => {
     if (!form.name || !form.email || !form.industry || !form.years_of_experience) {
