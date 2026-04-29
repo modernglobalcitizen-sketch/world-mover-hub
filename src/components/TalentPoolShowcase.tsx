@@ -124,9 +124,9 @@ const TalentPoolShowcase = () => {
                   </Button>
                 </a>
               )}
-              <a href="/contact" className="flex-1">
+              <a href={isAdmin ? `/admin?tab=talent-pool&highlight=${t.id}` : "/contact"} className="flex-1">
                 <Button size="sm" className="w-full">
-                  Request intro
+                  {isAdmin ? "View profile" : "Request intro"}
                 </Button>
               </a>
             </div>
