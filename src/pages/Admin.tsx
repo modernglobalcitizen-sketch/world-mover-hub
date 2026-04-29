@@ -18,6 +18,7 @@ import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
 import RemoteJobApplicationsAdmin from "@/components/RemoteJobApplicationsAdmin";
 import ReviewsAdmin from "@/components/ReviewsAdmin";
 import TalentPoolAdmin from "@/components/TalentPoolAdmin";
+import TalentIntroRequestsAdmin from "@/components/TalentIntroRequestsAdmin";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
@@ -503,6 +504,10 @@ const Admin = () => {
                   <UserCheck className="h-4 w-4" />
                   Talent Pool
                 </TabsTrigger>
+                <TabsTrigger value="intro-requests" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Intro Requests
+                </TabsTrigger>
               </TabsList>
 
               {/* Transactions Tab */}
@@ -958,6 +963,10 @@ const Admin = () => {
 
               <TabsContent value="talent-pool">
                 <TalentPoolAdmin highlightId={highlightTalentId} />
+              </TabsContent>
+
+              <TabsContent value="intro-requests">
+                <TalentIntroRequestsAdmin />
               </TabsContent>
             </Tabs>
           </div>

@@ -697,6 +697,47 @@ export type Database = {
         }
         Relationships: []
       }
+      talent_intro_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          requester_company: string | null
+          requester_email: string
+          requester_name: string
+          status: string
+          talent_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          requester_company?: string | null
+          requester_email: string
+          requester_name: string
+          status?: string
+          talent_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          requester_company?: string | null
+          requester_email?: string
+          requester_name?: string
+          status?: string
+          talent_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "talent_intro_requests_talent_id_fkey"
+            columns: ["talent_id"]
+            isOneToOne: false
+            referencedRelation: "talent_pool"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       talent_pool: {
         Row: {
           additional_notes: string | null
