@@ -261,6 +261,7 @@ const TalentPoolAdmin = () => {
           </TableBody>
         </Table>
       </div>
+      )}
 
       {/* Detail Dialog */}
       <Dialog open={!!selectedEntry} onOpenChange={(open) => { if (!open) setSelectedEntry(null); }}>
