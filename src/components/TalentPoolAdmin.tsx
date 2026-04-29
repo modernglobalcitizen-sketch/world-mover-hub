@@ -3,14 +3,31 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Mail, Eye, FileText, ExternalLink, Star } from "lucide-react";
+import { Trash2, Mail, Eye, FileText, ExternalLink, Star, Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+
+const emptyForm = {
+  name: "",
+  email: "",
+  industry: "",
+  years_of_experience: "",
+  role_current: "",
+  role_desired: "",
+  skills: "",
+  education_level: "Not specified",
+  portfolio_url: "",
+  linkedin_url: "",
+  additional_notes: "",
+};
 
 interface TalentPoolEntry {
   id: string;
