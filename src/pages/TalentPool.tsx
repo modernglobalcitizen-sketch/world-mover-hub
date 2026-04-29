@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Upload, Users, CheckCircle, X, Clock } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import TalentPoolShowcase from "@/components/TalentPoolShowcase";
 
 const industries = [
   "Technology / IT",
