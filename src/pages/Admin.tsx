@@ -957,7 +957,7 @@ const Admin = () => {
               </TabsContent>
 
               <TabsContent value="talent-pool">
-                <TalentPoolAdmin />
+                <TalentPoolAdmin highlightId={highlightTalentId} />
               </TabsContent>
             </Tabs>
           </div>
