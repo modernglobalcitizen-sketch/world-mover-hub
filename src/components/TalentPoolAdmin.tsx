@@ -32,6 +32,7 @@ interface TalentPoolEntry {
   cover_letter_url: string | null;
   additional_notes: string | null;
   status: string;
+  is_featured: boolean;
   created_at: string;
 }
 
