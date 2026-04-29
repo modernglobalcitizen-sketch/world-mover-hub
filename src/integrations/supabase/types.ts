@@ -707,6 +707,7 @@ export type Database = {
           email: string
           id: string
           industry: string
+          is_featured: boolean
           linkedin_url: string | null
           name: string
           phone: string | null
@@ -731,6 +732,7 @@ export type Database = {
           email: string
           id?: string
           industry: string
+          is_featured?: boolean
           linkedin_url?: string | null
           name: string
           phone?: string | null
@@ -755,6 +757,7 @@ export type Database = {
           email?: string
           id?: string
           industry?: string
+          is_featured?: boolean
           linkedin_url?: string | null
           name?: string
           phone?: string | null
@@ -875,6 +878,20 @@ export type Database = {
       }
     }
     Functions: {
+      get_featured_talent_pool: {
+        Args: never
+        Returns: {
+          created_at: string
+          education_level: string
+          id: string
+          industry: string
+          portfolio_url: string
+          role_current: string
+          role_desired: string
+          skills: string
+          years_of_experience: string
+        }[]
+      }
       get_founding_members_public: {
         Args: never
         Returns: {
