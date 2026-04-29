@@ -464,7 +464,7 @@ const Admin = () => {
               </p>
             </div>
 
-            <Tabs defaultValue="transactions" className="space-y-6">
+            <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); const next = new URLSearchParams(searchParams); next.set("tab", v); if (v !== "talent-pool") next.delete("highlight"); setSearchParams(next, { replace: true }); }} className="space-y-6">
               <TabsList>
                 <TabsTrigger value="transactions" className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
