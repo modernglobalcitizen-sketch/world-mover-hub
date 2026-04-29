@@ -73,6 +73,19 @@ const TalentPoolAdmin = () => {
     }
   };
 
+  const handleToggleFeatured = async (id: string, is_featured: boolean) => {
+    const { error } = await supabase
+      .from("talent_pool")
+      .update({ is_featured })
+      .eq("id", id);
+    if (error) {
+      toast.error("Failed to update featured status");
+    } else {
+      setEntries(entries.map(e => e.id === id ? { ...e, is_featured } : e));
+      toast.success(is_featured ? "Profile featured publicly" : "Profile removed from showcase");
+    }
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this talent pool entry?")) return;
     const { error } = await supabase
