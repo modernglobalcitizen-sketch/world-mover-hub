@@ -20,6 +20,7 @@ interface FeaturedTalent {
 const TalentPoolShowcase = () => {
   const [talent, setTalent] = useState<FeaturedTalent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -27,7 +28,19 @@ const TalentPoolShowcase = () => {
       if (!error && data) setTalent(data as FeaturedTalent[]);
       setLoading(false);
     };
+    const checkAdmin = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      setIsAdmin(!!data);
+    };
     load();
+    checkAdmin();
   }, []);
 
   if (loading) {
