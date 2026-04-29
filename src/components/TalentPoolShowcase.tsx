@@ -45,8 +45,8 @@ const TalentPoolShowcase = () => {
 
   const submitIntro = async () => {
     if (!introTarget) return;
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      toast.error("Name, email, and message are required");
+    if (!form.name.trim() || !form.email.trim() || !form.company.trim() || !form.message.trim()) {
+      toast.error("Name, email, company, and message are required");
       return;
     }
     setSubmitting(true);
@@ -179,8 +179,8 @@ const TalentPoolShowcase = () => {
               <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} />
             </div>
             <div className="space-y-1.5">
-              <Label>Company (optional)</Label>
-              <Input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} maxLength={150} />
+              <Label>Company *</Label>
+              <Input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} maxLength={150} required />
             </div>
             <div className="space-y-1.5">
               <Label>Message *</Label>
