@@ -49,6 +49,11 @@ const careerRoadmapLinks = [
     description: "Career exploration and planning tool",
     url: "https://www.mynextmove.org/",
   },
+  {
+    title: "Digital Ascend",
+    description: "Check your skillset and discover new skills to learn",
+    url: "https://digital-ascend-app.lovable.app",
+  },
 ];
 
 const certificationLinks = [
