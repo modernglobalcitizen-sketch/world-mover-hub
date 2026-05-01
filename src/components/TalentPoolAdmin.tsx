@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Mail, Eye, FileText, ExternalLink, Star, Plus } from "lucide-react";
+import { Trash2, Mail, Eye, FileText, ExternalLink, Star, Plus, Pencil } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,6 +61,33 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
   const [addFeatured, setAddFeatured] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const openEdit = (entry: TalentPoolEntry) => {
+    setEditingId(entry.id);
+    setForm({
+      name: entry.name || "",
+      email: entry.email || "",
+      industry: entry.industry || "",
+      years_of_experience: entry.years_of_experience || "",
+      role_current: entry.role_current || "",
+      role_desired: entry.role_desired || "",
+      skills: entry.skills || "",
+      education_level: entry.education_level || "Not specified",
+      portfolio_url: entry.portfolio_url || "",
+      linkedin_url: entry.linkedin_url || "",
+      additional_notes: entry.additional_notes || "",
+    });
+    setAddFeatured(!!entry.is_featured);
+    setAddOpen(true);
+  };
+
+  const closeDialog = () => {
+    setAddOpen(false);
+    setEditingId(null);
+    setForm(emptyForm);
+    setAddFeatured(true);
+  };
 
   useEffect(() => {
     if (highlightId && entries.length > 0) {
@@ -69,43 +96,56 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
     }
   }, [highlightId, entries]);
 
-  const handleAddPortfolio = async () => {
+  const handleSavePortfolio = async () => {
     if (!form.name || !form.email || !form.industry || !form.years_of_experience) {
       toast.error("Name, email, industry, and experience are required");
       return;
     }
     setSaving(true);
-    const { data, error } = await supabase
-      .from("talent_pool")
-      .insert({
-        name: form.name.trim(),
-        email: form.email.trim().toLowerCase(),
-        industry: form.industry,
-        years_of_experience: form.years_of_experience,
-        role_current: form.role_current.trim() || null,
-        role_desired: form.role_desired.trim() || null,
-        skills: form.skills.trim() || null,
-        education_level: form.education_level || "Not specified",
-        work_authorization: "N/A",
-        availability: "N/A",
-        portfolio_url: form.portfolio_url.trim() || null,
-        linkedin_url: form.linkedin_url.trim() || null,
-        additional_notes: form.additional_notes.trim() || null,
-        is_featured: addFeatured,
-        status: "reviewed",
-      })
-      .select()
-      .single();
-    setSaving(false);
-    if (error) {
-      toast.error("Failed to add portfolio");
-      return;
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim().toLowerCase(),
+      industry: form.industry,
+      years_of_experience: form.years_of_experience,
+      role_current: form.role_current.trim() || null,
+      role_desired: form.role_desired.trim() || null,
+      skills: form.skills.trim() || null,
+      education_level: form.education_level || "Not specified",
+      portfolio_url: form.portfolio_url.trim() || null,
+      linkedin_url: form.linkedin_url.trim() || null,
+      additional_notes: form.additional_notes.trim() || null,
+      is_featured: addFeatured,
+    };
+
+    if (editingId) {
+      const { data, error } = await supabase
+        .from("talent_pool")
+        .update(payload)
+        .eq("id", editingId)
+        .select()
+        .single();
+      setSaving(false);
+      if (error) {
+        toast.error("Failed to update portfolio");
+        return;
+      }
+      setEntries(entries.map((e) => (e.id === editingId ? (data as TalentPoolEntry) : e)));
+      toast.success("Portfolio updated");
+    } else {
+      const { data, error } = await supabase
+        .from("talent_pool")
+        .insert({ ...payload, work_authorization: "N/A", availability: "N/A", status: "reviewed" })
+        .select()
+        .single();
+      setSaving(false);
+      if (error) {
+        toast.error("Failed to add portfolio");
+        return;
+      }
+      setEntries([data as TalentPoolEntry, ...entries]);
+      toast.success("Portfolio added");
     }
-    setEntries([data as TalentPoolEntry, ...entries]);
-    setForm(emptyForm);
-    setAddFeatured(true);
-    setAddOpen(false);
-    toast.success("Portfolio added");
+    closeDialog();
   };
 
   const fetchEntries = async () => {
@@ -258,6 +298,9 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
                     <Button size="sm" variant="outline" onClick={() => setSelectedEntry(entry)}>
                       <Eye className="h-4 w-4" />
                     </Button>
+                    <Button size="sm" variant="outline" onClick={() => openEdit(entry)}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
                     <Button size="sm" variant="ghost" onClick={() => handleDelete(entry.id)}>
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -380,12 +423,12 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
       </Dialog>
 
       {/* Add Portfolio Dialog */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+      <Dialog open={addOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setAddOpen(true); }}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add Portfolio Manually</DialogTitle>
+            <DialogTitle>{editingId ? "Edit Portfolio" : "Add Portfolio Manually"}</DialogTitle>
             <DialogDescription>
-              Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).
+              {editingId ? "Update this talent pool entry." : 'Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).'}
             </DialogDescription>
           </DialogHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
@@ -441,9 +484,9 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setAddOpen(false)} disabled={saving}>Cancel</Button>
-            <Button onClick={handleAddPortfolio} disabled={saving}>
-              {saving ? "Saving..." : "Add Portfolio"}
+            <Button variant="outline" onClick={closeDialog} disabled={saving}>Cancel</Button>
+            <Button onClick={handleSavePortfolio} disabled={saving}>
+              {saving ? "Saving..." : editingId ? "Save Changes" : "Add Portfolio"}
             </Button>
           </DialogFooter>
         </DialogContent>
