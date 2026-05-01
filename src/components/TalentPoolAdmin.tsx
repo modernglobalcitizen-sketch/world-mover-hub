@@ -423,12 +423,12 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
       </Dialog>
 
       {/* Add Portfolio Dialog */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+      <Dialog open={addOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setAddOpen(true); }}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add Portfolio Manually</DialogTitle>
+            <DialogTitle>{editingId ? "Edit Portfolio" : "Add Portfolio Manually"}</DialogTitle>
             <DialogDescription>
-              Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).
+              {editingId ? "Update this talent pool entry." : 'Create a talent pool entry directly. Toggle "Feature publicly" to show it on the Talent Pool page (anonymous fields only).'}
             </DialogDescription>
           </DialogHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
