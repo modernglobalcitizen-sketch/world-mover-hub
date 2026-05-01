@@ -61,6 +61,33 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
   const [addFeatured, setAddFeatured] = useState(true);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const openEdit = (entry: TalentPoolEntry) => {
+    setEditingId(entry.id);
+    setForm({
+      name: entry.name || "",
+      email: entry.email || "",
+      industry: entry.industry || "",
+      years_of_experience: entry.years_of_experience || "",
+      role_current: entry.role_current || "",
+      role_desired: entry.role_desired || "",
+      skills: entry.skills || "",
+      education_level: entry.education_level || "Not specified",
+      portfolio_url: entry.portfolio_url || "",
+      linkedin_url: entry.linkedin_url || "",
+      additional_notes: entry.additional_notes || "",
+    });
+    setAddFeatured(!!entry.is_featured);
+    setAddOpen(true);
+  };
+
+  const closeDialog = () => {
+    setAddOpen(false);
+    setEditingId(null);
+    setForm(emptyForm);
+    setAddFeatured(true);
+  };
 
   useEffect(() => {
     if (highlightId && entries.length > 0) {
