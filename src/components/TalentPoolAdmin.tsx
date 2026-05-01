@@ -484,9 +484,9 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setAddOpen(false)} disabled={saving}>Cancel</Button>
-            <Button onClick={handleAddPortfolio} disabled={saving}>
-              {saving ? "Saving..." : "Add Portfolio"}
+            <Button variant="outline" onClick={closeDialog} disabled={saving}>Cancel</Button>
+            <Button onClick={handleSavePortfolio} disabled={saving}>
+              {saving ? "Saving..." : editingId ? "Save Changes" : "Add Portfolio"}
             </Button>
           </DialogFooter>
         </DialogContent>
