@@ -96,43 +96,56 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
     }
   }, [highlightId, entries]);
 
-  const handleAddPortfolio = async () => {
+  const handleSavePortfolio = async () => {
     if (!form.name || !form.email || !form.industry || !form.years_of_experience) {
       toast.error("Name, email, industry, and experience are required");
       return;
     }
     setSaving(true);
-    const { data, error } = await supabase
-      .from("talent_pool")
-      .insert({
-        name: form.name.trim(),
-        email: form.email.trim().toLowerCase(),
-        industry: form.industry,
-        years_of_experience: form.years_of_experience,
-        role_current: form.role_current.trim() || null,
-        role_desired: form.role_desired.trim() || null,
-        skills: form.skills.trim() || null,
-        education_level: form.education_level || "Not specified",
-        work_authorization: "N/A",
-        availability: "N/A",
-        portfolio_url: form.portfolio_url.trim() || null,
-        linkedin_url: form.linkedin_url.trim() || null,
-        additional_notes: form.additional_notes.trim() || null,
-        is_featured: addFeatured,
-        status: "reviewed",
-      })
-      .select()
-      .single();
-    setSaving(false);
-    if (error) {
-      toast.error("Failed to add portfolio");
-      return;
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim().toLowerCase(),
+      industry: form.industry,
+      years_of_experience: form.years_of_experience,
+      role_current: form.role_current.trim() || null,
+      role_desired: form.role_desired.trim() || null,
+      skills: form.skills.trim() || null,
+      education_level: form.education_level || "Not specified",
+      portfolio_url: form.portfolio_url.trim() || null,
+      linkedin_url: form.linkedin_url.trim() || null,
+      additional_notes: form.additional_notes.trim() || null,
+      is_featured: addFeatured,
+    };
+
+    if (editingId) {
+      const { data, error } = await supabase
+        .from("talent_pool")
+        .update(payload)
+        .eq("id", editingId)
+        .select()
+        .single();
+      setSaving(false);
+      if (error) {
+        toast.error("Failed to update portfolio");
+        return;
+      }
+      setEntries(entries.map((e) => (e.id === editingId ? (data as TalentPoolEntry) : e)));
+      toast.success("Portfolio updated");
+    } else {
+      const { data, error } = await supabase
+        .from("talent_pool")
+        .insert({ ...payload, work_authorization: "N/A", availability: "N/A", status: "reviewed" })
+        .select()
+        .single();
+      setSaving(false);
+      if (error) {
+        toast.error("Failed to add portfolio");
+        return;
+      }
+      setEntries([data as TalentPoolEntry, ...entries]);
+      toast.success("Portfolio added");
     }
-    setEntries([data as TalentPoolEntry, ...entries]);
-    setForm(emptyForm);
-    setAddFeatured(true);
-    setAddOpen(false);
-    toast.success("Portfolio added");
+    closeDialog();
   };
 
   const fetchEntries = async () => {
