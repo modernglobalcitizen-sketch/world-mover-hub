@@ -16,7 +16,6 @@ const navLinks = [
   { name: "Resources", href: "/resources" },
   
   { name: "Talent Pool", href: "/talent-pool" },
-  { name: "Webinar", href: "/webinar" },
 ];
 
 const adminOnlyLinks: { name: string; href: string }[] = [
