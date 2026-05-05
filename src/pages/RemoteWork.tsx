@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import BootcampBanner from "@/components/BootcampBanner";
+
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 
 const COUNTRIES = [
@@ -245,7 +245,6 @@ const RemoteWork = () => {
           </div>
         </section>
 
-        <BootcampBanner />
 
         {/* Featured Jobs (Admin-added) */}
         {adminJobs.length > 0 ? (
