@@ -1,11 +1,41 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, Compass, Users, ArrowRight, Sparkles } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { GraduationCap, Compass, Users, Sparkles, Mail } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const MentorshipSection = () => {
-  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNotify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("newsletter-subscribe", {
+        body: { email: email.trim(), source: "mentorship_waitlist" },
+      });
+      if (error) throw error;
+      toast({
+        title: "You're on the list! 🎉",
+        description: "We'll email you when mentorship launches.",
+      });
+      setEmail("");
+    } catch (err) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const benefits = [
     {
