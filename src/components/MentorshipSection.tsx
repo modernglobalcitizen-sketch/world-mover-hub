@@ -31,7 +31,7 @@ const MentorshipSection = () => {
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4 gap-1">
             <Sparkles className="h-3 w-3" />
-            Mentorship
+            Mentorship — Coming Soon
           </Badge>
           <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-headline mb-4">
             Get Mentored by People Who've Done It
@@ -56,9 +56,8 @@ const MentorshipSection = () => {
         </div>
 
         <div className="text-center">
-          <Button size="lg" onClick={() => navigate("/contact")} className="gap-2">
-            Request a Mentor
-            <ArrowRight className="h-4 w-4" />
+          <Button size="lg" disabled className="gap-2">
+            Coming Soon
           </Button>
         </div>
       </div>
