@@ -85,10 +85,36 @@ const MentorshipSection = () => {
           ))}
         </div>
 
-        <div className="text-center">
-          <Button size="lg" disabled className="gap-2">
-            Coming Soon
-          </Button>
+        <div className="max-w-md mx-auto text-center">
+          <p className="text-sm text-muted-foreground mb-3">
+            Want to be the first to know when mentorship launches?
+          </p>
+          <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-2 mb-3">
+            <Input
+              type="email"
+              placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="flex-1"
+            />
+            <Button type="submit" disabled={isSubmitting} className="gap-2">
+              <Mail className="h-4 w-4" />
+              {isSubmitting ? "Joining..." : "Notify Me"}
+            </Button>
+          </form>
+          <p className="text-xs text-muted-foreground">
+            Or{" "}
+            <a
+              href="https://dashboard.mailerlite.com/forms/1834373/170524389812308697/share"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline font-medium"
+            >
+              subscribe to our newsletter
+            </a>{" "}
+            for weekly opportunities.
+          </p>
         </div>
       </div>
     </section>
