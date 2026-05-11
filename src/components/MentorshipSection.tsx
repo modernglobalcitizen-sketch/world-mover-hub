@@ -104,16 +104,7 @@ const MentorshipSection = () => {
             </Button>
           </form>
           <p className="text-xs text-muted-foreground">
-            Or{" "}
-            <a
-              href="https://dashboard.mailerlite.com/forms/1834373/170524389812308697/share"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline font-medium"
-            >
-              subscribe to our newsletter
-            </a>{" "}
-            for weekly opportunities.
+            You'll also be added to our newsletter for weekly opportunities.
           </p>
         </div>
       </div>
