@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
-import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
@@ -25,7 +24,6 @@ const Index = () => {
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
         </div>
-        <HomeBreakoutRooms />
         <MentorshipSection />
       </main>
       <Footer />
