@@ -67,7 +67,7 @@ const MentorshipSection = () => {
             Get Mentored by People Who've Done It
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Whether you're chasing a remote job, planning a relocation, or pivoting careers — connect with mentors who've walked the path.
+            Whether you're chasing a remote job, building a global career, or pivoting industries — connect with mentors who've walked the path.
           </p>
         </div>
 
