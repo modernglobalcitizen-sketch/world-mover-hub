@@ -11,7 +11,7 @@ const MentorshipSection = () => {
     {
       icon: Compass,
       title: "1:1 Guidance",
-      description: "Personalized advice on visas, remote work, and building a global career.",
+      description: "Personalized advice on remote work and building a global career.",
     },
     {
       icon: GraduationCap,
