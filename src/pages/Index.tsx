@@ -5,6 +5,7 @@ import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeBreakoutRooms from "@/components/HomeBreakoutRooms";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
+import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import AdSense from "@/components/AdSense";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
@@ -25,6 +26,7 @@ const Index = () => {
           <OpportunitiesSection limit={6} />
         </div>
         <HomeBreakoutRooms />
+        <MentorshipSection />
       </main>
       <Footer />
       <JobAlertsExitPopup />
