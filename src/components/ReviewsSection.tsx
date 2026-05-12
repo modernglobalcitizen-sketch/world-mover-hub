@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, Send, Quote } from "lucide-react";
+import { Star, Send, Quote, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,6 +38,7 @@ interface Review {
   rating: number;
   review_text: string;
   created_at: string;
+  verified_purchase?: boolean;
 }
 
 const StarRating = ({
@@ -78,9 +79,17 @@ const ReviewCard = ({ review }: { review: Review }) => (
         "{review.review_text}"
       </p>
       <div className="flex items-center justify-between pt-2 border-t border-border/40">
-        <span className="text-sm font-medium text-foreground">
-          {review.reviewer_name}
-        </span>
+        <div className="flex flex-col">
+          <span className="text-sm font-medium text-foreground">
+            {review.reviewer_name}
+          </span>
+          {review.verified_purchase && (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary mt-0.5">
+              <BadgeCheck className="h-3.5 w-3.5" />
+              Verified Purchase
+            </span>
+          )}
+        </div>
         <span className="text-xs text-muted-foreground">
           {new Date(review.created_at).toLocaleDateString()}
         </span>
@@ -174,7 +183,7 @@ const ReviewsSection = () => {
   const fetchReviews = async () => {
     const { data } = await supabase
       .from("reviews" as any)
-      .select("id, reviewer_name, service, rating, review_text, created_at")
+      .select("id, reviewer_name, service, rating, review_text, created_at, verified_purchase")
       .order("created_at", { ascending: false })
       .limit(6);
     if (data) setReviews(data as unknown as Review[]);

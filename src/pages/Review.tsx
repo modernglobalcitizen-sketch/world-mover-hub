@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Star, Send, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Star, Send, CheckCircle, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,14 +49,20 @@ const StarRating = ({
 );
 
 const Review = () => {
+  const [searchParams] = useSearchParams();
+  const verifiedEbook = searchParams.get("verified") === "ebook";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [service, setService] = useState("");
+  const [service, setService] = useState(verifiedEbook ? "Ebook" : "");
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (verifiedEbook) setService("Ebook");
+  }, [verifiedEbook]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +78,7 @@ const Review = () => {
         service,
         rating,
         review_text: text.trim(),
+        verified_purchase: verifiedEbook,
       } as any);
       if (error) throw error;
       setSubmitted(true);
@@ -113,6 +121,12 @@ const Review = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 bg-card text-card-foreground rounded-2xl p-6 md:p-8 shadow-lg border border-border/60">
+                {verifiedEbook && (
+                  <div className="flex items-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                    <BadgeCheck className="h-4 w-4 text-primary" />
+                    <span>Verified Purchase — your review will be tagged as a confirmed buyer.</span>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="rev-name">Your Name *</Label>
                   <Input
@@ -137,7 +151,7 @@ const Review = () => {
 
                 <div className="space-y-2">
                   <Label>Which service are you reviewing? *</Label>
-                  <Select value={service} onValueChange={setService}>
+                  <Select value={service} onValueChange={setService} disabled={verifiedEbook}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>

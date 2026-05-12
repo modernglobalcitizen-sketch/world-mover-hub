@@ -418,6 +418,7 @@ export type Database = {
           reviewer_email: string | null
           reviewer_name: string
           service: string
+          verified_purchase: boolean
         }
         Insert: {
           created_at?: string
@@ -428,6 +429,7 @@ export type Database = {
           reviewer_email?: string | null
           reviewer_name: string
           service: string
+          verified_purchase?: boolean
         }
         Update: {
           created_at?: string
@@ -438,6 +440,7 @@ export type Database = {
           reviewer_email?: string | null
           reviewer_name?: string
           service?: string
+          verified_purchase?: boolean
         }
         Relationships: []
       }
