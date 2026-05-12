@@ -327,8 +327,8 @@ const RemoteWork = () => {
                 {filteredJobs.map((job, idx) => {
                   const isSaved = savedJobIds.has(job.id);
                   return (
-                    <>
-                      <Card key={job.id} className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 border-primary/20 flex flex-col">
+                    <React.Fragment key={job.id}>
+                      <Card className="h-full shadow-soft hover:shadow-hover transition-all duration-300 hover:border-primary/30 border-primary/20 flex flex-col">
                         <CardHeader>
                           <div className="flex items-start gap-3">
                             <div className="h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
