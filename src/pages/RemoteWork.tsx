@@ -401,7 +401,7 @@ const RemoteWork = () => {
                   A straightforward roadmap from beginner to remote job — mindset shift, career roadmap, resume, portfolio, LinkedIn, and a checklist to keep you accountable every step of the way.
                 </p>
                 <div className="flex items-center gap-4 pt-2">
-                  <p className="text-3xl font-bold text-primary">$25</p>
+                  <p className="text-3xl font-bold text-primary">$29</p>
                   <Button asChild size="lg" className="gap-2">
                     <Link to="/ebooks">
                       Get the Checklist
