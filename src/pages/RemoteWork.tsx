@@ -385,6 +385,42 @@ const RemoteWork = () => {
           </section>
         )}
 
+        {/* Ebook Promo: Remote Job Beginner Checklist */}
+        <section className="py-16 md:py-20 bg-secondary text-secondary-foreground">
+          <div className="container max-w-5xl">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div className="order-2 md:order-1 space-y-5">
+                <Badge className="bg-primary/20 text-primary-foreground border-primary/30 hover:bg-primary/30">
+                  <BookOpen className="h-3 w-3 mr-1" />
+                  New Ebook
+                </Badge>
+                <h2 className="text-3xl md:text-4xl font-display font-bold leading-tight">
+                  Remote Job Beginner Checklist
+                </h2>
+                <p className="text-secondary-foreground/80 text-base md:text-lg">
+                  A straightforward roadmap from beginner to remote job — mindset shift, career roadmap, resume, portfolio, LinkedIn, and a checklist to keep you accountable every step of the way.
+                </p>
+                <div className="flex items-center gap-4 pt-2">
+                  <p className="text-3xl font-bold text-primary">$25</p>
+                  <Button asChild size="lg" className="gap-2">
+                    <Link to="/ebooks">
+                      Get the Checklist
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+              <div className="order-1 md:order-2 flex justify-center">
+                <img
+                  src={remoteJobChecklistCover}
+                  alt="Remote Job Beginner Checklist ebook cover"
+                  className="w-full max-w-sm rounded-xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Career Services */}
         <section className="py-16 md:py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10 border-t border-border">
           <div className="container max-w-6xl">
