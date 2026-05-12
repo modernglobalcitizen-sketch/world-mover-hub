@@ -70,8 +70,8 @@ const Ebook = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {ebooks.map((book, i) => (
+          <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto justify-center">
+            {ebooks.filter((b) => b.title === "Remote Job Beginner Checklist").map((book, i) => (
               <div
                 key={i}
                 className="bg-card text-card-foreground rounded-2xl p-6 shadow-lg space-y-5 text-center relative overflow-hidden"
