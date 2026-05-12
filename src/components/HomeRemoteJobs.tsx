@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Briefcase, MapPin, DollarSign, Clock, ArrowRight, Bookmark, BookmarkCheck, Lock, Eye } from "lucide-react";
+import { Briefcase, MapPin, DollarSign, Clock, ArrowRight, Bookmark, BookmarkCheck, Lock, Eye, Sparkles } from "lucide-react";
+import React from "react";
 import { toast } from "sonner";
 
 interface AdminRemoteJob {
