@@ -240,6 +240,33 @@ const HomeRemoteJobs = () => {
                   </div>
                 </CardContent>
               </Card>
+              {idx === 2 && (
+                <div className="md:col-span-2 rounded-xl bg-gradient-to-r from-primary via-primary to-accent text-primary-foreground p-6 md:p-8 shadow-hover border border-primary/30">
+                  <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
+                    <div className="flex-1 space-y-2">
+                      <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                        <Sparkles className="h-3 w-3 mr-1" />
+                        Stand Out
+                      </Badge>
+                      <h3 className="text-xl md:text-2xl font-display font-bold leading-snug">
+                        Over 100+ people just applied to this role. Are you prepared to beat them?
+                      </h3>
+                      <p className="text-primary-foreground/85 text-sm md:text-base">
+                        The 2026 Remote Job Beginner Checklist gives you the mindset, resume, portfolio, and LinkedIn edge to rise to the top of the pile.
+                      </p>
+                    </div>
+                    <div className="shrink-0">
+                      <Button asChild size="lg" variant="secondary" className="gap-2 font-semibold">
+                        <Link to="/ebooks">
+                          Get the Checklist — $29
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              </React.Fragment>
             );
           })}
         </div>
