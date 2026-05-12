@@ -36,9 +36,10 @@ import {
   MapPin, Briefcase, Wifi,
   DollarSign, Clock, Bookmark, BookmarkCheck, Lock,
   Globe, Users, Send, CheckCircle, Eye,
-  FileText, MessageSquare, Building2, Sparkles
+  FileText, MessageSquare, Building2, Sparkles, BookOpen, ArrowRight
 } from "lucide-react";
 import { toast } from "sonner";
+import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
 
 interface AdminRemoteJob {
   id: string;
