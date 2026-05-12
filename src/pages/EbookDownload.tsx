@@ -32,7 +32,7 @@ const EbookDownload = () => {
 
               <img
                 src={ebookCover}
-                alt="Your International Guide to Work, Volunteer, and Travel"
+                alt="Remote Job Beginner Checklist"
                 className="w-48 mx-auto rounded-lg shadow-md"
               />
 
