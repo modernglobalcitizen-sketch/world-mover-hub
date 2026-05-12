@@ -271,11 +271,11 @@ const HomeRemoteJobs = () => {
           })}
         </div>
 
-        <div className="text-center">
-          <Button variant="outline" asChild>
+        <div className="text-center pt-2">
+          <Button size="lg" asChild className="shadow-hover text-base font-semibold px-8 py-6">
             <a href="/remote-work">
               View All Remote Jobs
-              <ArrowRight className="h-4 w-4 ml-2" />
+              <ArrowRight className="h-5 w-5 ml-2" />
             </a>
           </Button>
         </div>
