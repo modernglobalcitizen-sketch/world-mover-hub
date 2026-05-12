@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ebookCover from "@/assets/ebook-cover.png";
 import workVisasCover from "@/assets/work-visas-ebook-cover.png";
+import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
 
 interface EbookItem {
   title: string;
@@ -31,6 +32,13 @@ const ebooks: EbookItem[] = [
     price: "$25",
     description: "This isn't just a directory; it's a filtered search of the world's most accessible opportunities. A deep dive into the 10 most strategically valuable countries for 2026. Clear breakdowns of Skilled Worker Permits and other pathways including how long it takes to get a work visa and how long it is valid for. We tell you exactly which \"door\" is easiest to open.\n\nYou'll also find where to find work (the specific platforms local recruiters actually use) and which In-Demand Careers (Tech, Healthcare, Green Energy) are currently being fast-tracked for approval.\n\nFrom the cost of a quiet one-bedroom in the best neighborhoods, we cover housing and the secret CV structures that pass the local ATS (Applicant Tracking Systems).\n\nWhen you purchase this guide, you aren't buying pages; you're buying time and certainty. No more \"guessing\" if your documents are right. We focus on countries that value skills over birthright. Learn how to position your professional experience as your most powerful \"Travel Document.\"",
     paypalLink: "https://www.paypal.com/ncp/payment/USBYCBHF2X25N",
+  },
+  {
+    title: "Remote Job Beginner Checklist",
+    cover: remoteJobChecklistCover,
+    price: "$25",
+    description: "After multiple webinars and conversations with newbies, one thing is clear: you want a straightforward process from beginner to remote job. This is the book that outlines it.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
+    paypalLink: "https://www.paypal.com/ncp/payment/MZ9NYBNTZMN2Q",
   },
 ];
 
