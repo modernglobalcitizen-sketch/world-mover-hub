@@ -37,7 +37,7 @@ const ebooks: EbookItem[] = [
     title: "Remote Job Beginner Checklist",
     cover: remoteJobChecklistCover,
     price: "$29",
-    description: "After multiple webinars and conversations with newbies, one thing is clear: you want a straightforward process from beginner to remote job. This is the book that outlines it.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
+    description: "After hosting 3 webinars and speaking with countless newbies, one thing became clear: you want a straightforward process from beginner to remote job. This is exactly what they asked for.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
     paypalLink: "https://www.paypal.com/ncp/payment/MZ9NYBNTZMN2Q",
   },
 ];
