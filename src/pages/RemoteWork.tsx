@@ -237,10 +237,18 @@ const RemoteWork = () => {
               Discover remote job opportunities worldwide and access resources to thrive as a location-independent professional.
             </p>
             {!session && (
-              <div className="mt-6">
+              <div className="mt-6 space-y-3">
                 <Button asChild className="bg-white text-primary hover:bg-white/90">
                   <a href="/auth">Sign Up to Apply for Jobs</a>
                 </Button>
+                <div>
+                  <Button asChild variant="outline" className="border-white/40 text-white hover:bg-white/10 hover:text-white bg-transparent">
+                    <Link to="/ebooks">
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      Get the 2026 Remote Job Checklist
+                    </Link>
+                  </Button>
+                </div>
               </div>
             )}
           </div>
