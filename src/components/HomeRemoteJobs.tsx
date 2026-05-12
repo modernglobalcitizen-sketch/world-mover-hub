@@ -271,7 +271,7 @@ const HomeRemoteJobs = () => {
           })}
         </div>
 
-        <div className="text-center sm:hidden">
+        <div className="text-center">
           <Button variant="outline" asChild>
             <a href="/remote-work">
               View All Remote Jobs
