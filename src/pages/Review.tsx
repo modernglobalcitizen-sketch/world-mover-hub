@@ -121,6 +121,12 @@ const Review = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6 bg-card text-card-foreground rounded-2xl p-6 md:p-8 shadow-lg border border-border/60">
+                {verifiedEbook && (
+                  <div className="flex items-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
+                    <BadgeCheck className="h-4 w-4 text-primary" />
+                    <span>Verified Purchase — your review will be tagged as a confirmed buyer.</span>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="rev-name">Your Name *</Label>
                   <Input
@@ -145,7 +151,7 @@ const Review = () => {
 
                 <div className="space-y-2">
                   <Label>Which service are you reviewing? *</Label>
-                  <Select value={service} onValueChange={setService}>
+                  <Select value={service} onValueChange={setService} disabled={verifiedEbook}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
