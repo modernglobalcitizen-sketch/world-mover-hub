@@ -4,9 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import ebookCover from "@/assets/ebook-cover.png";
+import ebookCover from "@/assets/remote-job-checklist-cover.png";
 
-const EBOOK_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/ebooks/Your_International_Guide_to_Work_Volunteer_and_Travel.pdf`;
+const EBOOK_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/ebooks/Remote_Work_Beginners_Ebook.pdf`;
 
 const EbookDownload = () => {
   return (
@@ -32,7 +32,7 @@ const EbookDownload = () => {
 
               <img
                 src={ebookCover}
-                alt="Your International Guide to Work, Volunteer, and Travel"
+                alt="Remote Job Beginner Checklist"
                 className="w-48 mx-auto rounded-lg shadow-md"
               />
 
