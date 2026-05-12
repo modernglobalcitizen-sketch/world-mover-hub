@@ -442,7 +442,7 @@ const RemoteWork = () => {
                           </div>
                         </div>
                       )}
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </div>
