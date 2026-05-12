@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Star, Send, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Star, Send, CheckCircle, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,14 +49,20 @@ const StarRating = ({
 );
 
 const Review = () => {
+  const [searchParams] = useSearchParams();
+  const verifiedEbook = searchParams.get("verified") === "ebook";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [service, setService] = useState("");
+  const [service, setService] = useState(verifiedEbook ? "Ebook" : "");
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (verifiedEbook) setService("Ebook");
+  }, [verifiedEbook]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +78,7 @@ const Review = () => {
         service,
         rating,
         review_text: text.trim(),
+        verified_purchase: verifiedEbook,
       } as any);
       if (error) throw error;
       setSubmitted(true);

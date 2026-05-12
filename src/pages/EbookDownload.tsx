@@ -1,4 +1,4 @@
-import { Download, BookOpen, Home, ArrowLeft } from "lucide-react";
+import { Download, BookOpen, Home, ArrowLeft, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -44,6 +44,22 @@ const EbookDownload = () => {
                 <Download className="w-5 h-5" />
                 Download Your Ebook
               </Button>
+
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-left space-y-3">
+                <div className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-primary fill-primary" />
+                  <p className="font-semibold text-foreground">Enjoyed the ebook?</p>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Share your experience with the community — your review will be marked as a Verified Purchase.
+                </p>
+                <Button asChild variant="default" className="w-full gap-2">
+                  <Link to="/review?verified=ebook">
+                    <Star className="w-4 h-4" />
+                    Leave a Review
+                  </Link>
+                </Button>
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
                 <Button asChild variant="outline">
