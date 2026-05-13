@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { ArrowRight, BookOpen, Clock } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRight, BookOpen, Clock, Download } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -90,20 +90,33 @@ const Ebook = () => {
                 <h2 className="text-xl font-bold font-serif">{book.title}</h2>
                 <p className="text-muted-foreground text-sm whitespace-pre-line text-left">{book.description}</p>
                 <p className="text-2xl font-bold text-primary">{book.price}</p>
-                {book.comingSoon ? (
-                  <Button size="lg" className="w-full text-lg" disabled>
-                    Coming Soon
-                  </Button>
-                ) : (
+                <div className="space-y-3">
+                  {book.comingSoon ? (
+                    <Button size="lg" className="w-full text-lg" disabled>
+                      Coming Soon
+                    </Button>
+                  ) : (
+                    <Button
+                      size="lg"
+                      className="w-full text-lg gap-2"
+                      onClick={() => window.open(book.paypalLink, "_blank")}
+                    >
+                      Buy Now
+                      <ArrowRight className="w-5 h-5" />
+                    </Button>
+                  )}
                   <Button
+                    asChild
+                    variant="outline"
                     size="lg"
-                    className="w-full text-lg gap-2"
-                    onClick={() => window.open(book.paypalLink, "_blank")}
+                    className="w-full text-base gap-2"
                   >
-                    Buy Now
-                    <ArrowRight className="w-5 h-5" />
+                    <Link to="/ebook-download">
+                      <Download className="w-5 h-5" />
+                      Download Your Ebook
+                    </Link>
                   </Button>
-                )}
+                </div>
               </div>
             ))}
           </div>
