@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ebookCover from "@/assets/ebook-cover.png";
 import workVisasCover from "@/assets/work-visas-ebook-cover.png";
-import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
+import remoteJobChecklistCover from "@/assets/remote-job-checklist-mockup.png";
 
 interface EbookItem {
   title: string;

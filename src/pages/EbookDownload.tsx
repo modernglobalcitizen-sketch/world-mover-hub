@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import ebookCover from "@/assets/remote-job-checklist-cover.png";
+import ebookCover from "@/assets/remote-job-checklist-mockup.png";
 
 const EBOOK_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/ebooks/Remote_Work_Beginners_Ebook.pdf`;
 
