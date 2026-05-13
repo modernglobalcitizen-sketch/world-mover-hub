@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ebookCover from "@/assets/ebook-cover.png";
 import workVisasCover from "@/assets/work-visas-ebook-cover.png";
-import remoteJobChecklistCover from "@/assets/remote-job-checklist-mockup.png";
+import remoteJobChecklistMockup from "@/assets/remote-job-checklist-mockup.png";
+import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
 
 interface EbookItem {
   title: string;
   cover: string;
+  originalCover?: string;
   price: string;
   description: string;
   paypalLink?: string;
@@ -35,7 +37,8 @@ const ebooks: EbookItem[] = [
   },
   {
     title: "Remote Job Beginner Checklist",
-    cover: remoteJobChecklistCover,
+    cover: remoteJobChecklistMockup,
+    originalCover: remoteJobChecklistCover,
     price: "$29",
     description: "After hosting 3 webinars and speaking with countless newbies, one thing became clear: you want a straightforward process from beginner to remote job. This is exactly what they asked for.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
     paypalLink: "https://www.paypal.com/ncp/payment/MZ9NYBNTZMN2Q",
@@ -90,11 +93,20 @@ const Ebook = () => {
                     Coming Soon
                   </Badge>
                 )}
-                <img
-                  src={book.cover}
-                  alt={book.title}
-                  className="w-full rounded-lg shadow-md"
-                />
+                <div className="space-y-3">
+                  <img
+                    src={book.cover}
+                    alt={book.title}
+                    className="w-full rounded-lg shadow-md"
+                  />
+                  {book.originalCover && (
+                    <img
+                      src={book.originalCover}
+                      alt={`${book.title} cover`}
+                      className="w-full rounded-lg shadow-md"
+                    />
+                  )}
+                </div>
                 <h2 className="text-xl font-bold font-serif">{book.title}</h2>
                 <p className="text-muted-foreground text-sm whitespace-pre-line text-left">{book.description}</p>
                 <p className="text-2xl font-bold text-primary">{book.price}</p>
