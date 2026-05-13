@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Globe, Loader2 } from "lucide-react";
+import { Globe, Loader2, Mail } from "lucide-react";
 import { z } from "zod";
 
 const fields = [
@@ -80,8 +80,14 @@ const signupSchema = loginSchema.extend({
   path: ["otherOpportunity"],
 });
 
+const forgotPasswordSchema = z.object({
+  email: z.string().trim().email({ message: "Invalid email address" }),
+});
+
+type AuthMode = "login" | "signup" | "forgot";
+
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
@@ -111,13 +117,18 @@ const Auth = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const switchMode = (mode: AuthMode) => {
+    setAuthMode(mode);
+    setErrors({});
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
     setLoading(true);
 
     try {
-      if (isLogin) {
+      if (authMode === "login") {
         const validation = loginSchema.safeParse({ email, password });
         if (!validation.success) {
           const fieldErrors: Record<string, string> = {};
@@ -139,15 +150,46 @@ const Auth = () => {
         if (error) {
           toast({
             title: "Login failed",
-            description: error.message === "Invalid login credentials" 
+            description: error.message === "Invalid login credentials"
               ? "Invalid email or password. Please try again."
               : error.message,
             variant: "destructive",
           });
         }
+      } else if (authMode === "forgot") {
+        const validation = forgotPasswordSchema.safeParse({ email });
+        if (!validation.success) {
+          const fieldErrors: Record<string, string> = {};
+          validation.error.errors.forEach((err) => {
+            if (err.path[0]) {
+              fieldErrors[err.path[0] as string] = err.message;
+            }
+          });
+          setErrors(fieldErrors);
+          setLoading(false);
+          return;
+        }
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+
+        if (error) {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Check your email",
+            description: "We've sent you a password reset link.",
+          });
+          switchMode("login");
+        }
       } else {
         // Signup flow
-        const validation = signupSchema.safeParse({ 
+        const validation = signupSchema.safeParse({
           email, password, country, fieldOfWork, opportunityInterests, otherOpportunity
         });
         if (!validation.success) {
@@ -189,7 +231,7 @@ const Auth = () => {
             title: "Check your email",
             description: "We've sent you a confirmation link to verify your account.",
           });
-          setIsLogin(true);
+          switchMode("login");
         }
       }
     } catch (error) {
@@ -201,6 +243,39 @@ const Auth = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getTitle = () => {
+    switch (authMode) {
+      case "login": return "Welcome back";
+      case "signup": return "Join the movement";
+      case "forgot": return "Reset your password";
+    }
+  };
+
+  const getSubtitle = () => {
+    switch (authMode) {
+      case "login": return "Sign in to access your account";
+      case "signup": return "Create a free account to get started";
+      case "forgot": return "Enter your email and we'll send you a reset link";
+    }
+  };
+
+  const getButtonText = () => {
+    if (loading) return <Loader2 className="h-5 w-5 animate-spin" />;
+    switch (authMode) {
+      case "login": return "Sign In";
+      case "signup": return "Create Free Account";
+      case "forgot": return "Send Reset Link";
+    }
+  };
+
+  const isSubmitDisabled = () => {
+    if (loading) return true;
+    if (authMode === "signup") {
+      return !country || !fieldOfWork || opportunityInterests.length === 0 || (opportunityInterests.includes("other") && !otherOpportunity.trim());
+    }
+    return false;
   };
 
   return (
@@ -221,12 +296,10 @@ const Auth = () => {
         {/* Card */}
         <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
           <h1 className="text-2xl font-display font-bold text-center text-foreground mb-2">
-            {isLogin ? "Welcome back" : "Join the movement"}
+            {getTitle()}
           </h1>
           <p className="text-center text-muted-foreground mb-6">
-            {isLogin
-              ? "Sign in to access your account"
-              : "Create a free account to get started"}
+            {getSubtitle()}
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -245,22 +318,45 @@ const Auth = () => {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={errors.password ? "border-destructive" : ""}
-              />
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
-              )}
-            </div>
+            {authMode !== "forgot" && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={errors.password ? "border-destructive" : ""}
+                />
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password}</p>
+                )}
+              </div>
+            )}
 
-            {!isLogin && (
+            {authMode === "login" && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => switchMode("forgot")}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            )}
+
+            {authMode === "forgot" && (
+              <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-4">
+                <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
+                <p className="text-sm text-muted-foreground">
+                  We'll send a secure link to this email address so you can choose a new password.
+                </p>
+              </div>
+            )}
+
+            {authMode === "signup" && (
               <>
                 <div className="space-y-2">
                   <Label htmlFor="country">Country</Label>
@@ -346,31 +442,40 @@ const Auth = () => {
               variant="hero"
               size="lg"
               className="w-full"
-              disabled={loading || (!isLogin && (!country || !fieldOfWork || opportunityInterests.length === 0 || (opportunityInterests.includes("other") && !otherOpportunity.trim())))}
+              disabled={isSubmitDisabled()}
             >
-              {loading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : isLogin ? (
-                "Sign In"
-              ) : (
-                "Create Free Account"
-              )}
+              {getButtonText()}
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setErrors({});
-              }}
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              {isLogin
-                ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"}
-            </button>
+          <div className="mt-6 text-center space-y-2">
+            {authMode === "login" && (
+              <button
+                type="button"
+                onClick={() => switchMode("signup")}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Don't have an account? Sign up
+              </button>
+            )}
+            {authMode === "signup" && (
+              <button
+                type="button"
+                onClick={() => switchMode("login")}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Already have an account? Sign in
+              </button>
+            )}
+            {authMode === "forgot" && (
+              <button
+                type="button"
+                onClick={() => switchMode("login")}
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Back to sign in
+              </button>
+            )}
           </div>
         </div>
       </div>

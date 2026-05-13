@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Donate from "./pages/Donate";
 import DonateThankYou from "./pages/DonateThankYou";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/donate" element={<Donate />} />
           <Route path="/donate/thank-you" element={<DonateThankYou />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/dashboard" element={<Dashboard />} />
