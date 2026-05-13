@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { ArrowRight, BookOpen, Clock } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRight, BookOpen, Clock, Download } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
