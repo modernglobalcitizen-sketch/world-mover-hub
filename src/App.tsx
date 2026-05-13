@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Donate from "./pages/Donate";
 import DonateThankYou from "./pages/DonateThankYou";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import Dashboard from "./pages/Dashboard";
