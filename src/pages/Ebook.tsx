@@ -48,8 +48,9 @@ const Ebook = () => {
 
   const handleBuy = (paypalLink?: string) => {
     if (!paypalLink) return;
-    window.open(paypalLink, "_blank");
-    navigate("/ebook-thank-you");
+    // Redirect in the same tab so PayPal's post-payment return URL
+    // (configured to /ebook-thank-you) only fires after successful payment.
+    window.location.href = paypalLink;
   };
 
   useEffect(() => {
