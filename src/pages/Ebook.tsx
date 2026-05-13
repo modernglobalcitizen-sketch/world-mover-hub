@@ -94,18 +94,20 @@ const Ebook = () => {
                   </Badge>
                 )}
                 <div className="space-y-3">
-                  <img
-                    src={book.cover}
-                    alt={book.title}
-                    className="w-full rounded-lg shadow-md"
-                  />
-                  {book.originalCover && (
+                  <div className="grid grid-cols-2 gap-3">
                     <img
-                      src={book.originalCover}
-                      alt={`${book.title} cover`}
+                      src={book.cover}
+                      alt={book.title}
                       className="w-full rounded-lg shadow-md"
                     />
-                  )}
+                    {book.originalCover && (
+                      <img
+                        src={book.originalCover}
+                        alt={`${book.title} cover`}
+                        className="w-full rounded-lg shadow-md"
+                      />
+                    )}
+                  </div>
                 </div>
                 <h2 className="text-xl font-bold font-serif">{book.title}</h2>
                 <p className="text-muted-foreground text-sm whitespace-pre-line text-left">{book.description}</p>
