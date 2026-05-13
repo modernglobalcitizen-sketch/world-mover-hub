@@ -81,11 +81,11 @@ const Ebook = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto justify-center">
+          <div className="max-w-6xl mx-auto">
             {ebooks.filter((b) => b.title === "Remote Job Beginner Checklist").map((book, i) => (
               <div
                 key={i}
-                className="bg-card text-card-foreground rounded-2xl p-6 shadow-lg space-y-5 text-center relative overflow-hidden"
+                className="bg-card text-card-foreground rounded-2xl p-6 md:p-8 shadow-lg relative overflow-hidden flex flex-col md:flex-row gap-6 md:gap-8"
               >
                 {book.comingSoon && (
                   <Badge className="absolute top-4 right-4 gap-1" variant="secondary">
@@ -93,40 +93,42 @@ const Ebook = () => {
                     Coming Soon
                   </Badge>
                 )}
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="flex-shrink-0 w-full md:w-1/2 lg:w-5/12 flex items-center justify-center">
+                  <div className="grid grid-cols-2 gap-4 w-full">
                     <img
                       src={book.cover}
                       alt={book.title}
-                      className="w-full rounded-lg shadow-md"
+                      className="w-full rounded-lg shadow-lg object-contain max-h-[400px]"
                     />
                     {book.originalCover && (
                       <img
                         src={book.originalCover}
                         alt={`${book.title} cover`}
-                        className="w-full rounded-lg shadow-md"
+                        className="w-full rounded-lg shadow-lg object-contain max-h-[400px]"
                       />
                     )}
                   </div>
                 </div>
-                <h2 className="text-xl font-bold font-serif">{book.title}</h2>
-                <p className="text-muted-foreground text-sm whitespace-pre-line text-left">{book.description}</p>
-                <p className="text-2xl font-bold text-primary">{book.price}</p>
-                <div className="space-y-3">
-                  {book.comingSoon ? (
-                    <Button size="lg" className="w-full text-lg" disabled>
-                      Coming Soon
-                    </Button>
-                  ) : (
-                    <Button
-                      size="lg"
-                      className="w-full text-lg gap-2"
-                      onClick={() => handleBuy(book.paypalLink)}
-                    >
-                      Buy Now
-                      <ArrowRight className="w-5 h-5" />
-                    </Button>
-                  )}
+                <div className="flex flex-col justify-center space-y-5 md:space-y-6 w-full md:w-1/2 lg:w-7/12">
+                  <h2 className="text-2xl md:text-3xl font-bold font-serif">{book.title}</h2>
+                  <p className="text-muted-foreground text-base md:text-lg whitespace-pre-line leading-relaxed">{book.description}</p>
+                  <p className="text-3xl font-bold text-primary">{book.price}</p>
+                  <div>
+                    {book.comingSoon ? (
+                      <Button size="lg" className="w-full text-lg" disabled>
+                        Coming Soon
+                      </Button>
+                    ) : (
+                      <Button
+                        size="lg"
+                        className="w-full text-lg gap-2"
+                        onClick={() => handleBuy(book.paypalLink)}
+                      >
+                        Buy Now
+                        <ArrowRight className="w-5 h-5" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
