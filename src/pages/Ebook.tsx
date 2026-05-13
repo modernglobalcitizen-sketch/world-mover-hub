@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, BookOpen, Clock, Download } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowRight, BookOpen, Clock } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,13 @@ const ebooks: EbookItem[] = [
 
 const Ebook = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const handleBuy = (paypalLink?: string) => {
+    if (!paypalLink) return;
+    window.open(paypalLink, "_blank");
+    navigate("/ebook-thank-you");
+  };
 
   useEffect(() => {
     const ref = searchParams.get("ref");
@@ -99,23 +106,12 @@ const Ebook = () => {
                     <Button
                       size="lg"
                       className="w-full text-lg gap-2"
-                      onClick={() => window.open(book.paypalLink, "_blank")}
+                      onClick={() => handleBuy(book.paypalLink)}
                     >
                       Buy Now
                       <ArrowRight className="w-5 h-5" />
                     </Button>
                   )}
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="w-full text-base gap-2"
-                  >
-                    <Link to="/ebook-download">
-                      <Download className="w-5 h-5" />
-                      Download Your Ebook
-                    </Link>
-                  </Button>
                 </div>
               </div>
             ))}
