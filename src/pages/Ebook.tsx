@@ -40,7 +40,7 @@ const ebooks: EbookItem[] = [
     cover: remoteJobChecklistMockup,
     originalCover: remoteJobChecklistCover,
     price: "$29",
-    description: "After hosting 3 webinars and speaking with countless newbies, one thing became clear: you want a straightforward process from beginner to remote job. This is exactly what they asked for.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
+    description: "After hosting 3 webinars and speaking with countless remote professionals, one thing became clear: you want a straightforward process from beginner to remote job. This is exactly what they asked for.\n\nFrom mindset shift, to career roadmap, to resume, portfolio, LinkedIn — it's all included. Straightforward, easy to understand, and it comes with a checklist to keep you accountable every step of the way.",
     paypalLink: "https://www.paypal.com/ncp/payment/MZ9NYBNTZMN2Q",
   },
 ];
