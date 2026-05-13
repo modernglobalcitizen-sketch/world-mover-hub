@@ -71,7 +71,7 @@ const Ebook = () => {
               Ebooks
             </div>
             <h1 className="text-4xl md:text-5xl font-bold font-serif">
-              Resources for the Diaspora
+              Resources for Professionals from the Global South
             </h1>
             <p className="text-muted-foreground text-lg">
               Practical guides to help you work, travel, and thrive internationally.
