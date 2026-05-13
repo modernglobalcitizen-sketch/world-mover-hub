@@ -13,6 +13,7 @@ import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
 interface EbookItem {
   title: string;
   cover: string;
+  originalCover?: string;
   price: string;
   description: string;
   paypalLink?: string;
