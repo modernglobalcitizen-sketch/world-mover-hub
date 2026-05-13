@@ -21,6 +21,8 @@ import Profile from "./pages/Profile";
 import BreakoutRooms from "./pages/BreakoutRooms";
 import Ebook from "./pages/Ebook";
 import EbookDownload from "./pages/EbookDownload";
+import EbookThankYou from "./pages/EbookThankYou";
+import Unsubscribe from "./pages/Unsubscribe";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import RemoteWork from "./pages/RemoteWork";
 import RemoteJobDetail from "./pages/RemoteJobDetail";
@@ -56,6 +58,8 @@ const App = () => (
           <Route path="/breakout-rooms" element={<BreakoutRooms />} />
           <Route path="/ebooks" element={<Ebook />} />
           <Route path="/ebooks/download" element={<EbookDownload />} />
+          <Route path="/ebook-thank-you" element={<EbookThankYou />} />
+          <Route path="/unsubscribe" element={<Unsubscribe />} />
           <Route path="/affiliate" element={<AffiliateDashboard />} />
           <Route path="/remote-work" element={<RemoteWork />} />
           <Route path="/remote-jobs/:id" element={<RemoteJobDetail />} />
