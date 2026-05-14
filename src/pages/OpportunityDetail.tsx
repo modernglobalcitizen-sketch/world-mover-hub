@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Session } from "@supabase/supabase-js";
 import ShareOpportunityDialog from "@/components/ShareOpportunityDialog";
 import SocialShareButtons from "@/components/SocialShareButtons";
+import SEO from "@/components/SEO";
 
 interface Opportunity {
   id: string;
