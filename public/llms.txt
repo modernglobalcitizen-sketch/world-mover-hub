@@ -1,0 +1,24 @@
+# Global Moves Network
+
+> Platform helping young professionals from the Global South access international opportunities — remote jobs, study abroad, work-travel programs, and visa-friendly pathways.
+
+## Pages
+
+- [Home](/): Overview of remote jobs, opportunities, and global career resources.
+- [About](/about): Founder story and mission of Global Moves Network.
+- [How It Works](/how-it-works): Step-by-step guide to using the platform.
+- [Opportunities](/opportunities): Curated study, work, and travel opportunities abroad.
+- [Remote Work](/remote-work): Remote job listings open to candidates from the Global South.
+- [Relocation Services](/relocation-services): Visa, job, and housing relocation support.
+- [Talent Pool](/talent-pool): Submit your professional profile to be matched with employers.
+- [Resources](/resources): Career roadmaps, certifications, and networking resources.
+- [Ebooks](/ebooks): Practical guides on work visas, remote jobs, and global careers.
+- [Breakout Rooms](/breakout-rooms): Real-time chat rooms organized by professional field.
+- [Webinar](/webinar): Upcoming live sessions on building a global career.
+- [Donate](/donate): Support the diaspora mission.
+- [Contact](/contact): Get in touch.
+- [Leave a Review](/review): Share your experience.
+
+## Optional
+
+- [Founding Members](/founding-members): Legacy first-tier subscriber program.
