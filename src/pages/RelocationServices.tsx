@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { MapPin, Briefcase, Home, FileText, Globe, CheckCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const services = [
   {
@@ -81,6 +82,11 @@ const RelocationServices = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Relocation Services — Visa, Job & Housing Support"
+        description="Personalized relocation help: visa pathways, international job search, and housing support for moving abroad."
+        path="/relocation-services"
+      />
       <main className="flex-1">
         {/* Hero */}
         <section className="py-16 md:py-24 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground">

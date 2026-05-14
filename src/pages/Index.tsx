@@ -8,11 +8,17 @@ import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import AdSense from "@/components/AdSense";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Global Moves Network — Global Opportunities for the Global South"
+        description="Remote jobs, study abroad programs, work-travel pathways, and visa-friendly opportunities for young professionals from the Global South."
+        path="/"
+      />
       <main className="flex-1">
         <Hero />
         <FounderSection />

@@ -13,6 +13,7 @@ import {
   ArrowLeft, Bookmark, BookmarkCheck, Lock, Building2, CalendarDays,
 } from "lucide-react";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 interface RemoteJob {
   id: string;
@@ -106,6 +107,14 @@ const RemoteJobDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      {job && (
+        <SEO
+          title={`${job.title} at ${job.company_name} — Remote Job`}
+          description={(job.description || `${job.title} — remote ${job.job_type} role at ${job.company_name}.`).replace(/<[^>]+>/g, "").slice(0, 160)}
+          path={`/remote-jobs/${job.id}`}
+          type="article"
+        />
+      )}
       <main className="flex-1 py-10 md:py-16">
         <div className="container max-w-4xl">
           <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-6">

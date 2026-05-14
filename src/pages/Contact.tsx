@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Send, Loader2, MapPin } from "lucide-react";
 import { z } from "zod";
+import SEO from "@/components/SEO";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be less than 100 characters" }),
@@ -58,6 +59,11 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Contact Global Moves Network"
+        description="Get in touch with the Global Moves Network team for questions, partnerships, or support."
+        path="/contact"
+      />
       <main className="flex-1 py-16 md:py-24">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">

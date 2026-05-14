@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import remoteJobChecklistCover from "@/assets/remote-job-checklist-mockup.png";
+import SEO from "@/components/SEO";
 
 const countryGuideLinks = [
   {
@@ -167,6 +168,11 @@ const Resources = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
+      <SEO
+        title="Career Resources — Roadmaps, Certifications & Networking"
+        description="Curated career roadmaps, free certifications, networking platforms, and tools for building a global professional career."
+        path="/resources"
+      />
       <main className="flex-1">
         {/* Hero Section */}
         <section className="py-16 md:py-24 bg-muted/30">

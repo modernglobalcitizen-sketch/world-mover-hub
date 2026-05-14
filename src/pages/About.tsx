@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import aboutImage from "@/assets/about-global-moves.jpg";
 import founderImage from "@/assets/kenisha-founder.jpg";
 import { Users, MessageCircle, Globe, Laptop, Plane, DollarSign } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const features = [
   {
@@ -31,6 +32,11 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="About Global Moves Network — Our Story & Mission"
+        description="Founded by a Jamaican remote worker since 2018. Helping young professionals from the Global South build international careers."
+        path="/about"
+      />
       <main className="flex-1 py-16 md:py-24">
         <div className="container max-w-4xl">
           <article className="space-y-8 animate-fade-in">

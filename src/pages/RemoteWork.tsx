@@ -40,6 +40,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import remoteJobChecklistCover from "@/assets/remote-job-checklist-mockup.png";
+import SEO from "@/components/SEO";
 
 interface AdminRemoteJob {
   id: string;
@@ -220,6 +221,11 @@ const RemoteWork = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Remote Jobs Hiring Globally — Global Moves Network"
+        description="Curated remote job listings open to candidates from the Global South. Updated regularly with vetted opportunities."
+        path="/remote-work"
+      />
       <main className="flex-1">
         {/* Hero */}
         <section className="relative py-20 md:py-28 overflow-hidden">
