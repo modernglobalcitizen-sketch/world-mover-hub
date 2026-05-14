@@ -13,6 +13,7 @@ import {
   ArrowLeft, Bookmark, BookmarkCheck, Lock, Building2, CalendarDays,
 } from "lucide-react";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 interface RemoteJob {
   id: string;
