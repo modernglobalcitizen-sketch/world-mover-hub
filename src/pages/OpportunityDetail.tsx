@@ -183,6 +183,12 @@ const OpportunityDetail = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title={`${opportunity.title} — Global Moves Network`}
+        description={(opportunity.about || `${opportunity.category} opportunity${opportunity.location ? ` in ${opportunity.location}` : ""}.`).slice(0, 160)}
+        path={`/opportunities/${opportunity.id}`}
+        type="article"
+      />
       <main className="flex-1">
         <div className="container py-12">
           <Button variant="ghost" asChild className="mb-6">
