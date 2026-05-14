@@ -74,6 +74,10 @@ const Hero = () => {
                 src={heroImage}
                 alt="Global network connectivity visualization representing worldwide opportunities"
                 className="w-full h-auto object-cover aspect-square"
+                width={1024}
+                height={1024}
+                fetchPriority="high"
+                decoding="async"
               />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none" />
