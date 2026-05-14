@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { Upload, Users, CheckCircle, X, Clock } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import TalentPoolShowcase from "@/components/TalentPoolShowcase";
+import SEO from "@/components/SEO";
 
 const industries = [
   "Technology / IT",
@@ -193,6 +194,11 @@ const TalentPool = () => {
     return (
       <div className="min-h-screen bg-background">
         <Header />
+      <SEO
+        title="Talent Pool — Get Matched With Global Employers"
+        description="Submit your professional profile, resume, and cover letter to be matched with international employers hiring remotely."
+        path="/talent-pool"
+      />
         <main className="py-16 md:py-24">
           <div className="container max-w-2xl mx-auto text-center space-y-6">
             <CheckCircle className="h-16 w-16 mx-auto text-green-500" />

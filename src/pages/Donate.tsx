@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SEO from "@/components/SEO";
 
 const PAYPAL_DONATE_URL = "https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID";
 
@@ -26,6 +27,11 @@ const Donate = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
       
+      <SEO
+        title="Support Global Moves Network — Donate"
+        description="Support our mission to expand access to international opportunities for professionals from the Global South."
+        path="/donate"
+      />
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 md:py-24">

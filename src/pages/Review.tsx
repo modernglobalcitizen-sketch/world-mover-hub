@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const SERVICES = [
   "Webinar",
@@ -92,6 +93,11 @@ const Review = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Leave a Review — Global Moves Network"
+        description="Share your experience with Global Moves Network services and help other professionals from the Global South."
+        path="/review"
+      />
       <main className="flex-1 py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-lg">
           {submitted ? (

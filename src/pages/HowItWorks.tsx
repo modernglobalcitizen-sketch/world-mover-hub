@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import {
   Accordion,
   AccordionContent,
@@ -80,6 +81,11 @@ const HowItWorks = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="How It Works — Global Moves Network"
+        description="Step-by-step guide to using Global Moves Network to find remote jobs, study abroad programs, and work-travel opportunities."
+        path="/how-it-works"
+      />
       <main className="flex-1">
         {/* Hero Section */}
         <section className="container py-16 md:py-24">

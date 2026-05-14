@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { 
   MessageCircle, 
   Send, 
@@ -837,6 +838,11 @@ const BreakoutRooms = () => {
     <div className="min-h-screen bg-background">
       <Header />
       
+      <SEO
+        title="Breakout Rooms — Connect by Professional Field"
+        description="Real-time chat rooms organized by field. Network with peers building international careers from the Global South."
+        path="/breakout-rooms"
+      />
       <main className="container mx-auto px-4 py-8">
         {!selectedRoom ? (
           <>

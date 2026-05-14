@@ -9,6 +9,7 @@ import ebookCover from "@/assets/ebook-cover.png";
 import workVisasCover from "@/assets/work-visas-ebook-cover.png";
 import remoteJobChecklistMockup from "@/assets/remote-job-checklist-mockup.png";
 import remoteJobChecklistCover from "@/assets/remote-job-checklist-cover.png";
+import SEO from "@/components/SEO";
 
 interface EbookItem {
   title: string;
@@ -66,6 +67,11 @@ const Ebook = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
+      <SEO
+        title="Ebooks — Practical Guides for Global Careers"
+        description="Practical digital guides on work visas, remote jobs, and building international careers from the Global South."
+        path="/ebooks"
+      />
       <main className="flex-1 py-16">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
