@@ -276,7 +276,7 @@ const RemoteWork = () => {
                   After hosting 3 webinars and speaking with countless remote professionals, one thing became clear — they wanted a straightforward process from beginner to remote job. This is exactly what they asked for: mindset shift, career roadmap, resume, portfolio, LinkedIn, and a checklist to keep you accountable every step of the way.
                 </p>
                 <div className="flex items-center gap-4 pt-2">
-                  <p className="text-3xl font-bold text-primary">$29</p>
+                  <p className="text-3xl font-bold text-primary">$10</p>
                   <Button asChild size="lg" className="gap-2">
                     <Link to="/ebooks">
                       Get the Checklist
@@ -440,7 +440,7 @@ const RemoteWork = () => {
                             <div className="shrink-0">
                               <Button asChild size="lg" variant="secondary" className="gap-2 font-semibold">
                                 <Link to="/ebooks">
-                                  Get the Checklist — $29
+                                  Get the Checklist — $10
                                   <ArrowRight className="h-4 w-4" />
                                 </Link>
                               </Button>
