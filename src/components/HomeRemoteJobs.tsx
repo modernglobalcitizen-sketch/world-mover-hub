@@ -258,7 +258,7 @@ const HomeRemoteJobs = () => {
                     <div className="shrink-0">
                       <Button asChild size="lg" variant="secondary" className="gap-2 font-semibold">
                         <Link to="/ebooks">
-                          Get the Checklist — $29
+                          Get the Checklist — $10
                           <ArrowRight className="h-4 w-4" />
                         </Link>
                       </Button>
