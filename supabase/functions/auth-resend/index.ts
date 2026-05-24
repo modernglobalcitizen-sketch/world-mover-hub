@@ -8,7 +8,10 @@ const corsHeaders = {
 
 const SITE_NAME = "Global Moves Network";
 const SITE_URL = "https://globalmovesnetwork.com";
-const FROM_EMAIL = "Global Moves Network <noreply@globalmovesnetwork.com>";
+const FROM_EMAILS = [
+  "Global Moves Network <noreply@globalmovesnetwork.com>",
+  "Global Moves Network <noreply@notify.globalmovesnetwork.com>",
+];
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 const allowedInterests = new Set(["remote-work", "travel-opportunities"]);
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -111,20 +114,27 @@ async function sendResendEmail(to: string, subject: string, html: string, text: 
   if (!lovableApiKey) throw new Error("LOVABLE_API_KEY is not configured");
   if (!resendApiKey) throw new Error("RESEND_API_KEY is not configured");
 
-  const response = await fetch(`${GATEWAY_URL}/emails`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${lovableApiKey}`,
-      "X-Connection-Api-Key": resendApiKey,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ from: FROM_EMAIL, to: [to], subject, html, text }),
-  });
+  let lastError = "Resend send failed";
+  for (const from of FROM_EMAILS) {
+    const response = await fetch(`${GATEWAY_URL}/emails`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${lovableApiKey}`,
+        "X-Connection-Api-Key": resendApiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from, to: [to], subject, html, text }),
+    });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(`Resend send failed [${response.status}]: ${JSON.stringify(data)}`);
+    const data = await response.json().catch(() => ({}));
+    if (response.ok) return;
+
+    lastError = `Resend send failed [${response.status}]: ${JSON.stringify(data)}`;
+    const message = typeof data?.message === "string" ? data.message.toLowerCase() : "";
+    if (response.status !== 403 || !message.includes("domain is not verified")) break;
   }
+
+  throw new Error(lastError);
 }
 
 serve(async (req) => {
