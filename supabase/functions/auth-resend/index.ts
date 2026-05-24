@@ -220,8 +220,10 @@ serve(async (req) => {
         }, { onConflict: "id" });
       }
 
-      await sendResendEmail(
+      await queueAuthEmail(
+        supabase,
         email,
+        "auth_resend_signup",
         "Confirm your Global Moves Network account",
         buildEmailHtml(
           "Confirm your email",
@@ -232,13 +234,6 @@ serve(async (req) => {
         ),
         `Confirm your Global Moves Network account: ${data.properties.action_link}`,
       );
-
-      await supabase.from("email_send_log").insert({
-        message_id: crypto.randomUUID(),
-        template_name: "resend_signup",
-        recipient_email: email,
-        status: "sent",
-      });
 
       return jsonResponse({ success: true });
     }
@@ -254,8 +249,10 @@ serve(async (req) => {
       return jsonResponse({ success: true });
     }
 
-    await sendResendEmail(
+    await queueAuthEmail(
+      supabase,
       email,
+      "auth_resend_recovery",
       "Reset your Global Moves Network password",
       buildEmailHtml(
         "Reset your password",
@@ -266,13 +263,6 @@ serve(async (req) => {
       ),
       `Reset your Global Moves Network password: ${data.properties.action_link}`,
     );
-
-    await supabase.from("email_send_log").insert({
-      message_id: crypto.randomUUID(),
-      template_name: "resend_recovery",
-      recipient_email: email,
-      status: "sent",
-    });
 
     return jsonResponse({ success: true });
   } catch (error) {
