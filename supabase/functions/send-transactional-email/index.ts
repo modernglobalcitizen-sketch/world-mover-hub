@@ -84,7 +84,21 @@ Deno.serve(async (req) => {
     )
   }
 
-  // 1. Look up template from registry (early — needed to resolve recipient)
+  // Per-template input validation to prevent abuse via the anon JWT.
+  // The ebook-download template emails a download link; restrict it to our
+  // public storage bucket so the function cannot be used to send arbitrary
+  // links from our trusted domain (phishing prevention).
+  if (templateName === 'ebook-download') {
+    const allowedPrefix = `${supabaseUrl}/storage/v1/object/public/ebooks/`
+    const url = typeof templateData.downloadUrl === 'string' ? templateData.downloadUrl : ''
+    if (!url.startsWith(allowedPrefix)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid downloadUrl for this template' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+  }
+
   const template = TEMPLATES[templateName]
 
   if (!template) {
