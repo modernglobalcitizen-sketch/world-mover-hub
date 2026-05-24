@@ -99,18 +99,34 @@ const TalentPool = () => {
     additional_notes: "",
   });
 
-  const uploadFile = async (file: File, folder: string) => {
-    const fileExt = file.name.split(".").pop();
+  const ALLOWED_EXTS = ["pdf", "doc", "docx"] as const;
+  const ALLOWED_MIMES = new Set([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ]);
+  const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
+
+  const uploadFile = async (file: File, folder: "resumes" | "cover-letters") => {
+    const fileExt = (file.name.split(".").pop() || "").toLowerCase();
+    if (!ALLOWED_EXTS.includes(fileExt as typeof ALLOWED_EXTS[number])) {
+      throw new Error("Only PDF, DOC, or DOCX files are allowed.");
+    }
+    if (file.type && !ALLOWED_MIMES.has(file.type)) {
+      throw new Error("File type not allowed. Please upload a PDF or Word document.");
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      throw new Error("File is too large (max 10MB).");
+    }
     const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
     const { data, error } = await supabase.storage
       .from("talent-pool")
-      .upload(fileName, file);
+      .upload(fileName, file, { contentType: file.type, upsert: false });
     if (error) throw error;
-    const { data: urlData } = supabase.storage
-      .from("talent-pool")
-      .getPublicUrl(data.path);
-    return urlData.publicUrl;
+    // Bucket is private; store the storage path. Signed URLs are generated on demand for admins.
+    return data.path;
   };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
