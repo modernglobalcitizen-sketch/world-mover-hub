@@ -80,7 +80,6 @@ const Auth = () => {
   const [country, setCountry] = useState("");
   const [fieldOfWork, setFieldOfWork] = useState("");
   const [opportunityInterests, setOpportunityInterests] = useState<string[]>([]);
-  const [otherOpportunity, setOtherOpportunity] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
