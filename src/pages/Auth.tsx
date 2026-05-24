@@ -65,15 +65,6 @@ const signupSchema = loginSchema.extend({
   country: z.string().min(1, { message: "Please select your country" }),
   fieldOfWork: z.string().min(1, { message: "Please select your field" }),
   opportunityInterests: z.array(z.string()).min(1, { message: "Please select at least one opportunity type" }),
-  otherOpportunity: z.string().optional(),
-}).refine((data) => {
-  if (data.opportunityInterests.includes("other")) {
-    return data.otherOpportunity && data.otherOpportunity.trim().length > 0;
-  }
-  return true;
-}, {
-  message: "Please specify your other opportunity",
-  path: ["otherOpportunity"],
 });
 
 const forgotPasswordSchema = z.object({
