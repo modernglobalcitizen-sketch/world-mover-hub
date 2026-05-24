@@ -79,8 +79,11 @@ const Review = () => {
         service,
         rating,
         review_text: text.trim(),
-        verified_purchase: verifiedEbook,
+        // verified_purchase is intentionally NOT set here — admins toggle it on approval
+        // after confirming the purchase server-side. Client-supplied URL params must not
+        // grant the "Verified Purchase" badge.
       } as any);
+
       if (error) throw error;
       setSubmitted(true);
     } catch {
