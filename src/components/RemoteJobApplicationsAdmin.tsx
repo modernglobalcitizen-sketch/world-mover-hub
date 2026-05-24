@@ -9,6 +9,7 @@ import { Trash2, Mail, FileText } from "lucide-react";
 const STATUS_OPTIONS = ["new", "viewed", "contacted", "on hold", "resolved"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { openTalentPoolFile } from "@/lib/talentPoolFiles";
 
 interface JobApplication {
   id: string;
