@@ -388,20 +388,16 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
               )}
               <div className="flex gap-3 pt-2">
                 {selectedEntry.resume_url && (
-                  <a href={selectedEntry.resume_url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
-                      <FileText className="h-4 w-4 mr-1" /> Resume
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </Button>
-                  </a>
+                  <Button variant="outline" size="sm" onClick={() => openTalentPoolFile(selectedEntry.resume_url)}>
+                    <FileText className="h-4 w-4 mr-1" /> Resume
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                 )}
                 {selectedEntry.cover_letter_url && (
-                  <a href={selectedEntry.cover_letter_url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
-                      <FileText className="h-4 w-4 mr-1" /> Cover Letter
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </Button>
-                  </a>
+                  <Button variant="outline" size="sm" onClick={() => openTalentPoolFile(selectedEntry.cover_letter_url)}>
+                    <FileText className="h-4 w-4 mr-1" /> Cover Letter
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                 )}
                 {selectedEntry.linkedin_url && (
                   <a href={selectedEntry.linkedin_url} target="_blank" rel="noopener noreferrer">
