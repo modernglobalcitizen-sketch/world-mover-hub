@@ -3,10 +3,13 @@ import { toast } from "sonner";
 
 const BUCKET = "talent-pool";
 
-function extractPath(url: string): string | null {
-  // Matches both public and signed URL formats for the talent-pool bucket
-  const match = url.match(/\/talent-pool\/([^?]+)/);
-  return match ? decodeURIComponent(match[1]) : null;
+function extractPath(value: string): string | null {
+  // Accept either a raw storage path (e.g. "resumes/123.pdf") or a full
+  // public/signed URL containing the bucket prefix.
+  const match = value.match(/\/talent-pool\/([^?]+)/);
+  if (match) return decodeURIComponent(match[1]);
+  if (!value.includes("://") && value.length > 0) return value;
+  return null;
 }
 
 export async function openTalentPoolFile(url: string | null | undefined) {
