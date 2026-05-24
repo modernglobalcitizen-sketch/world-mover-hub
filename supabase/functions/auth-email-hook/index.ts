@@ -37,7 +37,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 
 // Configuration
 const SITE_NAME = "world-mover-hub"
-const SENDER_DOMAIN = "notify.globalmovesnetwork.com"
+const SENDER_DOMAIN = "noreply.globalmovesnetwork.com"
 const ROOT_DOMAIN = "globalmovesnetwork.com"
 const FROM_DOMAIN = "globalmovesnetwork.com" // Domain shown in From address (may be root or sender subdomain)
 
