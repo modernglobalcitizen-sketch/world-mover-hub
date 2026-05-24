@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { openTalentPoolFile } from "@/lib/talentPoolFiles";
 
 const emptyForm = {
   name: "",
