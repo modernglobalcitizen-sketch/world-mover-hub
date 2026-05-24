@@ -156,14 +156,18 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-          redirectTo: `${window.location.origin}/reset-password`,
+        const { data, error } = await supabase.functions.invoke("auth-resend", {
+          body: {
+            action: "recovery",
+            email: email.trim(),
+            redirectOrigin: window.location.origin,
+          },
         });
 
-        if (error) {
+        if (error || data?.error) {
           toast({
             title: "Error",
-            description: error.message,
+            description: data?.error || error?.message || "Unable to send reset link.",
             variant: "destructive",
           });
         } else {
@@ -190,22 +194,22 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: {
-            data: {
-              country,
-              field_of_work: fieldOfWork,
-              opportunity_interests: opportunityInterests,
-            },
+        const { data, error } = await supabase.functions.invoke("auth-resend", {
+          body: {
+            action: "signup",
+            email: email.trim(),
+            password,
+            country,
+            fieldOfWork,
+            opportunityInterests,
+            redirectOrigin: window.location.origin,
           },
         });
 
-        if (error) {
+        if (error || data?.error) {
           toast({
             title: "Signup failed",
-            description: error.message,
+            description: data?.error || error?.message || "Unable to create account.",
             variant: "destructive",
           });
         } else {
