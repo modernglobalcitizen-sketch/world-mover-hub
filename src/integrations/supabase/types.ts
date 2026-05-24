@@ -1065,6 +1065,20 @@ export type Database = {
           id: string
         }[]
       }
+      get_reviews_admin: {
+        Args: never
+        Returns: {
+          created_at: string
+          id: string
+          is_approved: boolean
+          rating: number
+          review_text: string
+          reviewer_email: string
+          reviewer_name: string
+          service: string
+          verified_purchase: boolean
+        }[]
+      }
       has_pending_invitation: {
         Args: { _room_id: string; _user_id: string }
         Returns: boolean

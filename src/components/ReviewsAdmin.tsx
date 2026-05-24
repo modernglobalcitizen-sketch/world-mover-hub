@@ -36,10 +36,7 @@ const ReviewsAdmin = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchReviews = async () => {
-    const { data, error } = await supabase
-      .from("reviews" as any)
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data, error } = await (supabase as any).rpc("get_reviews_admin");
 
     if (data) setReviews(data as unknown as AdminReview[]);
     if (error) toast.error("Failed to load reviews");
