@@ -176,7 +176,7 @@ const Auth = () => {
       } else {
         // Signup flow
         const validation = signupSchema.safeParse({
-          email, password, country, fieldOfWork, opportunityInterests, otherOpportunity
+          email, password, country, fieldOfWork, opportunityInterests
         });
         if (!validation.success) {
           const fieldErrors: Record<string, string> = {};
@@ -190,10 +190,6 @@ const Auth = () => {
           return;
         }
 
-        const finalInterests = opportunityInterests.includes("other") && otherOpportunity.trim()
-          ? [...opportunityInterests.filter(i => i !== "other"), otherOpportunity.trim()]
-          : opportunityInterests;
-
         const { error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
@@ -201,7 +197,7 @@ const Auth = () => {
             data: {
               country,
               field_of_work: fieldOfWork,
-              opportunity_interests: finalInterests,
+              opportunity_interests: opportunityInterests,
             },
           },
         });
@@ -259,7 +255,7 @@ const Auth = () => {
   const isSubmitDisabled = () => {
     if (loading) return true;
     if (authMode === "signup") {
-      return !country || !fieldOfWork || opportunityInterests.length === 0 || (opportunityInterests.includes("other") && !otherOpportunity.trim());
+      return !country || !fieldOfWork || opportunityInterests.length ===  0;
     }
     return false;
   };
@@ -395,7 +391,6 @@ const Auth = () => {
                               setOpportunityInterests([...opportunityInterests, type.id]);
                             } else {
                               setOpportunityInterests(opportunityInterests.filter(i => i !== type.id));
-                              if (type.id === "other") setOtherOpportunity("");
                             }
                           }}
                         />
@@ -408,14 +403,6 @@ const Auth = () => {
                       </div>
                     ))}
                   </div>
-                  {opportunityInterests.includes("other") && (
-                    <Input
-                      placeholder="Please specify other opportunities..."
-                      value={otherOpportunity}
-                      onChange={(e) => setOtherOpportunity(e.target.value)}
-                      className="mt-2"
-                    />
-                  )}
                   {errors.opportunityInterests && (
                     <p className="text-sm text-destructive">{errors.opportunityInterests}</p>
                   )}
