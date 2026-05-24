@@ -986,6 +986,36 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          rating: number | null
+          review_text: string | null
+          reviewer_name: string | null
+          service: string | null
+          verified_purchase: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          review_text?: string | null
+          reviewer_name?: string | null
+          service?: string | null
+          verified_purchase?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          rating?: number | null
+          review_text?: string | null
+          reviewer_name?: string | null
+          service?: string | null
+          verified_purchase?: boolean | null
+        }
+        Relationships: []
+      }
       subscriptions_safe: {
         Row: {
           amount: number | null
