@@ -9,6 +9,7 @@ import { Trash2, Mail, FileText } from "lucide-react";
 const STATUS_OPTIONS = ["new", "viewed", "contacted", "on hold", "resolved"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { openTalentPoolFile } from "@/lib/talentPoolFiles";
 
 interface JobApplication {
   id: string;
@@ -123,10 +124,10 @@ const RemoteJobApplicationsAdmin = () => {
                 <TableCell className="text-sm">{app.country || "—"}</TableCell>
                 <TableCell>
                   {app.resume_url ? (
-                    <a href={app.resume_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1 text-sm">
+                    <button type="button" onClick={() => openTalentPoolFile(app.resume_url)} className="text-primary hover:underline inline-flex items-center gap-1 text-sm">
                       <FileText className="h-3 w-3" />
                       View
-                    </a>
+                    </button>
                   ) : (
                     <span className="text-muted-foreground text-sm">—</span>
                   )}

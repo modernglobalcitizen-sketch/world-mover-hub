@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 const STATUS_OPTIONS = ["new", "viewed", "reviewed", "contacted", "on hold", "placed"] as const;
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { openTalentPoolFile } from "@/lib/talentPoolFiles";
 
 const emptyForm = {
   name: "",
@@ -282,14 +283,14 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
                 <TableCell>
                   <div className="flex gap-1">
                     {entry.resume_url && (
-                      <a href={entry.resume_url} target="_blank" rel="noopener noreferrer" title="Resume">
+                      <button type="button" onClick={() => openTalentPoolFile(entry.resume_url)} title="Resume">
                         <FileText className="h-4 w-4 text-primary" />
-                      </a>
+                      </button>
                     )}
                     {entry.cover_letter_url && (
-                      <a href={entry.cover_letter_url} target="_blank" rel="noopener noreferrer" title="Cover Letter">
+                      <button type="button" onClick={() => openTalentPoolFile(entry.cover_letter_url)} title="Cover Letter">
                         <FileText className="h-4 w-4 text-muted-foreground" />
-                      </a>
+                      </button>
                     )}
                   </div>
                 </TableCell>
@@ -387,20 +388,16 @@ const TalentPoolAdmin = ({ highlightId }: { highlightId?: string } = {}) => {
               )}
               <div className="flex gap-3 pt-2">
                 {selectedEntry.resume_url && (
-                  <a href={selectedEntry.resume_url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
-                      <FileText className="h-4 w-4 mr-1" /> Resume
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </Button>
-                  </a>
+                  <Button variant="outline" size="sm" onClick={() => openTalentPoolFile(selectedEntry.resume_url)}>
+                    <FileText className="h-4 w-4 mr-1" /> Resume
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                 )}
                 {selectedEntry.cover_letter_url && (
-                  <a href={selectedEntry.cover_letter_url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm">
-                      <FileText className="h-4 w-4 mr-1" /> Cover Letter
-                      <ExternalLink className="h-3 w-3 ml-1" />
-                    </Button>
-                  </a>
+                  <Button variant="outline" size="sm" onClick={() => openTalentPoolFile(selectedEntry.cover_letter_url)}>
+                    <FileText className="h-4 w-4 mr-1" /> Cover Letter
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Button>
                 )}
                 {selectedEntry.linkedin_url && (
                   <a href={selectedEntry.linkedin_url} target="_blank" rel="noopener noreferrer">
