@@ -134,6 +134,7 @@ async function queueAuthEmail(
       purpose: "transactional",
       label,
       idempotency_key: messageId,
+      unsubscribe_token: messageId,
       queued_at: new Date().toISOString(),
     },
   });
