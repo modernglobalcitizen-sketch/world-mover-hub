@@ -26,12 +26,8 @@ const fields = [
 ];
 
 const opportunityTypes = [
-  { id: "grant", label: "Grants & Funding" },
-  { id: "competition", label: "Competitions" },
-  { id: "internship", label: "Internships" },
-  { id: "training", label: "Training & Workshops" },
-  { id: "conference", label: "Conferences & Events" },
-  { id: "other", label: "Other" },
+  { id: "remote-work", label: "Remote Work" },
+  { id: "travel-opportunities", label: "Travel Opportunities" },
 ];
 
 const countries = [
