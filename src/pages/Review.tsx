@@ -133,9 +133,10 @@ const Review = () => {
                 {verifiedEbook && (
                   <div className="flex items-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm text-foreground">
                     <BadgeCheck className="h-4 w-4 text-primary" />
-                    <span>Verified Purchase — your review will be tagged as a confirmed buyer.</span>
+                    <span>Thanks for your ebook purchase! Our team will verify your order before tagging this review.</span>
                   </div>
                 )}
+
                 <div className="space-y-2">
                   <Label htmlFor="rev-name">Your Name *</Label>
                   <Input
