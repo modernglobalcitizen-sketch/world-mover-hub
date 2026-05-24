@@ -37,9 +37,9 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 
 // Configuration
 const SITE_NAME = "world-mover-hub"
-const SENDER_DOMAIN = "noreply.globalmovesnetwork.com"
+const SENDER_DOMAIN = "notify.globalmovesnetwork.com"
 const ROOT_DOMAIN = "globalmovesnetwork.com"
-const FROM_DOMAIN = "noreply.globalmovesnetwork.com" // Domain shown in From address (may be root or sender subdomain)
+const FROM_DOMAIN = "globalmovesnetwork.com" // Domain shown in From address (may be root or sender subdomain)
 
 // Sample data for preview mode ONLY (not used in actual email sending).
 // URLs are baked in at scaffold time from the project's real data.
