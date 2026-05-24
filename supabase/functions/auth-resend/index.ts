@@ -8,8 +8,8 @@ const corsHeaders = {
 
 const SITE_NAME = "Global Moves Network";
 const SITE_URL = "https://globalmovesnetwork.com";
-const SENDER_DOMAIN = "noreply.globalmovesnetwork.com";
-const FROM_DOMAIN = "noreply.globalmovesnetwork.com";
+const SENDER_DOMAIN = "notify.globalmovesnetwork.com";
+const FROM_DOMAIN = "globalmovesnetwork.com";
 const allowedInterests = new Set(["remote-work", "travel-opportunities"]);
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
@@ -133,6 +133,7 @@ async function queueAuthEmail(
       text,
       purpose: "transactional",
       label,
+      idempotency_key: messageId,
       queued_at: new Date().toISOString(),
     },
   });
