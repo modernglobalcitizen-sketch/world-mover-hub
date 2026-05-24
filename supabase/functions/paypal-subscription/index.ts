@@ -334,6 +334,16 @@ Deno.serve(async (req) => {
         )
       }
 
+      // Ensure the signup email matches the verified PayPal subscriber email
+      const paypalEmail = paypalDetails.subscriber?.email_address?.toLowerCase()
+      const signupEmail = signupData.email.trim().toLowerCase()
+      if (!paypalEmail || paypalEmail !== signupEmail) {
+        return new Response(
+          JSON.stringify({ error: 'Signup email must match the PayPal subscription email' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
       // Also check DB record exists
       const { data: subscription, error: subError } = await supabase
         .from('subscriptions')
