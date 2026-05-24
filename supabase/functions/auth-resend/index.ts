@@ -8,11 +8,8 @@ const corsHeaders = {
 
 const SITE_NAME = "Global Moves Network";
 const SITE_URL = "https://globalmovesnetwork.com";
-const FROM_EMAILS = [
-  "Global Moves Network <noreply@globalmovesnetwork.com>",
-  "Global Moves Network <noreply@notify.globalmovesnetwork.com>",
-];
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+const SENDER_DOMAIN = "notify.globalmovesnetwork.com";
+const FROM_DOMAIN = "globalmovesnetwork.com";
 const allowedInterests = new Set(["remote-work", "travel-opportunities"]);
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
@@ -107,34 +104,42 @@ function buildEmailHtml(title: string, intro: string, buttonText: string, action
   </body></html>`;
 }
 
-async function sendResendEmail(to: string, subject: string, html: string, text: string) {
-  const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
-  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+async function queueAuthEmail(
+  supabase: ReturnType<typeof createClient>,
+  to: string,
+  label: string,
+  subject: string,
+  html: string,
+  text: string,
+) {
+  const messageId = crypto.randomUUID();
 
-  if (!lovableApiKey) throw new Error("LOVABLE_API_KEY is not configured");
-  if (!resendApiKey) throw new Error("RESEND_API_KEY is not configured");
+  await supabase.from("email_send_log").insert({
+    message_id: messageId,
+    template_name: label,
+    recipient_email: to,
+    status: "pending",
+  });
 
-  let lastError = "Resend send failed";
-  for (const from of FROM_EMAILS) {
-    const response = await fetch(`${GATEWAY_URL}/emails`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${lovableApiKey}`,
-        "X-Connection-Api-Key": resendApiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ from, to: [to], subject, html, text }),
-    });
+  const { error } = await supabase.rpc("enqueue_email", {
+    queue_name: "auth_emails",
+    payload: {
+      message_id: messageId,
+      to,
+      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+      sender_domain: SENDER_DOMAIN,
+      subject,
+      html,
+      text,
+      purpose: "transactional",
+      label,
+      queued_at: new Date().toISOString(),
+    },
+  });
 
-    const data = await response.json().catch(() => ({}));
-    if (response.ok) return;
-
-    lastError = `Resend send failed [${response.status}]: ${JSON.stringify(data)}`;
-    const message = typeof data?.message === "string" ? data.message.toLowerCase() : "";
-    if (response.status !== 403 || !message.includes("domain is not verified")) break;
+  if (error) {
+    throw new Error(`Email queue failed: ${error.message}`);
   }
-
-  throw new Error(lastError);
 }
 
 serve(async (req) => {
