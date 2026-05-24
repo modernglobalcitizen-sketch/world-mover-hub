@@ -26,12 +26,8 @@ const fields = [
 ];
 
 const opportunityTypes = [
-  { id: "grant", label: "Grants & Funding" },
-  { id: "competition", label: "Competitions" },
-  { id: "internship", label: "Internships" },
-  { id: "training", label: "Training & Workshops" },
-  { id: "conference", label: "Conferences & Events" },
-  { id: "other", label: "Other" },
+  { id: "remote-work", label: "Remote Work" },
+  { id: "travel-opportunities", label: "Travel Opportunities" },
 ];
 
 const countries = [
@@ -69,15 +65,6 @@ const signupSchema = loginSchema.extend({
   country: z.string().min(1, { message: "Please select your country" }),
   fieldOfWork: z.string().min(1, { message: "Please select your field" }),
   opportunityInterests: z.array(z.string()).min(1, { message: "Please select at least one opportunity type" }),
-  otherOpportunity: z.string().optional(),
-}).refine((data) => {
-  if (data.opportunityInterests.includes("other")) {
-    return data.otherOpportunity && data.otherOpportunity.trim().length > 0;
-  }
-  return true;
-}, {
-  message: "Please specify your other opportunity",
-  path: ["otherOpportunity"],
 });
 
 const forgotPasswordSchema = z.object({
@@ -93,7 +80,6 @@ const Auth = () => {
   const [country, setCountry] = useState("");
   const [fieldOfWork, setFieldOfWork] = useState("");
   const [opportunityInterests, setOpportunityInterests] = useState<string[]>([]);
-  const [otherOpportunity, setOtherOpportunity] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
@@ -190,7 +176,7 @@ const Auth = () => {
       } else {
         // Signup flow
         const validation = signupSchema.safeParse({
-          email, password, country, fieldOfWork, opportunityInterests, otherOpportunity
+          email, password, country, fieldOfWork, opportunityInterests
         });
         if (!validation.success) {
           const fieldErrors: Record<string, string> = {};
@@ -204,10 +190,6 @@ const Auth = () => {
           return;
         }
 
-        const finalInterests = opportunityInterests.includes("other") && otherOpportunity.trim()
-          ? [...opportunityInterests.filter(i => i !== "other"), otherOpportunity.trim()]
-          : opportunityInterests;
-
         const { error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
@@ -215,7 +197,7 @@ const Auth = () => {
             data: {
               country,
               field_of_work: fieldOfWork,
-              opportunity_interests: finalInterests,
+              opportunity_interests: opportunityInterests,
             },
           },
         });
@@ -273,7 +255,7 @@ const Auth = () => {
   const isSubmitDisabled = () => {
     if (loading) return true;
     if (authMode === "signup") {
-      return !country || !fieldOfWork || opportunityInterests.length === 0 || (opportunityInterests.includes("other") && !otherOpportunity.trim());
+      return !country || !fieldOfWork || opportunityInterests.length ===  0;
     }
     return false;
   };
@@ -409,7 +391,6 @@ const Auth = () => {
                               setOpportunityInterests([...opportunityInterests, type.id]);
                             } else {
                               setOpportunityInterests(opportunityInterests.filter(i => i !== type.id));
-                              if (type.id === "other") setOtherOpportunity("");
                             }
                           }}
                         />
@@ -422,14 +403,6 @@ const Auth = () => {
                       </div>
                     ))}
                   </div>
-                  {opportunityInterests.includes("other") && (
-                    <Input
-                      placeholder="Please specify other opportunities..."
-                      value={otherOpportunity}
-                      onChange={(e) => setOtherOpportunity(e.target.value)}
-                      className="mt-2"
-                    />
-                  )}
                   {errors.opportunityInterests && (
                     <p className="text-sm text-destructive">{errors.opportunityInterests}</p>
                   )}
