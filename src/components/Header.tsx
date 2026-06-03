@@ -14,8 +14,7 @@ const navLinks = [
   { name: "Ebooks", href: "/ebooks" },
   { name: "Remote Work", href: "/remote-work" },
   { name: "Resources", href: "/resources" },
-  
-  { name: "Talent Pool", href: "/talent-pool" },
+  // { name: "Talent Pool", href: "/talent-pool" },
 ];
 
 const adminOnlyLinks: { name: string; href: string }[] = [
