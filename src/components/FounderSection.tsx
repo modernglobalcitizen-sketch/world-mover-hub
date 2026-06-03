@@ -1,9 +1,8 @@
-import { Globe, DollarSign, Plane, Laptop } from "lucide-react";
+import { Globe, Plane, Laptop } from "lucide-react";
 import founderImage from "@/assets/kenisha-founder.jpg";
 
 const stats = [
   { icon: Globe, label: "Countries Visited", value: "30+" },
-  { icon: DollarSign, label: "Earned Remotely", value: "$10,000s" },
   { icon: Laptop, label: "Remote Since", value: "2018" },
   { icon: Plane, label: "From", value: "Jamaica 🇯🇲" },
 ];
