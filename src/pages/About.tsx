@@ -93,7 +93,6 @@ const About = () => {
                   <div className="flex flex-wrap gap-3 pt-2">
                     {[
                       { icon: Plane, text: "30+ countries" },
-                      { icon: DollarSign, text: "$10,000s earned remotely" },
                       { icon: Laptop, text: "Remote since 2018" },
                       { icon: Globe, text: "Jamaican 🇯🇲" },
                     ].map((item) => (
