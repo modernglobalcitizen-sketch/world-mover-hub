@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import aboutImage from "@/assets/about-global-moves.jpg";
 import founderImage from "@/assets/kenisha-founder.jpg";
-import { Users, MessageCircle, Globe, Laptop, Plane, DollarSign } from "lucide-react";
+import { Users, MessageCircle, Globe, Laptop, Plane } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const features = [
