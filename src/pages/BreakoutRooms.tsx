@@ -614,7 +614,7 @@ const BreakoutRooms = () => {
 
     // Find user by email
     const { data: lookupData, error: lookupError } = await supabase.functions.invoke("lookup-user", {
-      body: { email: inviteEmail.trim().toLowerCase() },
+      body: { email: inviteEmail.trim().toLowerCase(), room_id: selectedRoom.id },
     });
 
     const profileData = lookupData?.user_id ? { id: lookupData.user_id } : null;
