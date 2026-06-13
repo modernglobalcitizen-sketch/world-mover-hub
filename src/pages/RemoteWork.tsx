@@ -538,6 +538,13 @@ const RemoteWork = () => {
             )}
           </div>
         </section>
+
+        {/* Adsterra */}
+        <section className="py-8">
+          <div className="container flex justify-center">
+            <Adsterra keyId="5fe44d7044f1cc309a21d45eb2803742" width={160} height={300} />
+          </div>
+        </section>
       </main>
       <Footer />
       <JobAlertsExitPopup />
