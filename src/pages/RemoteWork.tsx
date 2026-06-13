@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
+import Adsterra from "@/components/Adsterra";
 
 const COUNTRIES = [
   "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
