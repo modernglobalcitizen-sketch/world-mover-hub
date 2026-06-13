@@ -228,8 +228,13 @@ Deno.serve(async (req) => {
       const accessToken = await getPayPalAccessToken()
       const productId = await createPayPalProduct(accessToken)
       const planId = await createPayPalPlan(accessToken, productId)
-      
-      const origin = req.headers.get('origin') || 'https://world-mover-hub.lovable.app'
+
+      const ALLOWED_ORIGINS = [
+        'https://globalmovesnetwork.com',
+        'https://world-mover-hub.lovable.app',
+      ]
+      const rawOrigin = req.headers.get('origin') || ''
+      const origin = ALLOWED_ORIGINS.includes(rawOrigin) ? rawOrigin : 'https://globalmovesnetwork.com'
       
       const subscription = await createSubscription(
         accessToken, 
