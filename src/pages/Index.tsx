@@ -8,6 +8,7 @@ import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import AdSense from "@/components/AdSense";
 import Adsterra from "@/components/Adsterra";
+import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import SEO from "@/components/SEO";
 
@@ -36,6 +37,7 @@ const Index = () => {
       </main>
       <Footer />
       <JobAlertsExitPopup />
+      <SmartLink url="https://www.effectivecpmnetwork.com/bgdrtiw6?key=95fb56ff12f30e3cf93f0fcaf4940efe" />
     </div>
   );
 };
