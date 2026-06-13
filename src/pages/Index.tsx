@@ -8,6 +8,7 @@ import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
 import AdSense from "@/components/AdSense";
 import Adsterra from "@/components/Adsterra";
+import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import SEO from "@/components/SEO";
 

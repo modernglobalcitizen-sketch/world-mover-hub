@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import Adsterra from "@/components/Adsterra";
+import SmartLink from "@/components/SmartLink";
 
 const COUNTRIES = [
   "Afghanistan", "Albania", "Algeria", "Argentina", "Armenia", "Australia", "Austria",
