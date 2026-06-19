@@ -98,6 +98,13 @@ const Subscribe = () => {
               ))}
             </ul>
 
+            <div className="bg-muted/50 border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground mb-1">Why is it not free?</h3>
+              <p className="text-sm text-muted-foreground">
+                All jobs are verified by a real person. This is a small investment if you are serious about your remote work journey.
+              </p>
+            </div>
+
             {verified ? (
               <div className="text-center space-y-4 pt-4">
                 <p className="text-foreground font-medium">
