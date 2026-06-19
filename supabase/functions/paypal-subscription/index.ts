@@ -142,6 +142,8 @@ async function createPayPalPlan(accessToken: string, productId: string): Promise
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create plan failed', response.status, body)
     throw new Error('Failed to create PayPal plan')
   }
 
