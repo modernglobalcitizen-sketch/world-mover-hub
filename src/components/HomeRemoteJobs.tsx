@@ -175,7 +175,7 @@ const HomeRemoteJobs = () => {
                         )}
                       </CardTitle>
                       <CardDescription className="mt-1 font-medium">
-                        
+                        {session ? job.company_name : null}
                       </CardDescription>
                     </div>
                     <Button

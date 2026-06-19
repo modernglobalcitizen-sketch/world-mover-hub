@@ -151,7 +151,7 @@ const RemoteJobDetail = () => {
                     </h1>
                     <div className="flex items-center gap-2 mt-2 text-muted-foreground">
                       <Building2 className="h-4 w-4" />
-                      <span className="font-medium">Confidential</span>
+                      <span className="font-medium">{session ? job.company_name : "Members only"}</span>
                     </div>
                   </div>
                   {session && (
