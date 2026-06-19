@@ -101,7 +101,7 @@ async function createPayPalPlan(accessToken: string, productId: string): Promise
 
   if (listResponse.ok) {
     const plans = await listResponse.json()
-    const existingPlan = plans.plans?.find((p: any) => p.name === 'Monthly $15 Membership' && p.status === 'ACTIVE')
+    const existingPlan = plans.plans?.find((p: any) => p.name === 'Monthly $3 Membership' && p.status === 'ACTIVE')
     if (existingPlan) {
       return existingPlan.id
     }
@@ -116,8 +116,8 @@ async function createPayPalPlan(accessToken: string, productId: string): Promise
     },
     body: JSON.stringify({
       product_id: productId,
-      name: 'Monthly $15 Membership',
-      description: 'Monthly subscription to Global Moves Network at $15/month',
+      name: 'Monthly $3 Membership',
+      description: 'Monthly subscription to Global Moves Network at $3/month',
       status: 'ACTIVE',
       billing_cycles: [
         {
@@ -125,7 +125,7 @@ async function createPayPalPlan(accessToken: string, productId: string): Promise
           tenure_type: 'REGULAR',
           sequence: 1,
           total_cycles: 0,
-          pricing_scheme: { fixed_price: { value: '15', currency_code: 'USD' } },
+          pricing_scheme: { fixed_price: { value: '3', currency_code: 'USD' } },
         },
       ],
       payment_preferences: {

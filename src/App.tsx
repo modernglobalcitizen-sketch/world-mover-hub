@@ -30,6 +30,7 @@ import RemoteJobDetail from "./pages/RemoteJobDetail";
 import Review from "./pages/Review";
 import RelocationServices from "./pages/RelocationServices";
 import TalentPool from "./pages/TalentPool";
+import Subscribe from "./pages/Subscribe";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/review" element={<Review />} />
           <Route path="/relocation-services" element={<RelocationServices />} />
           {/* <Route path="/talent-pool" element={<TalentPool />} /> */}
+          <Route path="/subscribe" element={<Subscribe />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
