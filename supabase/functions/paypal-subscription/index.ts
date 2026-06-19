@@ -170,6 +170,8 @@ async function createSubscription(accessToken: string, planId: string, email: st
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create subscription failed', response.status, body)
     throw new Error('Failed to create PayPal subscription')
   }
 
