@@ -843,6 +843,9 @@ const Dashboard = () => {
                         <div className="flex-1 space-y-2">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h4 className="font-medium">{saved.remote_job.title}</h4>
+                            <Badge variant="secondary" className="text-xs">
+                              {saved.remote_job.company_name}
+                            </Badge>
                             {saved.remote_job.category && (
                               <Badge variant="outline" className="text-xs">
                                 {saved.remote_job.category}
