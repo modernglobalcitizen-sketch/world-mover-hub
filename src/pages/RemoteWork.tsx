@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
-import Adsterra from "@/components/Adsterra";
 import SmartLink from "@/components/SmartLink";
 
 const COUNTRIES = [
@@ -540,12 +539,6 @@ const RemoteWork = () => {
           </div>
         </section>
 
-        {/* Adsterra */}
-        <section className="py-8">
-          <div className="container flex justify-center">
-            <Adsterra keyId="5fe44d7044f1cc309a21d45eb2803742" width={160} height={300} />
-          </div>
-        </section>
       </main>
       <Footer />
       <JobAlertsExitPopup />
