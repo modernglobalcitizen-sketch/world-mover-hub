@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 const PERKS = [
   "Save jobs and opportunities to your dashboard",
+  "Email notifications of new jobs",
   "Early access to webinars and resources",
   "Support the mission — keep the platform running",
 ];
