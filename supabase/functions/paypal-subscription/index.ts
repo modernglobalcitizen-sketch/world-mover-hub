@@ -45,6 +45,8 @@ async function getPayPalAccessToken(): Promise<string> {
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal auth failed', response.status, body)
     throw new Error('Failed to authenticate with PayPal')
   }
 
@@ -84,6 +86,8 @@ async function createPayPalProduct(accessToken: string): Promise<string> {
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create product failed', response.status, body)
     throw new Error('Failed to create PayPal product')
   }
 
@@ -138,6 +142,8 @@ async function createPayPalPlan(accessToken: string, productId: string): Promise
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create plan failed', response.status, body)
     throw new Error('Failed to create PayPal plan')
   }
 
@@ -168,6 +174,8 @@ async function createSubscription(accessToken: string, planId: string, email: st
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create subscription failed', response.status, body)
     throw new Error('Failed to create PayPal subscription')
   }
 
@@ -406,6 +414,7 @@ Deno.serve(async (req) => {
     )
 
   } catch (error) {
+    console.error('paypal-subscription error:', error instanceof Error ? error.message : String(error), error instanceof Error ? error.stack : '')
     return new Response(
       JSON.stringify({ error: 'An error occurred. Please try again later.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
