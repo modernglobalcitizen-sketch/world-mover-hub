@@ -86,6 +86,8 @@ async function createPayPalProduct(accessToken: string): Promise<string> {
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal create product failed', response.status, body)
     throw new Error('Failed to create PayPal product')
   }
 
