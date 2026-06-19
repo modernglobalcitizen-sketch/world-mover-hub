@@ -6,8 +6,6 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
-import AdSense from "@/components/AdSense";
-import Adsterra from "@/components/Adsterra";
 import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import SEO from "@/components/SEO";
@@ -27,7 +25,6 @@ const Index = () => {
         <ReviewsSection />
         <div className="container mx-auto px-4">
           <AdSense slot="1226790098" />
-          <Adsterra keyId="5fe44d7044f1cc309a21d45eb2803742" width={160} height={300} />
         </div>
         <HomeRemoteJobs />
         <div id="opportunities">
