@@ -6,7 +6,7 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
-import AdSense from "@/components/AdSense";
+
 import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import SEO from "@/components/SEO";
@@ -24,9 +24,6 @@ const Index = () => {
         <Hero />
         <FounderSection />
         <ReviewsSection />
-        <div className="container mx-auto px-4">
-          <AdSense slot="1226790098" />
-        </div>
         <HomeRemoteJobs />
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
