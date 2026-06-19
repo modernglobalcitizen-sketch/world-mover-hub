@@ -67,6 +67,7 @@ const Subscribe = () => {
       <SEO
         title="Become a Member — $3/month | Global Moves Network"
         description="Join Global Moves Network for $3/month. Unlock breakout rooms, opportunities, and resources to access international careers."
+        path="/subscribe"
       />
       <Header />
       <main className="flex-1 container mx-auto px-4 py-12 max-w-3xl">
