@@ -175,7 +175,7 @@ const HomeRemoteJobs = () => {
                         )}
                       </CardTitle>
                       <CardDescription className="mt-1 font-medium">
-                        {job.company_name}
+                        
                       </CardDescription>
                     </div>
                     <Button

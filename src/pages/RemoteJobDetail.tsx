@@ -109,8 +109,8 @@ const RemoteJobDetail = () => {
       <Header />
       {job && (
         <SEO
-          title={`${job.title} at ${job.company_name} — Remote Job`}
-          description={(job.description || `${job.title} — remote ${job.job_type} role at ${job.company_name}.`).replace(/<[^>]+>/g, "").slice(0, 160)}
+          title={`${job.title} — Remote Job`}
+          description={(job.description || `${job.title} — remote ${job.job_type} role.`).replace(/<[^>]+>/g, "").slice(0, 160)}
           path={`/remote-jobs/${job.id}`}
           type="article"
         />
@@ -151,7 +151,7 @@ const RemoteJobDetail = () => {
                     </h1>
                     <div className="flex items-center gap-2 mt-2 text-muted-foreground">
                       <Building2 className="h-4 w-4" />
-                      <span className="font-medium">{job.company_name}</span>
+                      <span className="font-medium">Confidential</span>
                     </div>
                   </div>
                   {session && (
