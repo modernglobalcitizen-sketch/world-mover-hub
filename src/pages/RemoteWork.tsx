@@ -412,10 +412,10 @@ const RemoteWork = () => {
                               </Button>
                             ) : (
                               <Button size="sm" variant="outline" asChild>
-                                <a href="/auth">
+                                <Link to="/subscribe">
                                   <Lock className="h-3 w-3 mr-1" />
-                                  Sign up to View
-                                </a>
+                                  Join $3/mo to View
+                                </Link>
                               </Button>
                             )}
                           </div>
