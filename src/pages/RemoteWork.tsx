@@ -353,7 +353,7 @@ const RemoteWork = () => {
                                 )}
                               </CardTitle>
                               <CardDescription className="mt-1 font-medium">
-                                {job.company_name}
+                                
                               </CardDescription>
                             </div>
                             <div className="flex items-center gap-2 shrink-0">
