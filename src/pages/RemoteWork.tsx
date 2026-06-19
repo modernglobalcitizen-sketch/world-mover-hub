@@ -247,7 +247,7 @@ const RemoteWork = () => {
             {!session && (
               <div className="mt-6 space-y-3">
                 <Button asChild className="bg-white text-primary hover:bg-white/90">
-                  <a href="/auth">Sign Up to Apply for Jobs</a>
+                  <Link to="/subscribe">Become a Member — $3/month to Apply</Link>
                 </Button>
                 <div>
                   <Button asChild variant="outline" className="border-white/40 text-white hover:bg-white/10 hover:text-white bg-transparent">
@@ -412,10 +412,10 @@ const RemoteWork = () => {
                               </Button>
                             ) : (
                               <Button size="sm" variant="outline" asChild>
-                                <a href="/auth">
+                                <Link to="/subscribe">
                                   <Lock className="h-3 w-3 mr-1" />
-                                  Sign up to View
-                                </a>
+                                  Join $3/mo to View
+                                </Link>
                               </Button>
                             )}
                           </div>
