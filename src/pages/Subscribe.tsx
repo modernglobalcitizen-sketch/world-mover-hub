@@ -12,8 +12,6 @@ import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const PERKS = [
-  "Access to all breakout rooms & community chats",
-  "Personalized opportunity matches",
   "Save jobs and opportunities to your dashboard",
   "Early access to webinars and resources",
   "Support the mission — keep the platform running",
