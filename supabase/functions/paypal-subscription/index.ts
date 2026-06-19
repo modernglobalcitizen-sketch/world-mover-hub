@@ -406,6 +406,7 @@ Deno.serve(async (req) => {
     )
 
   } catch (error) {
+    console.error('paypal-subscription error:', error instanceof Error ? error.message : String(error), error instanceof Error ? error.stack : '')
     return new Response(
       JSON.stringify({ error: 'An error occurred. Please try again later.' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
