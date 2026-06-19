@@ -45,6 +45,8 @@ async function getPayPalAccessToken(): Promise<string> {
   })
 
   if (!response.ok) {
+    const body = await response.text()
+    console.error('PayPal auth failed', response.status, body)
     throw new Error('Failed to authenticate with PayPal')
   }
 
