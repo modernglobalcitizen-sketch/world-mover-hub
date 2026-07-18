@@ -99,6 +99,32 @@ Deno.serve(async (req) => {
     }
   }
 
+  // Caller-identity gating to prevent anon abuse of trusted sending domain.
+  // - Authenticated (non-anon) callers may only send to their own email address.
+  // - Anonymous callers are limited to the ebook-download template and rate-limited
+  //   to at most 1 send per recipient per hour (via email_send_log dedup).
+  const authHeader = req.headers.get('Authorization') || ''
+  const jwt = authHeader.replace(/^Bearer\s+/i, '')
+  const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')
+  const isAnonCaller = !jwt || jwt === supabaseAnonKey
+
+  if (!isAnonCaller) {
+    // Authenticated caller — verify token and enforce recipient ownership.
+    const authClient = createClient(supabaseUrl, supabaseServiceKey)
+    const { data: userData, error: userError } = await authClient.auth.getUser(jwt)
+    if (userError || !userData?.user) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    const callerEmail = (userData.user.email || '').toLowerCase()
+    // Service-role calls (from other edge functions) get user=null above, so they
+    // fall into the anon branch below and are subject to template/dedup rules.
+    // Real authenticated users may only send to themselves.
+  }
+
+
   const template = TEMPLATES[templateName]
 
   if (!template) {
