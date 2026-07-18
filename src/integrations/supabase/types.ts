@@ -1042,6 +1042,17 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_affiliate_sales: {
+        Args: never
+        Returns: {
+          commission_amount: number
+          created_at: string
+          ebook_title: string
+          id: string
+          sale_amount: number
+          status: string
+        }[]
+      }
       get_featured_talent_pool: {
         Args: never
         Returns: {
