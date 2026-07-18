@@ -143,6 +143,57 @@ Deno.serve(async (req) => {
   // Create Supabase client with service role (bypasses RLS)
   const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
+  // Caller-identity gating to prevent anon abuse of trusted sending domain.
+  // - Authenticated (real user) callers may only send to their own email address.
+  // - Anonymous (public anon key) callers are limited to the ebook-download template
+  //   and rate-limited to 1 send per recipient per hour via email_send_log dedup.
+  // - Service-role callers (other edge functions) are unrestricted.
+  const ANON_ALLOWED_TEMPLATES = new Set(['ebook-download'])
+  if (isAnonCaller) {
+    if (!ANON_ALLOWED_TEMPLATES.has(templateName)) {
+      return new Response(
+        JSON.stringify({ error: 'Authentication required for this template' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+    const { count: recentCount, error: recentErr } = await supabase
+      .from('email_send_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('recipient_email', effectiveRecipient)
+      .eq('template_name', templateName)
+      .gte('created_at', oneHourAgo)
+    if (recentErr) {
+      console.error('Rate-limit check failed', { error: recentErr })
+      return new Response(
+        JSON.stringify({ error: 'Failed to verify send eligibility' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    if ((recentCount ?? 0) >= 1) {
+      return new Response(
+        JSON.stringify({ success: false, reason: 'rate_limited' }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+  } else {
+    // Authenticated caller: verify JWT signature and require self-recipient.
+    const { data: userData, error: userError } = await supabase.auth.getUser(jwt)
+    // If getUser fails (e.g. service-role token), treat as service call — unrestricted.
+    if (userData?.user) {
+      const callerEmail = (userData.user.email || '').toLowerCase()
+      if (callerEmail !== effectiveRecipient.toLowerCase()) {
+        return new Response(
+          JSON.stringify({ error: 'Recipient must match authenticated user' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    } else if (userError) {
+      // Non-user JWT that isn't the anon key — likely service-role. Allow.
+    }
+  }
+
+
   // 2. Check suppression list (fail-closed: if we can't verify, don't send)
   const { data: suppressed, error: suppressionError } = await supabase
     .from('suppressed_emails')
