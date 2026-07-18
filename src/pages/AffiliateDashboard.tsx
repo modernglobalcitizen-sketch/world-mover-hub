@@ -38,11 +38,7 @@ const AffiliateDashboard = () => {
 
       setAffiliate(aff);
 
-      const { data: salesData } = await supabase
-        .from("affiliate_sales")
-        .select("*")
-        .eq("affiliate_id", aff.id)
-        .order("created_at", { ascending: false });
+      const { data: salesData } = await supabase.rpc("get_affiliate_sales");
 
       if (salesData) setSales(salesData);
       setLoading(false);
