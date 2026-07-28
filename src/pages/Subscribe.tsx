@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Check } from "lucide-react";
 
 const PERKS = [
   "Save jobs and opportunities to your dashboard",
@@ -18,53 +13,11 @@ const PERKS = [
 ];
 
 const Subscribe = () => {
-  const [searchParams] = useSearchParams();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [verifying, setVerifying] = useState(false);
-  const [verified, setVerified] = useState(false);
-
-  const paymentStatus = searchParams.get("payment");
-  const subscriptionId = searchParams.get("subscription_id");
-
-  useEffect(() => {
-    const verify = async () => {
-      if (paymentStatus !== "success" || !subscriptionId) return;
-      setVerifying(true);
-      const { data, error } = await supabase.functions.invoke("paypal-subscription", {
-        body: { action: "verify-subscription", subscriptionId },
-      });
-      setVerifying(false);
-      if (error || !data?.verified) {
-        toast.error("We couldn't confirm your subscription yet. It may take a moment.");
-        return;
-      }
-      setVerified(true);
-      toast.success("Subscription active! Welcome aboard.");
-    };
-    verify();
-  }, [paymentStatus, subscriptionId]);
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setLoading(true);
-    const { data, error } = await supabase.functions.invoke("paypal-subscription", {
-      body: { action: "create-subscription", email: email.trim() },
-    });
-    setLoading(false);
-    if (error || !data?.approvalUrl) {
-      toast.error("Could not start subscription. Please try again.");
-      return;
-    }
-    window.location.href = data.approvalUrl;
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SEO
-        title="Become a Member — $3/month | Global Moves Network"
-        description="Join Global Moves Network for $3/month. Unlock breakout rooms, opportunities, and resources to access international careers."
+        title="Become a Member — Free | Global Moves Network"
+        description="Join Global Moves Network for free. Unlock opportunities, remote jobs, and resources to access international careers."
         path="/subscribe"
       />
       <Header />
@@ -74,17 +27,16 @@ const Subscribe = () => {
             Become a Member
           </h1>
           <p className="text-lg text-muted-foreground">
-            Support the mission and unlock everything Global Moves Network offers.
+            Unlock everything Global Moves Network offers.
           </p>
         </div>
 
         <Card className="border-primary/20 shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Monthly Membership</CardTitle>
-            <CardDescription>Cancel anytime through PayPal.</CardDescription>
+            <CardTitle className="text-2xl">Membership</CardTitle>
+            <CardDescription>Free to join. No payment required.</CardDescription>
             <div className="mt-4">
-              <span className="text-5xl font-bold text-primary">$3</span>
-              <span className="text-muted-foreground ml-1">/ month</span>
+              <span className="text-5xl font-bold text-primary">Free</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -98,60 +50,15 @@ const Subscribe = () => {
             </ul>
 
             <div className="bg-muted/50 border border-border rounded-lg p-4">
-              <h3 className="font-semibold text-foreground mb-1">Why is it not free?</h3>
+              <h3 className="font-semibold text-foreground mb-1">Why join?</h3>
               <p className="text-sm text-muted-foreground">
-                All jobs are verified by a real person. This is a small investment if you are serious about your remote work journey.
+                All jobs are verified by a real person, so you only see opportunities worth your time.
               </p>
             </div>
 
-            {verified ? (
-              <div className="text-center space-y-4 pt-4">
-                <p className="text-foreground font-medium">
-                  🎉 Your membership is active. Thank you for supporting the community!
-                </p>
-                <Button asChild className="w-full">
-                  <Link to="/dashboard">Go to Dashboard</Link>
-                </Button>
-              </div>
-            ) : verifying ? (
-              <div className="flex items-center justify-center gap-2 py-4 text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Confirming your subscription...
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="space-y-4 pt-2">
-                <div>
-                  <Label htmlFor="email">Your email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    className="mt-1"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Use the same email as your PayPal account.
-                  </p>
-                </div>
-                <Button type="submit" disabled={loading} className="w-full" size="lg">
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      Redirecting to PayPal...
-                    </>
-                  ) : (
-                    "Subscribe with PayPal — $3/month"
-                  )}
-                </Button>
-                {paymentStatus === "cancelled" && (
-                  <p className="text-sm text-center text-muted-foreground">
-                    Payment cancelled. You can try again anytime.
-                  </p>
-                )}
-              </form>
-            )}
+            <Button asChild className="w-full" size="lg">
+              <Link to="/auth">Create your free account</Link>
+            </Button>
           </CardContent>
         </Card>
       </main>

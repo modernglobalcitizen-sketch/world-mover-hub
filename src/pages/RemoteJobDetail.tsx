@@ -221,10 +221,10 @@ const RemoteJobDetail = () => {
                       <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
                       <h3 className="font-semibold text-foreground mb-2">Members only</h3>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Become a member for $3/month to unlock application links and apply to remote jobs.
+                        Become a member for free to unlock application links and apply to remote jobs.
                       </p>
                       <Button asChild>
-                        <Link to="/subscribe">Become a Member — $3/month</Link>
+                        <Link to="/subscribe">Become a Member — Free</Link>
                       </Button>
                     </div>
                   )}
