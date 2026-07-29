@@ -2,20 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import aboutImage from "@/assets/about-global-moves.jpg";
 import founderImage from "@/assets/kenisha-founder.jpg";
-import { Users, MessageCircle, Globe, Laptop, Plane } from "lucide-react";
+import { Globe, Laptop, Plane } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const features = [
-  {
-    icon: Users,
-    title: "Breakout Rooms by Goal",
-    description: "Join rooms organized around your aspirations — whether you're pursuing a scholarship, finding remote work, or international fellowship.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Real-Time Presence",
-    description: "See who's actively online, share real opportunities, and support each other's progress in real time.",
-  },
   {
     icon: Globe,
     title: "Curated Opportunities",
@@ -127,20 +117,6 @@ const About = () => {
                   </p>
                 </div>
               ))}
-            </div>
-
-            <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-headline pt-8">
-              How It Works
-            </h2>
-            
-            <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
-              <p>
-                Members join breakout rooms organized by goal — whether you're applying for scholarships, finding remote work, or exploring international fellowships. Inside these rooms, you can see who's actively online, share real opportunities you've discovered, and hold each other accountable.
-              </p>
-              
-              <p>
-                Our members gain access to curated opportunities, learning resources for skill-building, and a supportive community of others on the same journey. Together, we're proving that barriers to global mobility can be overcome through solidarity and collective action.
-              </p>
             </div>
 
             <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tight text-headline pt-8">

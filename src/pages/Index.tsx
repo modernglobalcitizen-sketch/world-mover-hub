@@ -4,7 +4,6 @@ import Hero from "@/components/Hero";
 import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
-import MentorshipSection from "@/components/MentorshipSection";
 import ReviewsSection from "@/components/ReviewsSection";
 
 import SmartLink from "@/components/SmartLink";
@@ -28,7 +27,6 @@ const Index = () => {
         <div id="opportunities">
           <OpportunitiesSection limit={6} />
         </div>
-        <MentorshipSection />
       </main>
       <Footer />
       <JobAlertsExitPopup />
