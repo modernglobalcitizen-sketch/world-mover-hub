@@ -49,9 +49,6 @@ const About = () => {
                 Global Moves Network is a membership platform where people navigating global work, study, and travel with limited passport access connect, stay accountable, and unlock opportunities together.
               </p>
               
-              <p>
-                We bring together ambitious individuals who face similar barriers — visa restrictions, financial proof requirements, and limited access to global networks. Instead of navigating these challenges alone, our members support each other through shared knowledge, real opportunities, and collective resources.
-              </p>
             </div>
 
             {/* Meet the Founder */}
@@ -124,9 +121,6 @@ const About = () => {
             </h2>
             
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
-              <p>
-                Global Moves Network was born from a simple observation: incredible talent exists everywhere, but access to global opportunities doesn't. Having experienced the barriers of limited passport mobility firsthand, I realized that individual effort alone wasn't enough — community was the answer.
-              </p>
               
               <p>
                 What started as me sharing remote work tips with friends has grown into a comprehensive membership platform serving members worldwide. By combining curated resources, real-time community support, and practical guidance, we've created a space that democratizes access to global opportunities.
