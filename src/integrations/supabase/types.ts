@@ -930,6 +930,63 @@ export type Database = {
         }
         Relationships: []
       }
+      teach_abroad_programs: {
+        Row: {
+          apply_url: string | null
+          benefits: string | null
+          contract_length: string | null
+          country: string
+          created_at: string
+          deadline: string | null
+          description: string
+          id: string
+          is_active: boolean
+          organization: string
+          program_name: string
+          region: string
+          requirements: string | null
+          salary: string | null
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          apply_url?: string | null
+          benefits?: string | null
+          contract_length?: string | null
+          country: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean
+          organization: string
+          program_name: string
+          region?: string
+          requirements?: string | null
+          salary?: string | null
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          apply_url?: string | null
+          benefits?: string | null
+          contract_length?: string | null
+          country?: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean
+          organization?: string
+          program_name?: string
+          region?: string
+          requirements?: string | null
+          salary?: string | null
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
