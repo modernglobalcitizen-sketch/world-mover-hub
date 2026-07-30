@@ -13,6 +13,7 @@ const navLinks = [
   // { name: "How It Works", href: "/how-it-works" },
   { name: "Ebooks", href: "/ebooks" },
   { name: "Remote Work", href: "/remote-work" },
+  { name: "Teach Abroad", href: "/teach-abroad" },
   { name: "Resources", href: "/resources" },
   // { name: "Talent Pool", href: "/talent-pool" },
 ];
