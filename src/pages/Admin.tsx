@@ -958,6 +958,10 @@ const Admin = () => {
                 <RemoteJobsAdmin />
               </TabsContent>
 
+              <TabsContent value="teach-abroad">
+                <TeachAbroadAdmin />
+              </TabsContent>
+
               <TabsContent value="reviews">
                 <ReviewsAdmin />
               </TabsContent>
