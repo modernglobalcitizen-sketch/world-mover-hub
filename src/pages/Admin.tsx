@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send, UserCheck } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send, UserCheck, GraduationCap } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
 import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
 import TeachAbroadAdmin from "@/components/TeachAbroadAdmin";
