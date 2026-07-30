@@ -12,9 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send, UserCheck } from "lucide-react";
+import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send, UserCheck, GraduationCap } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
 import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
+import TeachAbroadAdmin from "@/components/TeachAbroadAdmin";
 import RemoteJobApplicationsAdmin from "@/components/RemoteJobApplicationsAdmin";
 import ReviewsAdmin from "@/components/ReviewsAdmin";
 import TalentPoolAdmin from "@/components/TalentPoolAdmin";
@@ -492,6 +493,10 @@ const Admin = () => {
                   <Laptop className="h-4 w-4" />
                   Remote Jobs
                 </TabsTrigger>
+                <TabsTrigger value="teach-abroad" className="flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  Teach Abroad
+                </TabsTrigger>
                 <TabsTrigger value="reviews" className="flex items-center gap-2">
                   <Star className="h-4 w-4" />
                   Reviews
@@ -951,6 +956,10 @@ const Admin = () => {
 
               <TabsContent value="remote-jobs">
                 <RemoteJobsAdmin />
+              </TabsContent>
+
+              <TabsContent value="teach-abroad">
+                <TeachAbroadAdmin />
               </TabsContent>
 
               <TabsContent value="reviews">
