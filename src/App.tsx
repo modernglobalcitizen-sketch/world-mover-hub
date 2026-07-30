@@ -31,6 +31,7 @@ import Review from "./pages/Review";
 import RelocationServices from "./pages/RelocationServices";
 import TalentPool from "./pages/TalentPool";
 import Subscribe from "./pages/Subscribe";
+import TeachAbroad from "./pages/TeachAbroad";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
