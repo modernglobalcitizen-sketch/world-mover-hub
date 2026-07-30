@@ -15,6 +15,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plus, Pencil, Trash2, Shield, Briefcase, DollarSign, HandCoins, Users, Laptop, Star, Send, UserCheck } from "lucide-react";
 import AffiliateAdmin from "@/components/AffiliateAdmin";
 import RemoteJobsAdmin from "@/components/RemoteJobsAdmin";
+import TeachAbroadAdmin from "@/components/TeachAbroadAdmin";
 import RemoteJobApplicationsAdmin from "@/components/RemoteJobApplicationsAdmin";
 import ReviewsAdmin from "@/components/ReviewsAdmin";
 import TalentPoolAdmin from "@/components/TalentPoolAdmin";
