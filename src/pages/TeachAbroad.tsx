@@ -14,7 +14,7 @@ import { format } from "date-fns";
 
 interface Program {
   id: string;
-  program_name: string;
+  program_name: string | null;
   organization: string;
   country: string;
   region: string;
@@ -61,7 +61,7 @@ const TeachAbroad = () => {
     const q = search.trim().toLowerCase();
     const matchesSearch =
       !q ||
-      p.program_name.toLowerCase().includes(q) ||
+      (p.program_name && p.program_name.toLowerCase().includes(q)) ||
       p.organization.toLowerCase().includes(q) ||
       p.country.toLowerCase().includes(q);
     return (
@@ -138,7 +138,9 @@ const TeachAbroad = () => {
                       <Badge variant="secondary">{p.subject}</Badge>
                       <Badge variant="outline">{p.region}</Badge>
                     </div>
-                    <CardTitle className="text-xl leading-snug">{p.program_name}</CardTitle>
+                    <CardTitle className="text-xl leading-snug">
+                      {p.program_name || "Teaching opportunity in " + p.country}
+                    </CardTitle>
                     <p className="text-sm text-muted-foreground">{p.organization}</p>
                   </CardHeader>
                   <CardContent className="flex flex-col flex-1 gap-4">

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 export interface TeachAbroadProgram {
   id: string;
-  program_name: string;
+  program_name: string | null;
   organization: string;
   country: string;
   region: string;
@@ -102,8 +102,8 @@ const TeachAbroadAdmin = () => {
   };
 
   const handleSave = async () => {
-    if (!formData.program_name.trim() || !formData.organization.trim() || !formData.country.trim()) {
-      toast.error("Program name, organization and country are required");
+    if (!formData.organization.trim() || !formData.country.trim()) {
+      toast.error("Organization and country are required");
       return;
     }
 
@@ -179,7 +179,7 @@ const TeachAbroadAdmin = () => {
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>Program Name *</Label>
+                <Label>Program Name</Label>
                 <Input
                   value={formData.program_name}
                   onChange={(e) => setFormData({ ...formData, program_name: e.target.value })}
@@ -322,7 +322,9 @@ const TeachAbroadAdmin = () => {
             ) : (
               programs.map((p) => (
                 <TableRow key={p.id}>
-                  <TableCell className="font-medium max-w-[200px] truncate">{p.program_name}</TableCell>
+                  <TableCell className="font-medium max-w-[200px] truncate">
+                    {p.program_name || "—"}
+                  </TableCell>
                   <TableCell>{p.country}</TableCell>
                   <TableCell><Badge variant="secondary">{p.subject}</Badge></TableCell>
                   <TableCell>{p.salary || "—"}</TableCell>

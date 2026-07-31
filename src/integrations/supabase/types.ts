@@ -942,7 +942,7 @@ export type Database = {
           id: string
           is_active: boolean
           organization: string
-          program_name: string
+          program_name: string | null
           region: string
           requirements: string | null
           salary: string | null
@@ -960,7 +960,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           organization: string
-          program_name: string
+          program_name?: string | null
           region?: string
           requirements?: string | null
           salary?: string | null
@@ -978,7 +978,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           organization?: string
-          program_name?: string
+          program_name?: string | null
           region?: string
           requirements?: string | null
           salary?: string | null
