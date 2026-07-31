@@ -14,7 +14,7 @@ import { format } from "date-fns";
 
 interface Program {
   id: string;
-  program_name: string;
+  program_name: string | null;
   organization: string;
   country: string;
   region: string;
