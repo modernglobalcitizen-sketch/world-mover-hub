@@ -322,7 +322,9 @@ const TeachAbroadAdmin = () => {
             ) : (
               programs.map((p) => (
                 <TableRow key={p.id}>
-                  <TableCell className="font-medium max-w-[200px] truncate">{p.program_name}</TableCell>
+                  <TableCell className="font-medium max-w-[200px] truncate">
+                    {p.program_name || "—"}
+                  </TableCell>
                   <TableCell>{p.country}</TableCell>
                   <TableCell><Badge variant="secondary">{p.subject}</Badge></TableCell>
                   <TableCell>{p.salary || "—"}</TableCell>
