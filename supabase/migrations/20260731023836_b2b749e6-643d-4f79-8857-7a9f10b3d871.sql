@@ -1,0 +1,1 @@
+ALTER TABLE public.teach_abroad_programs ALTER COLUMN program_name DROP NOT NULL;
