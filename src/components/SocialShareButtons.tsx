@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Facebook, Twitter, Linkedin, Link2, Mail } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Link2, Mail, AtSign } from "lucide-react";
 import { toast } from "sonner";
 
 interface SocialShareButtonsProps {
@@ -17,8 +17,10 @@ const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps
     twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    threads: `https://www.threads.net/intent/post?text=${encodedTitle}%20${encodedUrl}`,
     email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
   };
+
 
   const copyToClipboard = async () => {
     try {
