@@ -6,6 +6,7 @@ import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import ReviewsSection from "@/components/ReviewsSection";
 import BannerAd from "@/components/BannerAd";
+import LovableBannerAd from "@/components/LovableBannerAd";
 
 import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
@@ -24,6 +25,7 @@ const Index = () => {
       <main className="flex-1">
         <Hero />
         <BannerAd />
+        <LovableBannerAd />
         <FounderSection />
         <ReviewsSection />
         <HomeRemoteJobs />
