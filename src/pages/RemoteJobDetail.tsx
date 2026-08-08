@@ -189,10 +189,18 @@ const RemoteJobDetail = () => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 text-sm text-muted-foreground border-t border-border pt-4">
-                  <CalendarDays className="h-4 w-4" />
-                  Posted {formatDate(job.created_at)}
+                <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground border-t border-border pt-4">
+                  <span className="flex items-center gap-2">
+                    <CalendarDays className="h-4 w-4" />
+                    Posted {formatDate(job.created_at)}
+                  </span>
+                  <SocialShareButtons
+                    url={typeof window !== "undefined" ? window.location.href : `https://globalmovesnetwork.com/remote-jobs/${job.id}`}
+                    title={job.title}
+                    description={(job.description || "").replace(/<[^>]+>/g, "").slice(0, 200)}
+                  />
                 </div>
+
 
                 <div>
                   <h2 className="text-xl font-display font-semibold text-headline mb-4">Job Description</h2>
