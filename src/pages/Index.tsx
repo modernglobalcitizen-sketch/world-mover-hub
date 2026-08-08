@@ -5,10 +5,12 @@ import FounderSection from "@/components/FounderSection";
 import OpportunitiesSection from "@/components/OpportunitiesSection";
 import HomeRemoteJobs from "@/components/HomeRemoteJobs";
 import ReviewsSection from "@/components/ReviewsSection";
+import BannerAd from "@/components/BannerAd";
 
 import SmartLink from "@/components/SmartLink";
 import JobAlertsExitPopup from "@/components/JobAlertsExitPopup";
 import SEO from "@/components/SEO";
+
 
 const Index = () => {
   return (
