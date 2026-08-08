@@ -70,6 +70,17 @@ const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps
         className="h-9 w-9"
         asChild
       >
+        <a href={shareLinks.threads} target="_blank" rel="noopener noreferrer" aria-label="Share on Threads">
+          <AtSign className="h-4 w-4" />
+        </a>
+      </Button>
+      <Button
+
+        variant="outline"
+        size="icon"
+        className="h-9 w-9"
+        asChild
+      >
         <a href={shareLinks.email} aria-label="Share via Email">
           <Mail className="h-4 w-4" />
         </a>
