@@ -275,7 +275,10 @@ const OpportunityDetail = () => {
                 url={window.location.href}
                 title={opportunity.title}
                 description={opportunity.about}
+                contentType="opportunity"
+                contentId={opportunity.id}
               />
+
             </div>
 
             <Card>
