@@ -736,6 +736,39 @@ export type Database = {
           },
         ]
       }
+      share_events: {
+        Row: {
+          content_id: string | null
+          content_title: string | null
+          content_type: string
+          created_at: string
+          id: string
+          network: string
+          page_url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content_id?: string | null
+          content_title?: string | null
+          content_type: string
+          created_at?: string
+          id?: string
+          network: string
+          page_url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content_id?: string | null
+          content_title?: string | null
+          content_type?: string
+          created_at?: string
+          id?: string
+          network?: string
+          page_url?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           amount: number
