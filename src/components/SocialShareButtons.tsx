@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Facebook, Twitter, Linkedin, Link2, Mail, AtSign } from "lucide-react";
 import { toast } from "sonner";
+import { trackShare, ShareNetwork, ShareContentType } from "@/lib/shareAnalytics";
 
 interface SocialShareButtonsProps {
   url: string;
   title: string;
   description?: string;
+  contentType?: ShareContentType;
+  contentId?: string;
 }
+
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
