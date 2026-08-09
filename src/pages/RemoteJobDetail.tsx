@@ -199,7 +199,10 @@ const RemoteJobDetail = () => {
                     url={typeof window !== "undefined" ? window.location.href : `https://globalmovesnetwork.com/remote-jobs/${job.id}`}
                     title={job.title}
                     description={(job.description || "").replace(/<[^>]+>/g, "").slice(0, 200)}
+                    contentType="remote_job"
+                    contentId={job.id}
                   />
+
                 </div>
 
 
