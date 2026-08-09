@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Facebook, Twitter, Linkedin, Link2, Mail, AtSign } from "lucide-react";
 import { toast } from "sonner";
+import { trackShare, ShareNetwork, ShareContentType } from "@/lib/shareAnalytics";
 
 interface SocialShareButtonsProps {
   url: string;
   title: string;
   description?: string;
+  contentType?: ShareContentType;
+  contentId?: string;
 }
+
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
   <svg
@@ -19,7 +23,13 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps) => {
+const SocialShareButtons = ({
+  url,
+  title,
+  description,
+  contentType = "page",
+  contentId,
+}: SocialShareButtonsProps) => {
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
   const encodedDescription = encodeURIComponent(description || "");
@@ -34,7 +44,12 @@ const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps
     email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
   };
 
+  const handleShare = (network: ShareNetwork) => {
+    void trackShare({ network, contentType, contentId, contentTitle: title, url });
+  };
+
   const copyToClipboard = async () => {
+    handleShare("copy_link");
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Link copied to clipboard!");
@@ -46,63 +61,67 @@ const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm text-muted-foreground mr-2">Share:</span>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.twitter}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Twitter"
+          onClick={() => handleShare("twitter")}
+        >
           <Twitter className="h-4 w-4" />
         </a>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Facebook"
+          onClick={() => handleShare("facebook")}
+        >
           <Facebook className="h-4 w-4" />
         </a>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on LinkedIn"
+          onClick={() => handleShare("linkedin")}
+        >
           <Linkedin className="h-4 w-4" />
         </a>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.threads} target="_blank" rel="noopener noreferrer" aria-label="Share on Threads">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.threads}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on Threads"
+          onClick={() => handleShare("threads")}
+        >
           <AtSign className="h-4 w-4" />
         </a>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Share on WhatsApp"
+          onClick={() => handleShare("whatsapp")}
+        >
           <WhatsAppIcon className="h-4 w-4" />
         </a>
       </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        className="h-9 w-9"
-        asChild
-      >
-        <a href={shareLinks.email} aria-label="Share via Email">
+      <Button variant="outline" size="icon" className="h-9 w-9" asChild>
+        <a
+          href={shareLinks.email}
+          aria-label="Share via Email"
+          onClick={() => handleShare("email")}
+        >
           <Mail className="h-4 w-4" />
         </a>
       </Button>
@@ -118,5 +137,6 @@ const SocialShareButtons = ({ url, title, description }: SocialShareButtonsProps
     </div>
   );
 };
+
 
 export default SocialShareButtons;
